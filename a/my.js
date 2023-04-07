@@ -907,8 +907,12 @@ function pint(v,p) {
   let px=document.getElementById(t);let pxn=px.parentNode;
   //console.log(xm,px)
   db.pt.where('ods').equals(od+t.match(/\d+/g)[0]).each((v)=>{
-    !!v.add||(pxn.style.color='blue')
-   // console.log(t,'fgf')
+    !!v.add||(pxn.style.color='blue');
+    if (v.gst) {
+        let zw=pxn.querySelector('span[onclick] span');
+        zw.innerText='GST';
+        zw.style.padding='';
+    }
   })
   if(t!=selod5[t]){aul.querySelector('#vtag [name='+t+']').innerText=selod5[t];}
   //document.querySelector().innerText=selod5[t];
