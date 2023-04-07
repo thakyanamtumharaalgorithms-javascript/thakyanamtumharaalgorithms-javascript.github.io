@@ -583,7 +583,7 @@ function svptd() {
      })();
   }
   zc(ptd,'hiiiiiii');
-  sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ')
+  sendd(urli,{ "p": "10", "g": 'ods', "od": {},ptd},'Party Details ')
   selg||newocb();selg&&gr();
   ptods=[];ptid=0;
 }
