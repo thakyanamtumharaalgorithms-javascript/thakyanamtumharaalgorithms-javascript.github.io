@@ -423,7 +423,7 @@ function pincode(v) {
 function gststc(v) { //let text = "07BBNPG0866";g.match(/^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$/g)
   let g = v.value.replace(/ /g, '').trim().toUpperCase();
   // console.log(`hi ${g}`);
-  if ((g.length == 15) && (checksum(g))) {
+  if ((g.length == 15)) {
     document.getElementById('ptst').innerHTML = "<b id='q000' style='color:#008001'>" + g.substr(0, 2) + '-' + gststate[Number(g.substr(0, 2))] + " <b></b>" + "</b>";
     // fetch('https://services.gst.gov.in/services/api/search/goodservice?gstin='+g)
     // .then((r) => r.json())
