@@ -441,17 +441,37 @@ function gststc(v) { //let text = "07BBNPG0866";g.match(/^([0][1-9]|[1-2][0-9]|[
     document.getElementById('ptst').innerHTML = "<b style='color:blue'>Ohhh! Something Wrong</b>";
   }
 }
-function checksum(g){
-  let regTest = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/.test(g)
-   if(regTest){
-      let a=65,b=55,c=36;
-      return Array['from'](g).reduce((i,j,k,g)=>{ 
-         p=(p=(j.charCodeAt(0)<a?parseInt(j):j.charCodeAt(0)-b)*(k%2+1))>c?1+(p-c):p;
-         return k<14?i+p:j==((c=(c-(i%c)))<10?c:String.fromCharCode(c+b));
-      },0); 
+// function checksum(g){
+//   let regTest = /\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}/.test(g)
+//    if(regTest){
+//       let a=65,b=55,c=36;
+//       return Array['from'](g).reduce((i,j,k,g)=>{ 
+//          p=(p=(j.charCodeAt(0)<a?parseInt(j):j.charCodeAt(0)-b)*(k%2+1))>c?1+(p-c):p;
+//          return k<14?i+p:j==((c=(c-(i%c)))<10?c:String.fromCharCode(c+b));
+//       },0); 
+//   }
+//   return regTest
+// } //End GST state code and Verify
+
+function checksum(gstn) {
+  if (!/^(0[1-9]|[1-2][0-9]|3[0-7])[A-Z]{3}([ABCFGHLJPT])[A-Z][0-9]{4}[A-Z][1-9][Z][0-9A-Z]$/g.test(gstn))
+      return false;
+  //Calculate 15th digit checksum from 14 digits and compare it
+  let gstnCodepointChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let factor = 2, sum = 0, checkCodePoint = 0;
+  let mod = gstnCodepointChars.length;
+  for (let i = gstn.length - 2; i >= 0; i--) {
+      let codePoint = gstnCodepointChars.indexOf(gstn.charAt(i));
+      let digit = factor * codePoint;
+      factor = factor == 2 ? 1 : 2;
+      digit = (digit / mod) + (digit % mod);
+      sum += Math.floor(digit);
   }
-  return regTest
-} //End GST state code and Verify
+  checkCodePoint = (mod - (sum % mod)) % mod;
+  let checksumCharacter = gstnCodepointChars.charAt(checkCodePoint);
+  return gstn.substring(14, 15) == checksumCharacter;
+}
+
 
 // address
 function address(v) {
@@ -562,7 +582,7 @@ function sptd(v){
  // ptd.ods.push(Number(localStorage.clickcount)+Number(ptcounter()));
  let vn = (ptg) ? (true && document.getElementById('q000')): true;
 
-  if((cn)||(ptg.length==2)){
+  if((cn&&vn)||(ptg.length==2)){
     console.log(ptd);
     if (v==1) {gonext();} // save and next 
     return true
