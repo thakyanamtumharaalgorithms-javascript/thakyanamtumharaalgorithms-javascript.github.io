@@ -695,7 +695,7 @@ if((clickh % 2 == 0)) {
   // if (op5.hasOwnProperty(b.getAttribute("for"))) {
   //    kk5="<input onchange='chnot(this)' id='inp5' name='"+b.getAttribute("for")+"' class='w3-border w3-input' type='text' style='padding:0 5px' placeholder=' Write Notes...'>"
   // }else{ kk5=''}
-  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey jkjxxx' id=''>Copy</div><textarea rows='1' style='resize:none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
+  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey jkjxxx'>Copy</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
      odtbl(doc.it,'tblom1','my55'); 
      }
     })
