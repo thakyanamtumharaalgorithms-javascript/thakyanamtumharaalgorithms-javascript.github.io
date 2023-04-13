@@ -627,16 +627,20 @@ function genid(v,i,b='a'){
 async function genlink(id,cn) {
   console.log(id);
     document.querySelector('.jkjxxx').addEventListener('click', async () => {
-      try {
-        const shareData = {
-          title: 'Link',
-          text: cn+', save this link and download all your bills here👇\n',
-          url: 'https://www.ownknitted.com/bill#'+id
-        }
-        await navigator.share(shareData);
-      } catch (err) {
-        console.log(err);
-      }
+     let cin=document.querySelector('#aa5 textarea');
+     cin.value=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
+     cin.select();
+     cin.setSelectionRange(0, 99999);
+     navigator.clipboard.writeText(cin.value);
+
+      // try {
+      //   const shareData = {
+      //     title: 'Link',
+      //     text: cn+', save this link and download all your bills here👇\n',
+      //     url: 'https://www.ownknitted.com/bill#'+id
+      //   }
+      //   await navigator.share(shareData);
+      // }
     });
   //return url1
 }
@@ -747,5 +751,3 @@ function download(imgurl,imgnm){
         console.log(v,'b');
       })
     }
-
-
