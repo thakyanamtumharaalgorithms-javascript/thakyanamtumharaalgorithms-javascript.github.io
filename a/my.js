@@ -22,7 +22,7 @@ async function getods(gd) {
           if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
 
-          hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+i.id+")'>"+String(i.id).slice(2)+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
+          hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
       }
       document.getElementById('oderli').innerHTML=hmtl0;
 
@@ -262,8 +262,8 @@ dptch = (tch=='') ? dptch='display:none': dptch='';
 dpoch = (och=='') ? dpoch='display:none': dpoch='';
  // kli=document.getElementById('gst').checked;
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
-let v9 = (pk8) ? pk8.slice(2) : (date1+(Number(zxc)+1));
-document.querySelector('#tot table thead th span').innerText='#'+v9;  
+let v9 = (pk8) ? pk8.slice(2) : (date1+(Number(localStorage.clickcount)+1));
+document.querySelector('#tot table thead th span').innerText='#'+v9;
  //document.getElementById('u33').innerHTML=new Date().toLocaleString().slice(0,-3);
 //  pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
 // let pw=new Date();
@@ -1074,8 +1074,4 @@ function selpin(g) {
 // onload set last image
   let tt5=JSON.parse(localStorage.imglastod);
   document.getElementById('lastodimg').src=tt5.im5;
-  document.getElementById('lastodcn').innerHTML=tt5.cn.slice(2);
-
-
-
-
+  document.getElementById('lastodcn').innerHTML=tt5.cn;
