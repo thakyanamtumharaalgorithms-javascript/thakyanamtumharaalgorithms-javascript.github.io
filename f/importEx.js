@@ -1,4 +1,5 @@
 //export pt
+
 var d99=[];
 async function om99() {
     await db.pt.orderBy('id').each((v)=>{
