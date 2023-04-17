@@ -6,28 +6,11 @@
 document.getElementById("btn_convert").addEventListener("click", function () {
   let gd =document.getElementById("gsel").value;
   viewtotal();
+  let odid=Number(date1+(Number(zxc)+1));
   if (document.getElementById('instock').checked) {
     saveinst(1);document.getElementById('instock').click();
-  } else {
+  }else {
     // let ptd={id:'a',cn:'',mn1:'',mn2:'',gst:'',add:'',ods:['as102','as33','ak508']};
-    let oldid=ptd.id;
-    let odid=Number(date1+(Number(zxc)+1));
-    let odno=gd.slice(-1)+odid; // s30424
-    ptd.id=ptd.id||genid(ptcounter(),1);
-    //genlink(genid(ptd.id,3),ptd.cn);
-    ptd.ods.push(odno);
-     console.log(ptd);
-     if (!oldid) {
-      (async()=> { // save party details
-        await db.pt.add(ptd);
-       })();
-     }else{ 
-    //  in case key is not found, put() would create a new object while update() wont change anything.
-    //  The returned Promise will NOT fail if key was not found but resolve with value 0 instead of 1.
-      (async()=> { // update party details
-        await db.pt.update(oldid, ptd)
-       })();
-     }
 
     //corj();
     zc(ptd,'hiii76868iiii');
@@ -46,35 +29,56 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     zsr.dis=Number(document.getElementById('dis').value);
     let ct=document.getElementById('ctp');
     let ch=document.getElementById('chp');
-    if (ct.value) {
+    if(ct.value) {
       zsr.c=[,,,,];
       zsr.c[0]=Number(ct.value);
       let ctq=Number(document.getElementById('ctq').value);
       zsr.c[1]=ctq;
       zsr.tot=zsr.tot+ctq;
     }
-    if (ch.value) {
+    if(ch.value) {
       zsr.c||(zsr.c=[,,,,]);
       zsr.c[2]=Number(ch.value);
       let chq= Number(document.getElementById('chq').value);
       zsr.c[3]=chq;
       zsr.tot=zsr.tot+chq;
     }
+    let shod0={};
+    if(document.getElementById('bulkc').checked){
+      let oldid=ptd.id;
+      let odno=gd.slice(-1)+odid; // s30424
+      ptd.id=ptd.id||genid(ptcounter(),1);
+      //genlink(genid(ptd.id,3),ptd.cn);
+      ptd.ods.push(odno);
+       console.log(ptd);
+       if(!oldid) {
+        (async()=> { // save party details
+          await db.pt.add(ptd);
+         })();
+       }else{ 
+      //  in case key is not found, put() would create a new object while update() wont change anything.
+      //  The returned Promise will NOT fail if key was not found but resolve with value 0 instead of 1.
+        (async()=> { // update party details
+          await db.pt.update(oldid, ptd);
+         })();
+       }
+       shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}},ptd };
+      //  zc(window,'hiiiiiii');
+      }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
     
-    let shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}},ptd };
     (async ()=> {
       let st = new Localbase('st');
       //await st.collection(gd).add(shod0.od, 'od' + (Number(zxc)+1)).then((res) => {
         await st.collection(gd).add(shod0.od, 'od' + shod0.od.id).then((res) => {
-        console.log(res, 'added')
-        selgo(gd);    //  pinloc    
+        console.log(res, 'added');
+        selgo(gd);//  pinloc
         let paz = JSON.parse(pinloc);
         paz['od' + shod0.od.id] = 'Pending';
-        selpin(gd);//pinz 
+        selpin(gd);//pinz
         localStorage.setItem(pinz, JSON.stringify(paz));
       }).catch((error) => {
-        alert('error in add order fn-', error);
         console.log('error add order fn-', error);
+        alert('error in add order fn-', error);
       });
       await sendd(urli,shod0,'new order');
    })();

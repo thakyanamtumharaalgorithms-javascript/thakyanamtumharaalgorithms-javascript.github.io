@@ -14,25 +14,25 @@ async function getods(gd) {
    let hmtl0='';
     for await (const i of allod) {
           //console.log(i)
-          if(Number(i.tot)){ifz="ndelt"}else{ifz="delt"};
-          if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
-
-          let inp="<input onclick='selod(this)' id='"+'od'+i.id+"' class='w3-check' type='checkbox'>";let lid='';
-          let exio='';let funex='';
+          let ifz='';
+          if(!Number(i.tot)){ifz="delt"};
+          // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
+          let gstr="<span style='padding: 0 1.55em'></span>";
+          let inp="<input onclick='selod(this)' id='"+'od'+i.id+"' class='w3-check' type='checkbox'>";
+          let lid='';let exio='';let funex='';
           if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
 
           hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
       }
       document.getElementById('oderli').innerHTML=hmtl0;
-
   }
   catch(error) {
     console.log('error in getods() fn-', error);
     alert('error in getods() fn-', error);
   }
 }
- let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
+let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
 var selod5={};var zsr={};let selg;let odimgbob;
 //var om=document.getElementById("tb").innerHTML;
 var od={};var zxc=0; 
@@ -163,6 +163,7 @@ function bulks() {
 }
 
 // display all tab 
+// let bulk;
   let prc={};let bulkpc=JSON.parse(localStorage.pc);let sampc=JSON.parse(localStorage.pcs);
   function viewtotal(){
    let sum = totqt.reduce((p, a) => p + a, 0);
@@ -194,7 +195,7 @@ for (let i = 0; i < lkp1; i++) {
     
     for (let j = 0; j < pkz; j++) {
      let zo=lkp[i].querySelectorAll('tr input')[j].value==="";
-       let jkp=[];
+      //  let jkp=[];
    if(!zo){
        //console.log(lkp[i],'y');
       lkp[i].style.display="";
@@ -311,9 +312,13 @@ let cta=0, ctb=0, ctc=0, ctd=0, cte=0,sd1=null,sd11=0;
   }
 }//console.log(sd0);
 let txv=(Number(pctt)-Number(dis));
-let inv=Math.ceil(((Number(txv)*0.05)+Number(txv)+Number(tch)+Number(och)));billinv=[txv,inv];
+
+let vn = (document.getElementById('bulkc').checked) ? (Number(txv)*0.05) : 0;
+let vn1 = (document.getElementById('bulkc').checked) ? '' : 'none';
+// let vn1 = (document.getElementById('bulkc').checked) ?  '+ 5% Tax' : '<span style="padding: 0 2.30em"></span>';
+let inv=Math.ceil((vn+Number(txv)+Number(tch)+Number(och)));billinv=[txv,inv];
 let pctt0=dis&&("<tr><td colspan='2'><b class='sa2'>Discount -</b></td><td>"+"<b>"+dis+'₹'+'</b></td></tr>');
-let pctt1="<tr><td colspan='3' style='padding: 1px 4px 1px 2px!important'><div><b class='sc1'>"+total+" PCS Total</b><b class='sc1' style='margin-left: 2px;background: #2e2effd6'>"+Math.ceil(pcwt)+"kg</b><b class='sa2'>"+txv+'₹ + 5% Tax</b></div></td>'+'</tr>';
+let pctt1="<tr><td colspan='3' style='padding: 1px 4px 1px 2px!important'><div><b class='sc1'>"+total+" PCS Total</b><b class='sc1' style='margin-left: 2px;background: #2e2effd6'>"+Math.ceil(pcwt)+"kg</b><b class='sa2' style='display:"+vn1+"'>"+txv+'₹ + 5% Tax'+'</b></div></td>'+'</tr>';
 let pctt2="<tr style="+dptch+"><td colspan='2'><b class='sa2'>Transport Charge -</b></td><td>"+"<b>"+tch+'₹'+'</b></td></tr>';
 let pctt3="<tr style="+dpoch+"><td colspan='2'><b class='sa2'>Other Charges -</b></td><td>"+"<b>"+och+'₹'+'</b></td></tr>';
 let pctt4="<tr><td colspan='2'><b style='font-size: 12px; font-weight: 500;'>"+dtt+dtt2+"</b><b class='sa2'>Total Amount -</b></td><td>"+"<b class='sc1'>"+(inv.toLocaleString('en-IN'))+'₹'+'</b></td></tr>';
@@ -554,29 +559,29 @@ function newocb() {
 let totqt=[];
 function inclick(zx) {
  //macin();
- let qt=Number(zx.value);
- let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
-
- let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-  // console.log('cvbnmkkk',tbid,xn);
+ let qt=Number(zx.value);let ep=zx.parentElement.parentElement;
+ let tbid=ep.parentElement.parentElement.id;
+// alert('hi')
+ let xn=Array.from(ep.children).indexOf(zx.parentNode);
+// console.log('cvbnmkkk',tbid,xn);
 let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
 let jk=0;
 for (let i = 2; i < pk11; i++) {
    jk+=Number(pk1[i].cells[xn].querySelector('input').value);
 }//console.log(zx,zx.value,'asd');
  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
- let ihj1=zx.parentElement.parentElement;
+// let ihj1=zx.parentElement.parentElement;
  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
- //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
- stork(ihj2,ihj1.querySelector('th').innerText,ihj,qt);
- //console.log(od);
+ // console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
+ stork(ihj2,ep.querySelector('th').innerText,ihj,qt);
+ // console.log(od);
 document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
  let rt=0;
  for (let u = 1; u < uy1; u++) {
   rt+=Number(uy[u].innerText);
-  //console.log('gggtttt',rt,yt12);
- }//console.log('fghjkk',rt);
+  // console.log('gggtttt',rt,yt12);
+ }// console.log('fghjkk',rt);
  totqt[tbid.slice(-1)]=rt;
  document.getElementById('odert').innerText="Total-"+rt;
 }
@@ -600,8 +605,8 @@ document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerT
 // zsr.it = od; 
 // zsr.tch=Number(document.getElementById('tch').value)
 // zsr.och=Number(document.getElementById('och').value)
-//  //console.log('json:',zsr)
-//  //var obj = {a: 123, b: "4 5 6"};
+//  // console.log('json:',zsr)
+//  // var obj = {a: 123, b: "4 5 6"};
 // // var data5 = "text/json;charset=utf-8," + encodeURIComponent('od'+(Number(zxc)+1)+'='+JSON.stringify(zsr));
 
 // // let a = document.createElement('a');
@@ -695,8 +700,8 @@ if((clickh % 2 == 0)) {
   // if (op5.hasOwnProperty(b.getAttribute("for"))) {
   //    kk5="<input onchange='chnot(this)' id='inp5' name='"+b.getAttribute("for")+"' class='w3-border w3-input' type='text' style='padding:0 5px' placeholder=' Write Notes...'>"
   // }else{ kk5=''}
-  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey jkjxxx'>Copy</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
-     odtbl(doc.it,'tblom1','my55'); 
+  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey w3-ripple jkjxxx'>Copy Link</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
+     odtbl(doc.it,'tblom1','my55');
      }
     })
   //  setTimeout(()=>{
@@ -1075,3 +1080,7 @@ function selpin(g) {
   let tt5=JSON.parse(localStorage.imglastod);
   document.getElementById('lastodimg').src=tt5.im5;
   document.getElementById('lastodcn').innerHTML=tt5.cn;
+
+
+
+

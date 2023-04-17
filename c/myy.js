@@ -175,11 +175,10 @@ if(!(selg==gsel)){
    shod1={"p":"4","g":selg,"gl":gsel,"od":{...zsr, "pc":{...odprice}}};
   await moveod(selg,gsel,'od'+id55);
 })();
-}else{
- // alert('g normal')
-  shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}}};
 }
 
+ // alert('g normal')
+shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}}};
 sendd(urli,shod1,'update order');
 
 let st = new Localbase('st');
@@ -213,8 +212,9 @@ document.getElementById('upd5').style.display='none';
 document.getElementById("p781").click();
   })
   .catch(error => {
-    alert('error in update od1 fn-', error);
     console.log('error in update od1 fn-', error);
+    alert('error in update od1 fn-', error);
+   
   })
 }}
 
@@ -246,7 +246,6 @@ function saveinst(v) {
    //pkx.cn = document.getElementById('gsel').options[document.getElementById('gsel').selectedIndex].innerText;
    pkx.cn =document.querySelector('#gsel').selectedOptions[0].innerText;
    pkx.tot = Number(total);
-   pkx.gst = false;
    pkx.dt = date.split(' ').join('/');
    pkx.it = od;
    (async () => {
@@ -266,6 +265,7 @@ function saveinst(v) {
     document.getElementById('upd5').style.display = 'none';
    }
 }
+  
 
 function expt(v) {
  // console.log(Number(v.parentElement.innerText.split('.')[0]))
@@ -482,7 +482,7 @@ function searchp(vv) {
   // genrate party search list in id-plist.  <li id="212">czxcjk fd 9554255495</li>
   (async()=> { // save party details
     let reg = new RegExp(vv, 'i');let lihtml="";
-    await db.pt.filter(pk => reg.test(pk.cn)).limit(10).each(pv => { console.log('n',pv);
+    await db.pt.filter(pk => reg.test(pk.cn)).limit(10).each(pv => { //console.log('n',pv);
       lihtml+="<li id='"+pv.id+"'>"+pv.cn+', '+pv.mn1+', '+pv.mn2+"</li>";
     }); 
     p.innerHTML=lihtml;
@@ -510,7 +510,7 @@ document.getElementById('plist').addEventListener('click',(e)=>{
 // onclick // get party details by id from indexed db for mobile no. 
 document.getElementById('m1list').addEventListener('click',(e)=>{
   getptd(e);
-  document.getElementById('ptmn').innerHTML=''
+  document.getElementById('ptmn').innerHTML='';
 })
 
 // not match in list, #ptd click remove list for name and mobile no. 
@@ -549,7 +549,7 @@ function getptd(e) {
 }
 
 // make party details obj
-// let ptd={id:'a0k1l6h12',cn:'',mn1:'',mn2:'',gst:'',pin:'',add:'',ods:['as102','as33','ak508']};
+// let ptd={id:'',cn:'',mn1:'',mn2:'',gst:'',pin:'',add:'',ods:['as102','as33','ak508']};
 var ptd={};let cid='';
 function sptd(v){
   // prc=JSON.parse(localStorage.pc);
@@ -567,7 +567,7 @@ function sptd(v){
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
-    if(ptd.add&&cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='';}
+  if(ptd.add&&cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='';}
   else if(cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='#00f';}
  // ptd.ods.push(Number(localStorage.clickcount)+Number(ptcounter()));
  let vn = (ptg) ? (true && document.getElementById('q000')): true;
@@ -589,11 +589,11 @@ function svptd() {
      })();
   } else {
     (async()=> { // update party details
-      await db.pt.update(oldid, ptd)
+      await db.pt.update(oldid, ptd);
      })();
   }
   zc(ptd,'hiiiiiii');
-  sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ')
+  sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ');
   selg||newocb();selg&&gr();
   ptods=[];ptid=0;
 }

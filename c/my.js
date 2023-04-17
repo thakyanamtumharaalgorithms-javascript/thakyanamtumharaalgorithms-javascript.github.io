@@ -195,7 +195,7 @@ for (let i = 0; i < lkp1; i++) {
     
     for (let j = 0; j < pkz; j++) {
      let zo=lkp[i].querySelectorAll('tr input')[j].value==="";
-       let jkp=[];
+      //  let jkp=[];
    if(!zo){
        //console.log(lkp[i],'y');
       lkp[i].style.display="";
@@ -559,29 +559,29 @@ function newocb() {
 let totqt=[];
 function inclick(zx) {
  //macin();
- let qt=Number(zx.value);
- let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
-
- let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-  // console.log('cvbnmkkk',tbid,xn);
+ let qt=Number(zx.value);let ep=zx.parentElement.parentElement;
+ let tbid=ep.parentElement.parentElement.id;
+// alert('hi')
+ let xn=Array.from(ep.children).indexOf(zx.parentNode);
+// console.log('cvbnmkkk',tbid,xn);
 let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
 let jk=0;
 for (let i = 2; i < pk11; i++) {
    jk+=Number(pk1[i].cells[xn].querySelector('input').value);
 }//console.log(zx,zx.value,'asd');
  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
- let ihj1=zx.parentElement.parentElement;
+// let ihj1=zx.parentElement.parentElement;
  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
- //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
- stork(ihj2,ihj1.querySelector('th').innerText,ihj,qt);
- //console.log(od);
+ // console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
+ stork(ihj2,ep.querySelector('th').innerText,ihj,qt);
+ // console.log(od);
 document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
  let rt=0;
  for (let u = 1; u < uy1; u++) {
   rt+=Number(uy[u].innerText);
-  //console.log('gggtttt',rt,yt12);
- }//console.log('fghjkk',rt);
+  // console.log('gggtttt',rt,yt12);
+ }// console.log('fghjkk',rt);
  totqt[tbid.slice(-1)]=rt;
  document.getElementById('odert').innerText="Total-"+rt;
 }
@@ -605,8 +605,8 @@ document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerT
 // zsr.it = od; 
 // zsr.tch=Number(document.getElementById('tch').value)
 // zsr.och=Number(document.getElementById('och').value)
-//  //console.log('json:',zsr)
-//  //var obj = {a: 123, b: "4 5 6"};
+//  // console.log('json:',zsr)
+//  // var obj = {a: 123, b: "4 5 6"};
 // // var data5 = "text/json;charset=utf-8," + encodeURIComponent('od'+(Number(zxc)+1)+'='+JSON.stringify(zsr));
 
 // // let a = document.createElement('a');
@@ -701,7 +701,7 @@ if((clickh % 2 == 0)) {
   //    kk5="<input onchange='chnot(this)' id='inp5' name='"+b.getAttribute("for")+"' class='w3-border w3-input' type='text' style='padding:0 5px' placeholder=' Write Notes...'>"
   // }else{ kk5=''}
   if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey w3-ripple jkjxxx'>Copy Link</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
-     odtbl(doc.it,'tblom1','my55'); 
+     odtbl(doc.it,'tblom1','my55');
      }
     })
   //  setTimeout(()=>{
