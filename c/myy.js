@@ -156,6 +156,7 @@ if (ct.value) {
   let ctq=Number(document.getElementById('ctq').value);
   zsr.c[1]=ctq;
   zsr.tot=zsr.tot+ctq;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;
 }
 if (ch.value) {
   zsr.c||(zsr.c=[,,,,]);
@@ -163,6 +164,7 @@ if (ch.value) {
   let chq= Number(document.getElementById('chq').value);
   zsr.c[3]=chq;
   zsr.tot=zsr.tot+chq;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;
 }
 
 const gsel=document.getElementById("gsel").value;

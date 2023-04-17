@@ -4,7 +4,7 @@ var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelec
 async function getods(gd) {
   try {
     
-    let st = new Localbase('st');
+ let st = new Localbase('st');
  let allod=await st.collection(gd).get().then(v =>{
   return v.sort((a,b)=>{
       return a.id - b.id;
