@@ -46,18 +46,19 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       zsr.bulk=1;document.getElementById('bulkc').checked=1;
     }
     let shod0={};
-    if(document.getElementById('bulkc').checked){
+    
       let oldid=ptd.id;
       let odno=gd.slice(-1)+odid; // s30424
       ptd.id=ptd.id||genid(ptcounter(),1);
       //genlink(genid(ptd.id,3),ptd.cn);
-      ptd.ods.push(odno);
+      if(document.getElementById('bulkc').checked){
+      ptd.ods.push(odno);}
        console.log(ptd);
        if(!oldid) {
         (async()=> { // save party details
           await db.pt.add(ptd);
          })();
-       }else{ 
+       }else{
       //  in case key is not found, put() would create a new object while update() wont change anything.
       //  The returned Promise will NOT fail if key was not found but resolve with value 0 instead of 1.
         (async()=> { // update party details
@@ -66,7 +67,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
        }
        shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}},ptd };
       //  zc(window,'hiiiiiii');
-      }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
+     // }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
     
     (async ()=> {
       let st = new Localbase('st');
