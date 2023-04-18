@@ -150,7 +150,7 @@ zsr.och=Number(document.getElementById('och').value);
 zsr.dis=Number(document.getElementById('dis').value);
 let ct=document.getElementById('ctp');
 let ch=document.getElementById('chp');
-if (ct.value) {
+if(ct.value){
   zsr.c=[,,,,];
   zsr.c[0]=Number(ct.value);
   let ctq=Number(document.getElementById('ctq').value);
@@ -158,7 +158,7 @@ if (ct.value) {
   zsr.tot=zsr.tot+ctq;
   zsr.bulk=1;document.getElementById('bulkc').checked=1;
 }
-if (ch.value) {
+if(ch.value){
   zsr.c||(zsr.c=[,,,,]);
   zsr.c[2]=Number(ch.value);
   let chq= Number(document.getElementById('chq').value);
@@ -730,10 +730,10 @@ function download(imgurl,imgnm){
       document.getElementById('cnm1').classList.toggle("hide");
     }
     //
-    function goadd(b) {
-      let od=selg.slice(-1)+b; //'as63'
+    function goadd(b,z) {
+      let od=selg.slice(-1)+b; //'s63'
       ptid=0,ptods={};
-      console.log(b);
+      console.log(b,z);
       db.pt.where('cn').equals(b).each((v)=>{ 
         gr();document.getElementById('id01').scrollTop=0;
         document.getElementById('incn').value=v.cn;
@@ -749,7 +749,7 @@ function download(imgurl,imgnm){
           (k2.value)?k2.dispatchEvent(new Event('input')):document.getElementById('ptplace').innerText='State, District';
   
         document.getElementById('pta').value=v.add??'';
-        ptods=v.ods;ptid=v.id;cid=b;
+        ptods=v.ods;ptid=v.id;cid=z;
         console.log(v,'b');
       })
     }

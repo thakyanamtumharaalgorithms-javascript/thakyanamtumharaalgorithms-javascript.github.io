@@ -29,7 +29,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     zsr.dis=Number(document.getElementById('dis').value);
     let ct=document.getElementById('ctp');
     let ch=document.getElementById('chp');
-    if(ct.value) {
+    if(ct.value){
       zsr.c=[,,,,];
       zsr.c[0]=Number(ct.value);
       let ctq=Number(document.getElementById('ctq').value);
@@ -37,7 +37,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       zsr.tot=zsr.tot+ctq;
       zsr.bulk=1;document.getElementById('bulkc').checked=1;
     }
-    if(ch.value) {
+    if(ch.value){
       zsr.c||(zsr.c=[,,,,]);
       zsr.c[2]=Number(ch.value);
       let chq= Number(document.getElementById('chq').value);
