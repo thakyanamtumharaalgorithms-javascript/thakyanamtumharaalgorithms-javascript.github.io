@@ -734,7 +734,7 @@ function download(imgurl,imgnm){
       let od=selg.slice(-1)+b; //'as63'
       ptid=0,ptods={};
       console.log(b);
-      db.pt.where('ods').equals(od).each((v)=>{ 
+      db.pt.where('cn').equals(b).each((v)=>{ 
         gr();document.getElementById('id01').scrollTop=0;
         document.getElementById('incn').value=v.cn;
         document.getElementById('ptm').value=v.mn1;
