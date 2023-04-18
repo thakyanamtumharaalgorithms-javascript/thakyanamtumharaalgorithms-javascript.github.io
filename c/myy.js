@@ -142,7 +142,7 @@ zsr.id = Number(id55);
 zsr.cn = document.getElementById('u13').innerText;
 zsr.tot = Number(total);
 zsr.bulk = Number(document.getElementById('bulkc').checked);
-zsr.dt = oldod.dt; 
+zsr.dt = oldod.dt;
 zsr.it = od;
 zsr.inv=billinv;
 zsr.tch=Number(document.getElementById('tch').value);
@@ -655,12 +655,14 @@ function printadd() {
       (async()=> { // get party address
       let od=selg.slice(-1)+v.match(/\d+/g)[0];//'as63'
       let cadd,radd;
-      await db.pt.where(selg).equals(od).toArray((v)=>{
+      let cnv=document.getElementById(v).name;console.log(cnv)
+      // db.pt.where('cn').equals(b).each((v)=>{
+      await db.pt.where('cn').equals(cnv).toArray((v)=>{console.log(v)
       cadd='<h1 class="p1"><b>To </b>- '+v[0].cn+', '+v[0].mn1+', '+v[0].mn2+'<br>'+v[0].add+', '+v[0].pin+'</span></h1>';
       radd='<h1><span class="p2"><div><b>Return address if not delivered</b><br></div><span>Own Knitted, 9336695049</span><br><span>F-120, Shutter wali gali, near Gujjar chowk, Khanpur Delhi, 110062</span></span></h1>';
       });
 let om='<hr style="border-top: 2px dashed #000;padding: 0;margin: 0;">';
-      if (!((i+1)%3)) {
+      if(!((i+1)%3)){
           om='<span id="pbr"></span>';
       }
       htmladd+=cadd+radd+om;

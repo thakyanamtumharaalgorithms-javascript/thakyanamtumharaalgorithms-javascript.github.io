@@ -65,6 +65,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
           await db.pt.update(oldid, ptd);
          })();
        }
+       zsr.pt=ptd.id;
        shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}},ptd };
       //  zc(window,'hiiiiiii');
      // }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}

@@ -18,7 +18,7 @@ async function getods(gd) {
           if(!Number(i.tot)){ifz="delt"};
           // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
           let gstr="<span style='padding: 0 1.55em'></span>";
-          let inp="<input onclick='selod(this)' id='"+'od'+i.id+"' class='w3-check' type='checkbox'>";
+          let inp="<input onclick='selod(this)' id='od"+i.id+"' name="+'"'+i.cn+'"'+" class='w3-check' type='checkbox'>";
           let lid='';let exio='';let funex='';
           if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
