@@ -36,7 +36,7 @@ let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
 var selod5={};var zsr={};let selg;let odimgbob;
 //var om=document.getElementById("tb").innerHTML;
 var od={};var zxc=0; 
-if(localStorage.clickcount) {zxc=localStorage.clickcount;}
+if(localStorage.clickcount){zxc=localStorage.clickcount;}
 
 //  // date today
  var date;let date1;
@@ -217,42 +217,42 @@ for (let d = 0; d < gf1; d++) {
 
 
 ///each oninput table cell
-function inclick(zx) {
- //macin();
- console.log(Number(zx.value))
- let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
- let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
-var jk=0;
-for (let i = 2; i < pk11; i++) {
-   let njh=pk1[i].cells[xn].querySelector('input').value;
-   let njh1=Number(njh);
-   jk+=njh1;
-}
- let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
- let ihj1=zx.parentElement.parentElement;
- let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
- //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
- let ihjk=Number(zx.value);
-//  
- stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
- //console.log(od);
-document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
- let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
- var rt=0;
- for (let u = 1; u < uy1; u++) {
-  let yt12=uy[u].innerText;
-  let yt3= Number(yt12);
-  rt+=yt3;
-  //console.log('gggtttt',rt,yt12);
- }//console.log('ffftttt',rt);
- document.getElementById('odert').innerText="Total-"+rt;
-}
+// function inclick(zx) {
+//  //macin();
+//  console.log(Number(zx.value));
+//  let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
+//  let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
+// let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
+// var jk=0;
+// for (let i = 2; i < pk11; i++) {
+//    let njh=pk1[i].cells[xn].querySelector('input').value;
+//    let njh1=Number(njh);
+//    jk+=njh1;
+// }
+//  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
+//  let ihj1=zx.parentElement.parentElement;
+//  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
+//  //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
+//  let ihjk=Number(zx.value);
+// //  
+//  stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
+//  //console.log(od);
+// document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
+//  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
+//  var rt=0;
+//  for(let u = 1; u < uy1; u++){
+//   let yt12=uy[u].innerText;
+//   let yt3= Number(yt12);
+//   rt+=yt3;
+//   //console.log('gggtttt',rt,yt12);
+//  }//console.log('ffftttt',rt);
+//  document.getElementById('odert').innerText="Total-"+rt;
+// }
 
 //// Display Total table
 //var kli;
 var pctt;var pcwt;let total;var odprice;let billinv=[];
-function tot() {
+function tot(){
 odprice={};
 let dtt=date.slice(0,6);
 let tch=document.getElementById('tch').value;let och=document.getElementById('och').value;
@@ -276,7 +276,7 @@ document.getElementById('tot').style.display='';
 document.getElementById('odert').style.display='none';
 total=0;pctt=0;pcwt=0;
 let uy= document.querySelectorAll('.city thead tr:nth-child(1)');let uy1=uy.length;
-for (let v = 0; v < uy1; v++) {
+for(let v = 0; v < uy1; v++){
  uy[v].style.display='none';
 }
 let tg=document.querySelectorAll('.city');let tg1=tg.length;
@@ -557,7 +557,7 @@ function newocb() {
 
 ///each oninput table cell
 let totqt=[];
-function inclick(zx) {
+function inclick(zx){
  //macin();
  let qt=Number(zx.value);let ep=zx.parentElement.parentElement;
  let tbid=ep.parentElement.parentElement.id;
@@ -566,7 +566,7 @@ function inclick(zx) {
 // console.log('cvbnmkkk',tbid,xn);
 let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
 let jk=0;
-for (let i = 2; i < pk11; i++) {
+for(let i = 2; i < pk11; i++){
    jk+=Number(pk1[i].cells[xn].querySelector('input').value);
 }//console.log(zx,zx.value,'asd');
  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
@@ -672,7 +672,7 @@ function chnot(b,v) {
   if (b===1) {
     op5[lastsel]=v.value;
     document.querySelector('#vtag [name='+lastsel+']').innerHTML=v.value;
-  } else {
+  }else{
     op5[lastsel]=v.innerText;
     document.querySelector('#vtag [name='+lastsel+']').innerText=v.innerText;
   }
@@ -692,7 +692,7 @@ function opodli(b) {
       //  console.log("data:",uio=doc.it)
         //gentblo(doc.it,qwe5);
      clickh+=1;
-if((clickh % 2 == 0)) {
+if((clickh % 2 == 0)){
   //if(document.getElementById('my55')){}
   if(document.getElementById('aa5')){document.getElementById('my55').remove();document.getElementById('aa5').remove()}
   //b.click();
@@ -812,13 +812,13 @@ function selod(h) {
 let oldm=localStorage.lastreset.split(','); // '304,34' 
 if (oldm[0]!=date1) {
   let lr=Number(oldm[1]);
-  for(let v = lr; v <= (lr+500); v++) {  
+  for(let v = lr; v <= (lr+500); v++){
   st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
     lelo(doc.it);
 })}
 }
 
-for(let v = xc; v <= Number(zxc); v++) {  
+for(let v = xc; v <= Number(zxc); v++){  
 st.collection(gd).doc('od'+date1+v).get().then(doc => {
   lelo(doc.it);
 })
@@ -841,9 +841,20 @@ st.collection(gd).doc('od'+date1+v).get().then(doc => {
 //   //console.log(doc5)
 //    lelo(doc5);
 //   })
-  }   
+  }
  }
  
+// for instock
+async function couttotinst(xc,gd) {  
+  let st = new Localbase('st');
+  pd2=structuredClone(ods1);
+  // console.log(pd2);
+  st.collection(gd).doc('od'+xc).get().then(doc => {
+    lelo(doc.it);
+  })
+}
+
+
 function lelo(kk) {
     Object.keys(kk).forEach(function(t) {
   //  type loop

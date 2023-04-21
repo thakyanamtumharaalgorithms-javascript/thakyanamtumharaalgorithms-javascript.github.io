@@ -61,8 +61,10 @@ var pk8;var oldod;
 var instg={Delhi:'ods',Tiruppur:'odt',Kolkata:'odk',PD:'odpd'};
 
 function editod(tp) {
-  let st = new Localbase('st');
   pk8=tp.id.split('b')[1];// order id od34
+  let cnv=document.getElementById(pk8).name;
+  db.pt.where('cn').equals(cnv).each((v)=>{ptd=v});
+  let st = new Localbase('st');
   st.collection(selg).doc(pk8).get().then(doc => {
     let ht=doc.cn;
     oldod=doc;
@@ -98,7 +100,6 @@ function editod(tp) {
     // console.log(doc.it)
   })
  
-
 document.querySelectorAll('#id01 #tblom1 tbody').forEach(kjhu)
 // for edit order
 function kjhu(v) {//alert(v.id);document.getElementById('frt').innerText=.innerText.split('\n')[0].split(' ')[2];
@@ -166,6 +167,15 @@ if(ch.value){
   zsr.tot=zsr.tot+chq;
   zsr.bulk=1;document.getElementById('bulkc').checked=1;
 }
+if(document.getElementById('bulkc').checked){
+  ptd.ods.push(selg.slice(-1)+id55);
+}else{
+  let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+  if(yu!=(-1)){ptd.ods.splice(yu, 1);}
+}
+(async()=> { 
+  await db.pt.update(ptd.id, ptd);
+ })();
 
 const gsel=document.getElementById("gsel").value;
 let shod1={};
@@ -180,7 +190,7 @@ if(!(selg==gsel)){
 }
 
  // alert('g normal')
-shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}}};
+shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}},ptd};
 sendd(urli,shod1,'update order');
 
 let st = new Localbase('st');
@@ -214,8 +224,8 @@ document.getElementById('upd5').style.display='none';
 document.getElementById("p781").click();
   })
   .catch(error => {
-    console.log('error in update od1 fn-', error);
-    alert('error in update od1 fn-', error);
+    console.log('error in update od1 fn- ', error);
+    alert('error in update od1 fn- ', error);
    
   })
 }}
@@ -271,7 +281,8 @@ function saveinst(v) {
 
 function expt(v) {
  // console.log(Number(v.parentElement.innerText.split('.')[0]))
-  couttot(Number(v.parentElement.innerText.split('.')[0]),selg,Number(v.parentElement.innerText.split('.')[0]))
+ console.log(v.parentElement.innerText.split('.')[0]);
+ couttotinst(Number(v.parentElement.innerText.split('.')[0]),selg);
   setTimeout(()=>{
     tabletcsv('testTable',new Date().toLocaleString("en-GB"));
   },3000)
@@ -528,7 +539,7 @@ function getptd(e) {
   (async()=> {
     await db.pt.get(pid).then((v) => {
       console.log(v);
-      document.getElementById('incn').value=v.cn;
+      document.getElementById('incn').value=v.cn.trim();
       document.getElementById('ptm').value=v.mn1;
       
       document.getElementById('ptm1').value=v.mn2??'';
@@ -562,7 +573,7 @@ function sptd(v){
   let pinc=document.getElementById('ptp').value;
   let pta=document.getElementById('pta').value;
   let ptg=document.getElementById('ptg').value;
-  ptd.cn=cn;
+  ptd.cn=cn.trim();
   ptd.mn1=mn1;
   ptd.mn2=mn2;
   ptd.gst=ptg;
@@ -585,7 +596,7 @@ function sptd(v){
 function svptd() {
   let oldid=ptd.id;
   ptd.id=ptid||genid(ptcounter(),1);console.log('save party details',ptd);
-  if (!oldid) {
+  if(!oldid){
     (async()=> { // save party details
       await db.pt.add(ptd);
      })();
@@ -611,7 +622,7 @@ function ptcounter() {
   return localStorage.ptcount;
 }
 
-function genid(v,i,b='a'){ 
+function genid(v,i,b='a'){
   let id2;let id1;
   if(i==1){
   id1=new Date().toLocaleDateString('en-GB', {day : '2-digit',month : '2-digit',year : '2-digit'}).split('/').reverse().join('');
@@ -755,5 +766,3 @@ function download(imgurl,imgnm){
         console.log(v,'b');
       })
     }
-
-
