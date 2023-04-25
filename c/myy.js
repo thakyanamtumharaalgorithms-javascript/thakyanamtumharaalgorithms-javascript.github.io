@@ -170,14 +170,22 @@ if(ch.value){
   zsr.tot=zsr.tot+chq;
   zsr.bulk=1;document.getElementById('bulkc').checked=1;
 }
+let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
 if(document.getElementById('bulkc').checked){
   ptd.ods.push(selg.slice(-1)+id55);
+  let uniq=[...new Set(ptd.ods)];
+  ptd.ods=uniq;
   (async()=> { 
     await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
    })();
 }else{
-  let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
-  if(yu!=(-1)){ptd.ods.splice(yu, 1);}
+  // let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+  if(yu!=(-1)){
+    ptd.ods.splice(yu, 1);
+    (async()=> { 
+      await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
+     })();
+  }
 }
 (async()=> { 
   await db.pt.update(ptd.id, ptd);
@@ -551,7 +559,7 @@ function getptd(e) {
       document.getElementById('ptm1').value=v.mn2??'';
       
         let k1=document.getElementById('ptg');
-        k1.value=v.gst??'';
+        k1.value=v.gst.trim()??'';
         (k1.value)?k1.dispatchEvent(new Event('input')):document.getElementById('ptst').innerText='State 07BBNPG0866M2Z7';
        
         let k2=document.getElementById('ptp');
@@ -582,7 +590,7 @@ function sptd(v){
   ptd.cn=cn.trim();
   ptd.mn1=mn1;
   ptd.mn2=mn2;
-  ptd.gst=ptg;
+  ptd.gst=ptg.trim();
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
