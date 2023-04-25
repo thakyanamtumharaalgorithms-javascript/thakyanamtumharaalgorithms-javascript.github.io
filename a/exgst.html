@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<title>Yeloooo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="om.css">
+<script src='localbase.min.js'></script>
+<script src='dexie.min.js'></script>
+<!-- <script src="vue.js"></script> -->
+
+<body>
+<br>
+<div class="content w3-center">
+<input id="frm5" type="date">
+<label>To</label>
+<input id="to5" type="date"><br><br>
+
+<div class="w3-bar">
+<button onclick="gentcsv()" class="w3-red w3-button w3-hover-purple">Generate CSV</button>
+</div>
+</div>
+
+<script>
+let stat={"01":"Jammu and Kashmir","02":"Himachal Pradesh","03":"Punjab","04":"Chandigarh","05":"Uttarakhand","06":"Haryana","07":"Delhi","08":"Rajasthan","09":"Uttar Pradesh","10":"Bihar","11":"Sikkim","12":"Arunachal Pradesh","13":"Nagaland","14":"Manipur","15":"Mizoram","16":"Tripura","17":"Meghalaya","18":"Assam","19":"West Bengal","20":"Jharkhand","21":"Odisha","22":"Chhattisgarh","23":"Madhya Pradesh","24":"Gujarat","25":"Daman and Diu","26":"Dadra and Nagar Haveli and Daman and Diu","27":"Maharashtra","29":"Karnataka","30":"Goa","31":"Lakshadweep","32":"Kerala","33":"Tamil Nadu","34":"Pondicherry","35":"Andaman and Nicobar Islands","36":"Telangana","37":"Andhra Pradesh","38":"Ladakh","97":"Other Territory"};
+let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
+let st = new Localbase('st');
+let fr9=document.getElementById('frm5');
+let to9=document.getElementById('to5');fr9.valueAsDate=to9.valueAsDate = new Date();
+let odspt;console.log(fr9.valueAsNumber,fr9.valueAsDate)
+
+let d=["GSTIN/UIN of Recipient",
+    "Receiver Name",
+    "Invoice Number",
+    "Invoice date",
+    "Invoice Value",
+    "Place Of Supply",
+    "Reverse Charge",
+    "Applicable % of Tax Rate",
+    "Invoice Type",
+    "E-Commerce GSTIN",
+    "Rate",
+    "Taxable Value",
+    "Cess Amount"];
+    // let gsts=[0].gst.slice(0,2);
+    // let p=[.gst,.cn,.id,.dt,.inv[1],gsts+'-'+stat[gsts],"N","","Regular B2B","","5.0",.inv[0],"0.0"];
+
+let p=["","","","","","","N","","Regular B2B","","5.0","","0.0"];
+// p[0]=[0].gst;// GST of Recipient
+// p[1]=[1].cn;// Receiver Name
+// p[2]=[1].id;// Invoice Number
+// p[3]=[1].dt.split('/').join('-');// Invoice date
+// p[4]=[1].inv[1];// Invoice Value
+// let gsts=[0].gst.slice(0,2);
+// p[5]=gsts+'-'+stat[gsts];// Place Of Supply
+// p[11]=[1].inv[0];// Taxable Value
+
+// p[6]='N';// Reverse Charge
+// p[7]='';// Applicable % of Tax Rate
+// p[8]='Regular B2B';// Invoice Type
+// p[9]='';// E-Commerce GSTIN
+// p[10]='5.0';// Rate
+// p[12]='0.0';// Cess Amount
+
+function gentcsv() {
+    console.log(fr9.value,to9.value);
+  odspt = [];
+(async()=>{
+    await db.pt.orderBy('id').each((v)=>{
+        if (v.gst && v.ods.length) {
+            odspt.push(v);
+        }
+    });
+    await nnnn();
+})();
+console.log(odspt);
+
+}
+async function nnnn(){
+    let odspt1 = [];
+for(let i = 0; i < odspt.length; i++){
+    // console.log(odspt);
+    odspt1[i]=[];
+    odspt1[i][0]=odspt[i];
+    for(let j = 0; j < odspt[i].ods.length; j++){
+        await st.collection('ods').doc('od' + odspt[i].ods[j].slice(1)).get().then(d=>{
+            odspt1[i][j+1]=d;
+        });
+    }
+}
+console.log(odspt1);
+}
+
+</script>
+<style>
+.content {max-width: 500px;margin: auto;}
+
+</style>
+</body>
+</html>

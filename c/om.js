@@ -46,13 +46,16 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       zsr.bulk=1;document.getElementById('bulkc').checked=1;
     }
     let shod0={};
-    
       let oldid=ptd.id;
       let odno=gd.slice(-1)+odid; // s30424
       ptd.id=ptd.id||genid(ptcounter(),1);
       //genlink(genid(ptd.id,3),ptd.cn);
       if(document.getElementById('bulkc').checked){
-      ptd.ods.push(odno);}
+      ptd.ods.push(odno);
+      (async()=> { 
+        await bulkdb.bk.add({...zsr,"pt":ptd});
+       })();
+    }
        console.log(ptd);
        if(!oldid) {
         (async()=> { // save party details

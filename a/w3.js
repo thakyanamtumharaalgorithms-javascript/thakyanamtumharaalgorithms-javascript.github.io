@@ -1,3 +1,9 @@
+async function erradd(id,t,obj,er) { 
+  let da={"id":id,"type":t,"p":obj.p,"data":obj,"err":er};
+  console.log(da);
+  await erdb.err.put(da,da.id);
+ }
+
 //sendd(urli,od,'type')
 async function sendd(urld,d9,b) {
   await fetch(urld, {
@@ -9,15 +15,35 @@ async function sendd(urld,d9,b) {
     body: JSON.stringify(d9)
   })
     .then((res) => {
-      console.log(b+' data send ', d9 ,res);
+      console.log(b+' data send successfully ', d9);
     })
-    .catch((error) => {
+    .catch(async(error) => {
+      switch(d9.p) {
+        case '0':
+        case '1':
+    // case '10':
+          await erradd(d9.od.id,b,d9,error);
+        break;
+
+        case '2':
+        case '4':
+        case '5':
+          await erradd((new Date().getTime()),b,d9,error);
+        break;
+
+        case '3':
+          await erradd(111,b,d9,error);
+        break;
+
+        default:
+          
+        break;
+      }
+
       if(localStorage.gr5!='hi2'){
-      console.log('error in '+b+' sendd fn- '+JSON.stringify(d9)+error);
-      alert('error in '+b+' sendd fn- '+JSON.stringify(d9)+' '+error+'\nTake a screenshot for Onkar');}
-      let kl=JSON.parse(localStorage.getItem('pend2'));
-      kl['pendingPinData']=d9; // change pendingPinData to od24+'type' type(0,1,2,3,4,5,10)
-      localStorage.setItem("pend2", JSON.stringify(kl));  
+      console.log(b+' sendd failed '+JSON.stringify(d9)+' '+error);
+      alert(b+' sendd failed '+JSON.stringify(d9)+' '+error+'\nTake a screenshot for Onkar');}
+
     });
 }
 

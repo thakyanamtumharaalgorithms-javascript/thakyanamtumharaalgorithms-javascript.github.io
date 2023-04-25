@@ -29,42 +29,49 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     zsr.dis=Number(document.getElementById('dis').value);
     let ct=document.getElementById('ctp');
     let ch=document.getElementById('chp');
-    if(ct.value) {
+    if(ct.value){
       zsr.c=[,,,,];
       zsr.c[0]=Number(ct.value);
       let ctq=Number(document.getElementById('ctq').value);
       zsr.c[1]=ctq;
       zsr.tot=zsr.tot+ctq;
+      zsr.bulk=1;document.getElementById('bulkc').checked=1;
     }
-    if(ch.value) {
+    if(ch.value){
       zsr.c||(zsr.c=[,,,,]);
       zsr.c[2]=Number(ch.value);
       let chq= Number(document.getElementById('chq').value);
       zsr.c[3]=chq;
       zsr.tot=zsr.tot+chq;
+      zsr.bulk=1;document.getElementById('bulkc').checked=1;
     }
     let shod0={};
-    if(document.getElementById('bulkc').checked){
       let oldid=ptd.id;
       let odno=gd.slice(-1)+odid; // s30424
       ptd.id=ptd.id||genid(ptcounter(),1);
       //genlink(genid(ptd.id,3),ptd.cn);
+      if(document.getElementById('bulkc').checked){
       ptd.ods.push(odno);
+      (async()=> { 
+        await bulkdb.bk.add({...zsr,"pt":ptd});
+       })();
+    }
        console.log(ptd);
        if(!oldid) {
         (async()=> { // save party details
           await db.pt.add(ptd);
          })();
-       }else{ 
+       }else{
       //  in case key is not found, put() would create a new object while update() wont change anything.
       //  The returned Promise will NOT fail if key was not found but resolve with value 0 instead of 1.
         (async()=> { // update party details
           await db.pt.update(oldid, ptd);
          })();
        }
+       zsr.pt=ptd.id;
        shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}},ptd };
       //  zc(window,'hiiiiiii');
-      }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
+     // }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
     
     (async ()=> {
       let st = new Localbase('st');

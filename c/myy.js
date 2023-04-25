@@ -46,6 +46,9 @@ function delod () {
     od={};an5={};
 }).then(() => {
   //console.log('hhhhh',shod11.od)
+  (async()=> { 
+    await bulkdb.bk.delete(shod11.od.id)
+   })();
  st.collection(selg).doc(r).update(shod11.od).then(response => {
     selod5={};
     document.querySelector('[name='+selg+']').click();
@@ -96,7 +99,7 @@ function editod(tp) {
       let obj2 =doc.pc;
       prc={...obj1,pc:{...obj1.pc,...obj2}};
     }
-    console.log(prc);
+    //console.log(prc);
     // console.log(doc.it)
   })
  
@@ -169,6 +172,9 @@ if(ch.value){
 }
 if(document.getElementById('bulkc').checked){
   ptd.ods.push(selg.slice(-1)+id55);
+  (async()=> { 
+    await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
+   })();
 }else{
   let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
   if(yu!=(-1)){ptd.ods.splice(yu, 1);}

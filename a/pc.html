@@ -17,7 +17,7 @@
         <table id='pc' class='w3-table-all w3-centered'>
             <thead>
             <tr>
-                <th  colspan="4">
+                <th colspan="4">
                 <button onclick="history.back()" class='w3-button w3-red'>❮ Back</button>
                 <button @click='edit(this)' class='w3-button w3-blue'>Edit</button>
                 <button @click='save' class='w3-button w3-blue'>Save</button>
@@ -142,7 +142,7 @@ const price = Vue.createApp({
     },
     methods: {
     edit(e){
-        console.log(e)
+        console.log(e);
         document.querySelectorAll("#pc td").forEach((v)=>{
             v.contentEditable=true;v.style.background="yellow";v.style.color='blue';
         })
@@ -155,7 +155,7 @@ const price = Vue.createApp({
         })
     }
 }
-         
+
 }).mount('#price')
     
  /////////////////////////////////////////////////////
