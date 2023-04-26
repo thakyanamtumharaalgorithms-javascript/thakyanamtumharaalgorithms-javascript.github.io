@@ -83,13 +83,13 @@ for(let i = 0; i < odspt.length; i++){
     odspt1[i]=[];let pt=odspt[i];
     odspt1[i][0]=pt;
     let gsts=pt.gst.slice(0,2);
-    for(let j = 0; j < odspt[i].ods.length; j++){
-        await st.collection('ods').doc('od' + odspt[i].ods[j].slice(1)).get().then(d=>{
-            odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime();console.log(nd);
-            if (fr9.valueAsNumber>nd&&to9.valueAsNumber<nd) {
-                p+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
-            } 
-        });
+for(let j = 0; j < odspt[i].ods.length; j++){
+    await st.collection('ods').doc('od' + odspt[i].ods[j].slice(1)).get().then(d=>{
+     odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime();console.log(nd);
+        if (fr9.valueAsNumber>nd&&to9.valueAsNumber<nd) {
+        p+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
+        } 
+    });
     }
 }
 console.log(odspt1,p);
