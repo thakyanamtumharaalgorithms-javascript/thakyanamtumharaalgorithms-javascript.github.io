@@ -590,7 +590,7 @@ function sptd(v){
   ptd.cn=cn.trim();
   ptd.mn1=mn1;
   ptd.mn2=mn2;
-  ptd.gst=ptg.trim();
+  ptd.gst=ptg.trim().toUpperCase();
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
@@ -664,7 +664,7 @@ async function genlink(id,cn) {
       //   const shareData = {
       //     title: 'Link',
       //     text: cn+', save this link and download all your bills here👇\n',
-      //     url: 'https://www.ownknitted.com/bill#'+id
+      //     url: 'https://.com/'+id
       //   }
       //   await navigator.share(shareData);
 

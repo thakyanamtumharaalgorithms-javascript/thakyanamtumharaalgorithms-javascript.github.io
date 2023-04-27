@@ -10,13 +10,20 @@
 <body>
 <br>
 <div class="content w3-center">
-<input id="frm5" type="date">
+<input id="frm5" type="date" class="w3-large">
 <label>To</label>
-<input id="to5" type="date"><br><br>
+<input id="to5" type="date" class="w3-large"><br><br>
 
 <div class="w3-bar">
 <button onclick="gentcsv()" class="w3-red w3-button w3-hover-purple">Generate CSV</button>
 </div>
+<br>
+<div id="myBar1" style="display:none;" class="w3-light-grey w3-round-xlarge">
+    <div id="myBar" class="w3-container w3-round-xlarge" style="width:0%;background:#ffeb3b">0%</div>
+</div>
+<br>
+<ul id="alink" class="w3-ul w3-border" style="display:none;color: blue;"></ul>
+
 </div>
 
 <script>
@@ -26,23 +33,77 @@ let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
 let st = new Localbase('st');
 let fr9=document.getElementById('frm5');
 let to9=document.getElementById('to5');fr9.valueAsDate=to9.valueAsDate = new Date();
-let odspt;console.log(fr9.valueAsNumber,fr9.valueAsDate)
+let odspt;console.log(fr9.valueAsNumber,fr9.valueAsDate);
 
-let d=["GSTIN/UIN of Recipient",
-    "Receiver Name",
-    "Invoice Number",
-    "Invoice date",
-    "Invoice Value",
-    "Place Of Supply",
-    "Reverse Charge",
-    "Applicable % of Tax Rate",
-    "Invoice Type",
-    "E-Commerce GSTIN",
-    "Rate",
-    "Taxable Value",
-    "Cess Amount"];
+let pbar1=document.getElementById('myBar1');
+let pbar=document.getElementById('myBar');
+let odspt1 = [];let p1;
+function gentcsv() {
+    pbar1.style.display='';
+  odspt = [];
+(async()=>{
+    await db.pt.each((v)=>{
+        if (v.gst && v.ods.length) {
+        // if (v.gst && v.ods.length && (v.tot>10)) {
+            v.ods=[...new Set(v.ods)];v.gst=v.gst.trim().toUpperCase();
+            odspt.push(v);
+        }
+    });
+    await nnnn();
+})();
+console.log(odspt);
+}
+
+async function nnnn(){
+     let fr1=fr9.valueAsNumber;let to1=to9.valueAsNumber;
+  p1="data:text/csv;charset=utf-8,GSTIN/UIN of Recipient,Receiver Name,Invoice Number,Invoice date,Invoice Value,Place Of Supply,Reverse Charge,Applicable % of Tax Rate,Invoice Type,E-Commerce GSTIN,Rate,Taxable Value,Cess Amount\r\n";
+let pkl=odspt.length;let lp;
+  for(let i = 0; i < pkl; i++){
+    // console.log(odspt);
+    lp=((i+1)/pkl)*100;
+    pbar.style.width = lp + '%';
+    pbar.innerHTML =  Math.round(lp) + '%';
+    console.log(lp,'1hiiiiiii');
+    odspt1[i]=[];let pt=odspt[i];
+    odspt1[i][0]=pt;
+    let gsts=pt.gst.slice(0,2);
+    let pfgh=[...new Set(odspt[i].ods)];//console.log(pfgh);
+for(let j = 0; j < pfgh.length; j++){
+    let odsf=Number(pfgh[j].slice(1));
+    await st.collection('ods').doc({ id: odsf }).get().then(d=>{
+        // console.log(odspt1,d)
+     odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime(); // console.log(nd);
+    if(((fr1<nd&&to1>nd)&&d.tot)||(d.bulk&&d.tot)){
+        p1+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
+    }
+    });
+    }
+}
+
+// console.log(odspt1,p1);
+pbar1.style.display='none';
+let link1 = document.getElementById("alink");link1.style.display='';
+let fname="From "+fr9.value.split('-').reverse().join('_')+" To "+to9.value.split('-').reverse().join('_');
+link1.innerHTML="<li><a href="+encodeURI(p1)+" download='"+fname+".csv' class='w3-padding-small' style='text-decoration: none;'>❯ "+fname+" Download</a></li>"+link1.innerHTML;
+link1.querySelector('li > a').click();
+}
+
+
+// let d=["GSTIN/UIN of Recipient",
+//     "Receiver Name",
+//     "Invoice Number",
+//     "Invoice date",
+//     "Invoice Value",
+//     "Place Of Supply",
+//     "Reverse Charge",
+//     "Applicable % of Tax Rate",
+//     "Invoice Type",
+//     "E-Commerce GSTIN",
+//     "Rate",
+//     "Taxable Value",
+//     "Cess Amount"];
    
-let p=["","","","","","","N","","Regular B2B","","5.0","","0.0"];
+// let p=["","","","","","","N","","Regular B2B","","5.0","","0.0"];
 // let gsts=[0].gst.slice(0,2);
 // let p=[.gst,.cn,.id,.dt,.inv[1],gsts+'-'+stat[gsts],"N","","Regular B2B","","5.0",.inv[0],"0.0"];
 // p[0]=[0].gst;// GST of Recipient
@@ -60,48 +121,6 @@ let p=["","","","","","","N","","Regular B2B","","5.0","","0.0"];
 // p[9]='';// E-Commerce GSTIN
 // p[10]='5.0';// Rate
 // p[12]='0.0';// Cess Amount
-
-// function gentcsv() {
-//     console.log(fr9.value,to9.value);
-//   odspt = [];
-// (async()=>{
-//     await db.pt.orderBy('id').each((v)=>{
-//         if (v.gst && v.ods.length) {
-//         // if (v.gst && v.ods.length && (v.tot>10)) {
-//             odspt.push(v);
-//         }
-//     });
-//     await nnnn();
-// })();
-// console.log(odspt);
-
-// }
-// async function nnnn(){
-//     let odspt1 = [];let p="data:text/csv;charset=utf-8,GSTIN/UIN of Recipient,Receiver Name,Invoice Number,Invoice date,Invoice Value,Place Of Supply,Reverse Charge,Applicable % of Tax Rate,Invoice Type,E-Commerce GSTIN,Rate,Taxable Value,Cess Amount\r\n";
-// for(let i = 0; i < odspt.length; i++){
-//     // console.log(odspt);
-//     odspt1[i]=[];let pt=odspt[i];
-//     odspt1[i][0]=pt;
-//     let gsts=pt.gst.slice(0,2);
-// for(let j = 0; j < odspt[i].ods.length; j++){
-//     await st.collection('ods').doc('od' + odspt[i].ods[j].slice(1)).get().then(d=>{
-//      odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime();console.log(nd);
-//         if (fr9.valueAsNumber>nd&&to9.valueAsNumber<nd) {
-//         p+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
-//         } 
-//     });
-//     }
-// }
-// console.log(odspt1,p);
-// let urlv = encodeURI(p);
-// let link = document.createElement("a");
-// link.setAttribute("href", urlv);
-// link.setAttribute("download", "my_data.csv");
-// document.body.appendChild(link); // Required for FF
-// link.click(); 
-// }
-
-
 </script>
 <style>
 .content {max-width: 500px;margin: auto;}
