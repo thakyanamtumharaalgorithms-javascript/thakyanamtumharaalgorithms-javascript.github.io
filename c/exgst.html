@@ -73,8 +73,9 @@ for(let j = 0; j < pfgh.length; j++){
     await st.collection('ods').doc({ id: odsf }).get().then(d=>{
         // console.log(odspt1,d)
      odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime(); // console.log(nd);
-     console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1));
+     
     if((fr1<nd&&to1>nd)){
+        console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1));
         if (d.bulk&&d.tot) {
             p1+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(","); 
         }
