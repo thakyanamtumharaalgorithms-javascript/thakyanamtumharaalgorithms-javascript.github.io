@@ -32,7 +32,7 @@ let stat={"01":"Jammu and Kashmir","02":"Himachal Pradesh","03":"Punjab","04":"C
 let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
 let st = new Localbase('st');
 let fr9=document.getElementById('frm5');
-let to9=document.getElementById('to5');fr9.valueAsDate=new Date(new Date()-(1000*60*60*24*30));to9.valueAsDate = new Date();
+let to9=document.getElementById('to5');fr9.valueAsDate=new Date(new Date()-(1000*60*60*24*20));to9.valueAsDate = new Date();
 console.log(fr9.valueAsNumber,fr9.valueAsDate);
 
 let pbar1=document.getElementById('myBar1');
