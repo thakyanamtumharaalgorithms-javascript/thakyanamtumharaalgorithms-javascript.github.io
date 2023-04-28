@@ -160,7 +160,9 @@ if(ct.value){
   let ctq=Number(document.getElementById('ctq').value);
   zsr.c[1]=ctq;
   zsr.tot=zsr.tot+ctq;
-  zsr.bulk=1;document.getElementById('bulkc').checked=1;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;let m=zsr.c[0]*zsr.c[1];
+  zsr.inv[0]+=m;
+  zsr.inv[1]+=m+(m*0.05);
 }
 if(ch.value){
   zsr.c||(zsr.c=[,,,,]);
@@ -168,26 +170,29 @@ if(ch.value){
   let chq= Number(document.getElementById('chq').value);
   zsr.c[3]=chq;
   zsr.tot=zsr.tot+chq;
-  zsr.bulk=1;document.getElementById('bulkc').checked=1;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;let m1=zsr.c[2]*zsr.c[3];
+  zsr.inv[0]+=m1;
+  zsr.inv[1]+=m1+(m1*0.05);
 }
+zsr.pt=ptd.id;
 let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
 if(document.getElementById('bulkc').checked){
   ptd.ods.push(selg.slice(-1)+id55);
   let uniq=[...new Set(ptd.ods)];
   ptd.ods=uniq;
-  (async()=> { 
+  (async()=> {
     await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
    })();
 }else{
   // let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
   if(yu!=(-1)){
     ptd.ods.splice(yu, 1);
-    (async()=> { 
+    (async()=> {
       await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
      })();
   }
 }
-(async()=> { 
+(async()=> {
   await db.pt.update(ptd.id, ptd);
  })();
 

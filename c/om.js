@@ -35,7 +35,9 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       let ctq=Number(document.getElementById('ctq').value);
       zsr.c[1]=ctq;
       zsr.tot=zsr.tot+ctq;
-      zsr.bulk=1;document.getElementById('bulkc').checked=1;
+      zsr.bulk=1;document.getElementById('bulkc').checked=1;let m=zsr.c[0]*zsr.c[1];
+      zsr.inv[0]+=m;
+      zsr.inv[1]+=m+(m*0.05);
     }
     if(ch.value){
       zsr.c||(zsr.c=[,,,,]);
@@ -43,7 +45,9 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       let chq= Number(document.getElementById('chq').value);
       zsr.c[3]=chq;
       zsr.tot=zsr.tot+chq;
-      zsr.bulk=1;document.getElementById('bulkc').checked=1;
+      zsr.bulk=1;document.getElementById('bulkc').checked=1;let m1=zsr.c[2]*zsr.c[3];
+      zsr.inv[0]+=m1;
+      zsr.inv[1]+=m1+(m1*0.05);
     }
     let shod0={};
       let oldid=ptd.id;
