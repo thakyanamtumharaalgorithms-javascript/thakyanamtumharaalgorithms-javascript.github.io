@@ -4,41 +4,41 @@ var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelec
 async function getods(gd) {
   try {
     
-    let st = new Localbase('st');
+ let st = new Localbase('st');
  let allod=await st.collection(gd).get().then(v =>{
-    v.sort((a,b)=>{ // sort by id
+  return v.sort((a,b)=>{
       return a.id - b.id;
       });
-      return v
-     // console.log(v,'hiiiiiii');
   })
 
    let hmtl0='';
     for await (const i of allod) {
           //console.log(i)
-          if(Number(i.tot)){ifz="ndelt"}else{ifz="delt"};
-          if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
-
-          let inp="<input onclick='selod(this)' id='"+'od'+i.id+"' class='w3-check' type='checkbox'>";let lid='';
-          let exio='';let funex='';
+          let ifz='';
+          if(!Number(i.tot)){ifz="delt"};
+          // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
+          let gstr="<span style='padding: 0 1.55em'></span>";
+          let inp="<input onclick='selod(this)' id='od"+i.id+"' name="+'"'+i.cn+'"'+" class='w3-check' type='checkbox'>";
+          let lid='';let exio='';let funex='';
           if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
 
-          hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
+          hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+'"'+i.cn+'",'+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
       }
       document.getElementById('oderli').innerHTML=hmtl0;
-
   }
   catch(error) {
     console.log('error in getods() fn-', error);
     alert('error in getods() fn-', error);
   }
 }
- let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
+let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
+let erdb = new Dexie("erro");erdb.version(1).stores({err: "id"});
+let bulkdb = new Dexie("bulk");bulkdb.version(1).stores({bk: "id"});
 var selod5={};var zsr={};let selg;let odimgbob;
 //var om=document.getElementById("tb").innerHTML;
 var od={};var zxc=0; 
-if(localStorage.clickcount) {zxc=localStorage.clickcount;}
+if(localStorage.clickcount){zxc=localStorage.clickcount;}
 
 //  // date today
  var date;let date1;
@@ -63,10 +63,10 @@ if(localStorage.clickcount) {zxc=localStorage.clickcount;}
   
 
 var urli =localStorage.gr5;
-let gststate={01:"JAMMU AND KASHMIR",02:"HIMACHAL PRADESH",03:"PUNJAB",04:"CHANDIGARH",05:"UTTARAKHAND",06:"HARYANA",07:"DELHI",08:"RAJASTHAN",09:"UTTAR PRADESH",10:"BIHAR",11:"SIKKIM",12:"ARUNACHAL PRADESH",13:"NAGALAND",14:"MANIPUR",15:"MIZORAM",16:"TRIPURA",17:"MEGHALAYA",18:"ASSAM",19:"WEST BENGAL",20:"JHARKHAND",21:"ODISHA",22:"CHATTISGARH",23:"MADHYA PRADESH",24:"GUJARAT",26:"DADRA AND NAGAR HAVELI AND DAMAN AND DIU (NEWLY MERGED UT)",27:"MAHARASHTRA",28:"ANDHRA PRADESH(BEFORE DIVISION)",29:"KARNATAKA",30:"GOA",31:"LAKSHADWEEP",32:"KERALA",33:"TAMIL NADU",34:"PUDUCHERRY",35:"ANDAMAN AND NICOBAR ISLANDS",36:"TELANGANA",37:"ANDHRA PRADESH (NEWLY ADDED)",38:"LADAKH (NEWLY ADDED)",97:"OTHER TERRITORY",99:"CENTRE JURISDICTION"}
-var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
+let gststate={01:"JAMMU AND KASHMIR",02:"HIMACHAL PRADESH",03:"PUNJAB",04:"CHANDIGARH",05:"UTTARAKHAND",06:"HARYANA",07:"DELHI",08:"RAJASTHAN",09:"UTTAR PRADESH",10:"BIHAR",11:"SIKKIM",12:"ARUNACHAL PRADESH",13:"NAGALAND",14:"MANIPUR",15:"MIZORAM",16:"TRIPURA",17:"MEGHALAYA",18:"ASSAM",19:"WEST BENGAL",20:"JHARKHAND",21:"ODISHA",22:"CHATTISGARH",23:"MADHYA PRADESH",24:"GUJARAT",26:"DADRA AND NAGAR HAVELI AND DAMAN AND DIU (NEWLY MERGED UT)",27:"MAHARASHTRA",28:"ANDHRA PRADESH(BEFORE DIVISION)",29:"KARNATAKA",30:"GOA",31:"LAKSHADWEEP",32:"KERALA",33:"TAMIL NADU",34:"PUDUCHERRY",35:"ANDAMAN AND NICOBAR ISLANDS",36:"TELANGANA",37:"ANDHRA PRADESH",38:"LADAKH",97:"OTHER TERRITORY",99:"CENTRE JURISDICTION"}
+var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
 
-var pki={"types":[{"type":"Bio","color":["Black","White","Maroon","Navy","Mustard Yellow","Red","Bottle Green","Beige","Royal Blue","Lavender","Sky","Grey"],"size":[36,38,40,42,44,46],"price":155},{"type":"NBio","color":["Black","White","Navy","Grey","Mint","Charcol","Olive"],"size":[36,38,40,42,44,46],"price":105},{"type":"Polo","color":["Black","White","Navy","Grey","Maroon","Anthra","Red","Charcol","Royal","Orange","Sky Blue","Flag Green","Reliance Green","Golden Yellow"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"OverS","color":["Black","White"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Hood","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Sweat","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Kids","color":["Black","White"],"size":["20","22","24","26","28","30","32","34"],"price":190}]};
+var pki={"types":[{"type":"Bio","color":["Black","White","Maroon","Navy","Mustard Yellow","Red","Bottle Green","Beige","Royal Blue","Lavender","Sky","Grey"],"size":[36,38,40,42,44,46],"price":155},{"type":"NBio","color":["Black","White","Navy","Grey","Mint","Charcol","Olive"],"size":[36,38,40,42,44,46],"price":105},{"type":"Polo","color":["Black","White","Navy","Grey","Maroon","Anthra","Red","Charcol","Royal","Orange","Sky Blue","Flag Green","Reliance Green","Golden Yellow"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"OverS","color":["Black","White","Lavender","Beige"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Hood","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Sweat","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Kids","color":["Black","White"],"size":["20","22","24","26","28","30","32","34"],"price":190}]};
 // console.log(pki.types[0]); // console.log(pki.types[0].type); // console.log(pki.types[0].color[0]); // console.log(pki.types[0].size[0]);
 let intp;
 if((navigator.platform)==='iPhone'){intp="pattern='[0-9]*' type='text'";
@@ -137,7 +137,7 @@ function openCity(evt, cityName) {
   }
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " w3-red";
-var jk12=0;
+let jk12=0;
  let jk100=document.getElementById(cityName).querySelectorAll("thead > tr.w3-blue-grey th");let jk1001=jk100.length;
  for (let r = 1; r < jk1001; r++) {
    let njh113=jk100[r].innerText;
@@ -156,10 +156,28 @@ for (let v = 0; v < uy1; v++) {
 }
  document.getElementById('tot').style.display='none';
 }
-// // display all tab 
- //document.getElementById('alltab').onclick = function viewtotal(){
-  // document.getElementById('btn_convert').style.display="";
+
+
+//  toggle in sample/bulk oder
+function bulks() {
+  totqt[12] = (document.getElementById('bulkc').checked) ? 10 : -110;
+  console.log(totqt,'hiiiiiii');
+}
+
+// display all tab 
+// let bulk;
+  let prc={};let bulkpc=JSON.parse(localStorage.pc);let sampc=JSON.parse(localStorage.pcs);
   function viewtotal(){
+   let sum = totqt.reduce((p, a) => p + a, 0);
+    console.log(sum);
+      if((sum>bulkpc.sqt)){
+        prc=bulkpc;document.getElementById('bulkc').checked=1;
+        zc(sum,bulkpc.sqt,'t0hiiiiiii');
+      }else{
+        prc=sampc;document.getElementById('bulkc').checked=0;
+        zc(sum,bulkpc.sqt,'f0hiiiiiii');
+      }
+
    let x1 = document.querySelectorAll(".city");let x11=x1.length;
     for (i = 0; i < x11; i++) {
     x1[i].style.display = "block";
@@ -179,7 +197,7 @@ for (let i = 0; i < lkp1; i++) {
     
     for (let j = 0; j < pkz; j++) {
      let zo=lkp[i].querySelectorAll('tr input')[j].value==="";
-       let jkp=[];
+      //  let jkp=[];
    if(!zo){
        //console.log(lkp[i],'y');
       lkp[i].style.display="";
@@ -189,7 +207,7 @@ for (let i = 0; i < lkp1; i++) {
 let gf=document.querySelectorAll(".city");let gf1=gf.length;
 for (let d = 0; d < gf1; d++) {
   let hyt= gf[d].querySelectorAll('td input');let hyt1=hyt.length;
-  var fhall=1;
+  let fhall=1;
    for (let g = 0; g <hyt1; g++) {
      fhall+=hyt[g].value;
    }
@@ -199,53 +217,44 @@ for (let d = 0; d < gf1; d++) {
  } tot();
 }
 
-//  toggle in sample/bulk oder
-// function oderc(y) {
-//   let x = y.innerText;
-//   if (x === "Sample") {
-//     y.innerText = "Bulk";
-//   } else {
-//     y.innerText = "Sample";//console.log(x);
-//   }
-// }
 
 ///each oninput table cell
-function inclick(zx) {
- //macin();
- console.log(Number(zx.value))
- let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
- let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
-var jk=0;
-for (let i = 2; i < pk11; i++) {
-   let njh=pk1[i].cells[xn].querySelector('input').value;
-   let njh1=Number(njh);
-   jk+=njh1;
-}
- let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
- let ihj1=zx.parentElement.parentElement;
- let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
- //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
- let ihjk=Number(zx.value);
-//  
- stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
- //console.log(od);
-document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
- let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
- var rt=0;
- for (let u = 1; u < uy1; u++) {
-  let yt12=uy[u].innerText;
-  let yt3= Number(yt12);
-  rt+=yt3;
-  //console.log('gggtttt',rt,yt12);
- }//console.log('ffftttt',rt);
- document.getElementById('odert').innerText="Total-"+rt;
-}
+// function inclick(zx) {
+//  //macin();
+//  console.log(Number(zx.value));
+//  let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
+//  let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
+// let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
+// var jk=0;
+// for (let i = 2; i < pk11; i++) {
+//    let njh=pk1[i].cells[xn].querySelector('input').value;
+//    let njh1=Number(njh);
+//    jk+=njh1;
+// }
+//  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
+//  let ihj1=zx.parentElement.parentElement;
+//  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
+//  //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
+//  let ihjk=Number(zx.value);
+// //  
+//  stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
+//  //console.log(od);
+// document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
+//  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
+//  var rt=0;
+//  for(let u = 1; u < uy1; u++){
+//   let yt12=uy[u].innerText;
+//   let yt3= Number(yt12);
+//   rt+=yt3;
+//   //console.log('gggtttt',rt,yt12);
+//  }//console.log('ffftttt',rt);
+//  document.getElementById('odert').innerText="Total-"+rt;
+// }
 
 //// Display Total table
 //var kli;
 var pctt;var pcwt;let total;var odprice;let billinv=[];
-function tot() {
+function tot(){
 odprice={};
 let dtt=date.slice(0,6);
 let tch=document.getElementById('tch').value;let och=document.getElementById('och').value;
@@ -255,7 +264,9 @@ tch = (tch=='') ? tch=0 : tch=tch; och = (och=='') ? och=0 : och=och;
 dptch = (tch=='') ? dptch='display:none': dptch='';
 dpoch = (och=='') ? dpoch='display:none': dpoch='';
  // kli=document.getElementById('gst').checked;
-document.getElementById('u13').innerText=document.getElementById('frt').innerText;   
+document.getElementById('u13').innerText=document.getElementById('frt').innerText;
+let v9 = (pk8) ? pk8.slice(2) : (date1+(Number(localStorage.clickcount)+1));
+document.querySelector('#tot table thead th span').innerText='#'+v9;
  //document.getElementById('u33').innerHTML=new Date().toLocaleString().slice(0,-3);
 //  pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
 // let pw=new Date();
@@ -267,11 +278,11 @@ document.getElementById('tot').style.display='';
 document.getElementById('odert').style.display='none';
 total=0;pctt=0;pcwt=0;
 let uy= document.querySelectorAll('.city thead tr:nth-child(1)');let uy1=uy.length;
-for (let v = 0; v < uy1; v++) {
+for(let v = 0; v < uy1; v++){
  uy[v].style.display='none';
 }
 let tg=document.querySelectorAll('.city');let tg1=tg.length;
-var sd0='';let cot=0;
+let sd0='';
 for (let b = 0; b < tg1; b++) {
 let sd20=document.querySelectorAll("#trth .w3-blue")[b];
 let sd2=sd20.innerText.trim();
@@ -303,9 +314,13 @@ let cta=0, ctb=0, ctc=0, ctd=0, cte=0,sd1=null,sd11=0;
   }
 }//console.log(sd0);
 let txv=(Number(pctt)-Number(dis));
-let inv=Math.ceil(((Number(txv)*0.05)+Number(txv)+Number(tch)+Number(och)));billinv=[txv,inv];
+
+let vn = (document.getElementById('bulkc').checked) ? (Number(txv)*0.05) : 0;
+let vn1 = (document.getElementById('bulkc').checked) ? '' : 'none';
+// let vn1 = (document.getElementById('bulkc').checked) ?  '+ 5% Tax' : '<span style="padding: 0 2.30em"></span>';
+let inv=Math.ceil((vn+Number(txv)+Number(tch)+Number(och)));billinv=[txv,inv];
 let pctt0=dis&&("<tr><td colspan='2'><b class='sa2'>Discount -</b></td><td>"+"<b>"+dis+'₹'+'</b></td></tr>');
-let pctt1="<tr><td colspan='3' style='padding: 1px 4px 1px 2px!important'><div><b class='sc1'>"+total+" PCS Total</b><b class='sc1' style='margin-left: 2px;background: #2e2effd6'>"+Math.ceil(pcwt)+"kg</b><b class='sa2'>"+txv+'₹ + 5% Tax</b></div></td>'+'</tr>';
+let pctt1="<tr><td colspan='3' style='padding: 1px 4px 1px 2px!important'><div><b class='sc1'>"+total+" PCS Total</b><b class='sc1' style='margin-left: 2px;background: #2e2effd6'>"+Math.ceil(pcwt)+"kg</b><b class='sa2' style='display:"+vn1+"'>"+txv+'₹ + 5% Tax'+'</b></div></td>'+'</tr>';
 let pctt2="<tr style="+dptch+"><td colspan='2'><b class='sa2'>Transport Charge -</b></td><td>"+"<b>"+tch+'₹'+'</b></td></tr>';
 let pctt3="<tr style="+dpoch+"><td colspan='2'><b class='sa2'>Other Charges -</b></td><td>"+"<b>"+och+'₹'+'</b></td></tr>';
 let pctt4="<tr><td colspan='2'><b style='font-size: 12px; font-weight: 500;'>"+dtt+dtt2+"</b><b class='sa2'>Total Amount -</b></td><td>"+"<b class='sc1'>"+(inv.toLocaleString('en-IN'))+'₹'+'</b></td></tr>';
@@ -345,6 +360,7 @@ document.querySelector('#tot table tbody').innerHTML=sd0+pctt0+pctt1+pctt2+pctt3
 // create new, clear old input 
 function newc(){
   document.querySelector('#gall input').checked;
+  document.getElementById('bulkc').checked = 0;
  let hjk=document.querySelectorAll('.city table td input');
 for (let t of hjk) {
     if(t.value){t.value=''}
@@ -375,7 +391,7 @@ document.getElementById('id01').style.display='block';
  document.getElementById('ctq').value='';
  document.getElementById('chp').value='';
  document.getElementById('chq').value='';
- od={}; zsr={};//ods={};
+ totqt=[];od={}; zsr={};//ods={};
  ptd={};selg='';
 }
 
@@ -389,9 +405,9 @@ function gonext() {
 		if(ur){
     document.getElementById('u13').innerHTML=ur;
     document.getElementById('frt').innerHTML='<strong>'+ur+'</strong>';
-    if (document.getElementById('q000')) {
-      document.getElementById('gst').checked=true;
-    }
+    // if (document.getElementById('q000')) {
+    //   document.getElementById('gst').checked=true;
+    // }
     
    let val5=document.querySelector('#gall input[type="radio"]:checked').value;
    document.getElementById("gsel").options[val5].selected=true;
@@ -534,69 +550,43 @@ function newocb() {
  todaydate();
 }
 
-///each oninput table cell
-function inclick(zx) {
- //macin();
- let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
 
- let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-//console.log('cvbnmkkk',tbid,xn);
+// document.querySelectorAll('#html33 tbody .w3-input').forEach(b => {
+//   b.addEventListener("change", (event) => {
+//     console.log(event.target.innerText)
+//   })
+// })
+
+///each oninput table cell
+let totqt=[];
+function inclick(zx){
+ //macin();
+ let qt=Number(zx.value);let ep=zx.parentElement.parentElement;
+ let tbid=ep.parentElement.parentElement.id;
+// alert('hi')
+ let xn=Array.from(ep.children).indexOf(zx.parentNode);
+// console.log('cvbnmkkk',tbid,xn);
 let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
-var jk=0;
-for (let i = 2; i < pk11; i++) {
-   let njh=pk1[i].cells[xn].querySelector('input').value;
-   let njh1=Number(njh);
-   jk+=njh1;
+let jk=0;
+for(let i = 2; i < pk11; i++){
+   jk+=Number(pk1[i].cells[xn].querySelector('input').value);
 }//console.log(zx,zx.value,'asd');
  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
- let ihj1=zx.parentElement.parentElement;
+// let ihj1=zx.parentElement.parentElement;
  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
- //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
- let ihjk=Number(zx.value);
- stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
- //console.log(od);
+ // console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
+ stork(ihj2,ep.querySelector('th').innerText,ihj,qt);
+ // console.log(od);
 document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
- var rt=0;
+ let rt=0;
  for (let u = 1; u < uy1; u++) {
-  let yt12=uy[u].innerText;
-  let yt3= Number(yt12);
-  rt+=yt3;
-  //console.log('gggtttt',rt,yt12);
- }//console.log('fghjkk',rt);
+  rt+=Number(uy[u].innerText);
+  // console.log('gggtttt',rt,yt12);
+ }// console.log('fghjkk',rt);
+ totqt[tbid.slice(-1)]=rt;
  document.getElementById('odert').innerText="Total-"+rt;
 }
-
-// Download for customer oder .json file
-// function corj() {
-//  //let 'od'+localStorage.clickcount = {};
- 
-// zsr.id = (Number(zxc)+1);
-// zsr.cn = document.getElementById('u13').innerText;
-// zsr.tot = Number(document.getElementById('u23').innerText.split('-')[1]);
-// zsr.gst = document.getElementById('gst').checked;
-// //zsr.dt = document.getElementById('u33').innerText.split(',')[0]; 
-// let d0 = new Date();
-// let ye0 = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d0);
-// let mo0 = new Intl.DateTimeFormat('en', { month: 'short' }).format(d0);
-// let da0 = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d0);
-// zsr.dt=`${da0}/${mo0}/${ye0}`;
-// //zsr.dt=new Date().toLocaleDateString("en-US", {day:'numeric',month:'short',year: 'numeric'});
-// //.split(' ').reverse().join(' ');
-// zsr.it = od; 
-// zsr.tch=Number(document.getElementById('tch').value)
-// zsr.och=Number(document.getElementById('och').value)
-//  //console.log('json:',zsr)
-//  //var obj = {a: 123, b: "4 5 6"};
-// // var data5 = "text/json;charset=utf-8," + encodeURIComponent('od'+(Number(zxc)+1)+'='+JSON.stringify(zsr));
-
-// // let a = document.createElement('a');
-// // a.href = 'data:' + data5;
-// // a.download = 'od'+(Number(zxc)+1)+'.json';
-// // a.innerHTML = 'download JSON';
-// // document.body.appendChild(a);
-// // a.click();a.remove();
-// }
 
 
 // get document by key
@@ -653,7 +643,7 @@ function chnot(b,v) {
   if (b===1) {
     op5[lastsel]=v.value;
     document.querySelector('#vtag [name='+lastsel+']').innerHTML=v.value;
-  } else {
+  }else{
     op5[lastsel]=v.innerText;
     document.querySelector('#vtag [name='+lastsel+']').innerText=v.innerText;
   }
@@ -673,7 +663,7 @@ function opodli(b) {
       //  console.log("data:",uio=doc.it)
         //gentblo(doc.it,qwe5);
      clickh+=1;
-if((clickh % 2 == 0)) {
+if((clickh % 2 == 0)){
   //if(document.getElementById('my55')){}
   if(document.getElementById('aa5')){document.getElementById('my55').remove();document.getElementById('aa5').remove()}
   //b.click();
@@ -681,8 +671,8 @@ if((clickh % 2 == 0)) {
   // if (op5.hasOwnProperty(b.getAttribute("for"))) {
   //    kk5="<input onchange='chnot(this)' id='inp5' name='"+b.getAttribute("for")+"' class='w3-border w3-input' type='text' style='padding:0 5px' placeholder=' Write Notes...'>"
   // }else{ kk5=''}
-  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey jkjxxx' id=''>Share</div></div></div>"+"<div id='my55'>Sample Div</div>")}
-     odtbl(doc.it,'tblom1','my55'); 
+  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey w3-ripple jkjxxx'>Copy Link</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
+     odtbl(doc.it,'tblom1','my55');
      }
     })
   //  setTimeout(()=>{
@@ -793,13 +783,13 @@ function selod(h) {
 let oldm=localStorage.lastreset.split(','); // '304,34' 
 if (oldm[0]!=date1) {
   let lr=Number(oldm[1]);
-  for(let v = lr; v <= (lr+500); v++) {  
+  for(let v = lr; v <= (lr+500); v++){
   st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
     lelo(doc.it);
 })}
 }
 
-for(let v = xc; v <= Number(zxc); v++) {  
+for(let v = xc; v <= Number(zxc); v++){  
 st.collection(gd).doc('od'+date1+v).get().then(doc => {
   lelo(doc.it);
 })
@@ -822,9 +812,20 @@ st.collection(gd).doc('od'+date1+v).get().then(doc => {
 //   //console.log(doc5)
 //    lelo(doc5);
 //   })
-  }   
+  }
  }
  
+// for instock
+async function couttotinst(xc,gd) {  
+  let st = new Localbase('st');
+  pd2=structuredClone(ods1);
+  // console.log(pd2);
+  st.collection(gd).doc('od'+xc).get().then(doc => {
+    lelo(doc.it);
+  })
+}
+
+
 function lelo(kk) {
     Object.keys(kk).forEach(function(t) {
   //  type loop
@@ -1061,6 +1062,7 @@ function selpin(g) {
   let tt5=JSON.parse(localStorage.imglastod);
   document.getElementById('lastodimg').src=tt5.im5;
   document.getElementById('lastodcn').innerHTML=tt5.cn;
+
 
 
 

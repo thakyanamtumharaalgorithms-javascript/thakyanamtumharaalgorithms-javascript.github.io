@@ -37,8 +37,8 @@ function delod () {
   // let r=Object.keys(selod5)[Object.keys(selod5).length-1];
    let st = new Localbase('st');
    st.collection(selg).doc(r).get().then(doc => {
-    od=doc.it;let odno=selg.slice(-1)+doc.id;
-    an5=doc;an5.tot=0;an5.it={};an5.gst=false;an5.tch=0;an5.och=0;an5.dis=0;an5.c=[,,,,];an5.pc={};an5.odno=odno;
+    od=doc.it;//let odno=selg.slice(-1)+doc.id;
+    an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[,,,,];an5.pc={};an5.inv=[];
     shod11={"p":"1","g":selg,"od":{...an5}};
     sendd(urli,shod11,'del order');
 
@@ -46,6 +46,9 @@ function delod () {
     od={};an5={};
 }).then(() => {
   //console.log('hhhhh',shod11.od)
+  (async()=> { 
+    await bulkdb.bk.delete(shod11.od.id)
+   })();
  st.collection(selg).doc(r).update(shod11.od).then(response => {
     selod5={};
     document.querySelector('[name='+selg+']').click();
@@ -61,8 +64,10 @@ var pk8;var oldod;
 var instg={Delhi:'ods',Tiruppur:'odt',Kolkata:'odk',PD:'odpd'};
 
 function editod(tp) {
-  let st = new Localbase('st');
   pk8=tp.id.split('b')[1];// order id od34
+  let cnv=document.getElementById(pk8).name;
+  db.pt.where('cn').equals(cnv).each((v)=>{ptd=v});
+  let st = new Localbase('st');
   st.collection(selg).doc(pk8).get().then(doc => {
     let ht=doc.cn;
     oldod=doc;
@@ -82,7 +87,8 @@ function editod(tp) {
   }
 
     document.getElementById('frt').innerHTML="<strong>"+ht+"</strong>";
-    if(doc.gst){document.getElementById('gst').checked=true;}
+    // if(doc.bulk){document.getElementById('bulkc').checked=true;bulks();}else{document.getElementById('bulkc').checked=false;bulks();}
+    if(doc.bulk){document.getElementById('bulkc').checked=true;}else{document.getElementById('bulkc').checked=false;}
     if (selg=='inst') {
       document.getElementById("gsel").value=instg[ht.trim()];
     } else {
@@ -93,11 +99,10 @@ function editod(tp) {
       let obj2 =doc.pc;
       prc={...obj1,pc:{...obj1.pc,...obj2}};
     }
-    console.log(prc);
+    //console.log(prc);
     // console.log(doc.it)
   })
  
-
 document.querySelectorAll('#id01 #tblom1 tbody').forEach(kjhu)
 // for edit order
 function kjhu(v) {//alert(v.id);document.getElementById('frt').innerText=.innerText.split('\n')[0].split(' ')[2];
@@ -140,8 +145,8 @@ var id55=pk8.split('od')[1];
 zsr.id = Number(id55);
 zsr.cn = document.getElementById('u13').innerText;
 zsr.tot = Number(total);
-zsr.gst = document.getElementById('gst').checked;
-zsr.dt = oldod.dt; 
+zsr.bulk = Number(document.getElementById('bulkc').checked);
+zsr.dt = oldod.dt;
 zsr.it = od;
 zsr.inv=billinv;
 zsr.tch=Number(document.getElementById('tch').value);
@@ -149,20 +154,47 @@ zsr.och=Number(document.getElementById('och').value);
 zsr.dis=Number(document.getElementById('dis').value);
 let ct=document.getElementById('ctp');
 let ch=document.getElementById('chp');
-if (ct.value) {
+if(ct.value){
   zsr.c=[,,,,];
   zsr.c[0]=Number(ct.value);
   let ctq=Number(document.getElementById('ctq').value);
   zsr.c[1]=ctq;
   zsr.tot=zsr.tot+ctq;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;let m=zsr.c[0]*zsr.c[1];
+  zsr.inv[0]+=m;
+  zsr.inv[1]+=m+(m*0.05);
 }
-if (ch.value) {
+if(ch.value){
   zsr.c||(zsr.c=[,,,,]);
   zsr.c[2]=Number(ch.value);
   let chq= Number(document.getElementById('chq').value);
   zsr.c[3]=chq;
   zsr.tot=zsr.tot+chq;
+  zsr.bulk=1;document.getElementById('bulkc').checked=1;let m1=zsr.c[2]*zsr.c[3];
+  zsr.inv[0]+=m1;
+  zsr.inv[1]+=m1+(m1*0.05);
 }
+zsr.pt=ptd.id;
+let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+if(document.getElementById('bulkc').checked){
+  ptd.ods.push(selg.slice(-1)+id55);
+  let uniq=[...new Set(ptd.ods)];
+  ptd.ods=uniq;
+  (async()=> {
+    await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
+   })();
+}else{
+  // let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+  if(yu!=(-1)){
+    ptd.ods.splice(yu, 1);
+    (async()=> {
+      await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
+     })();
+  }
+}
+(async()=> {
+  await db.pt.update(ptd.id, ptd);
+ })();
 
 const gsel=document.getElementById("gsel").value;
 let shod1={};
@@ -174,11 +206,10 @@ if(!(selg==gsel)){
    shod1={"p":"4","g":selg,"gl":gsel,"od":{...zsr, "pc":{...odprice}}};
   await moveod(selg,gsel,'od'+id55);
 })();
-}else{
- // alert('g normal')
-  shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}}};
 }
 
+ // alert('g normal')
+shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}},ptd};
 sendd(urli,shod1,'update order');
 
 let st = new Localbase('st');
@@ -206,14 +237,15 @@ st.collection(selg).doc(pk8).set(shod1.od)
               // });
             });
             html33.style.width='';
-       newc();document.getElementById('gst').checked=0;
+       newc();
 document.getElementById('btn_convert').style.display='';
 document.getElementById('upd5').style.display='none';
 document.getElementById("p781").click();
   })
   .catch(error => {
-    alert('error in update od1 fn-', error);
-    console.log('error in update od1 fn-', error);
+    console.log('error in update od1 fn- ', error);
+    alert('error in update od1 fn- ', error);
+   
   })
 }}
 
@@ -245,7 +277,6 @@ function saveinst(v) {
    //pkx.cn = document.getElementById('gsel').options[document.getElementById('gsel').selectedIndex].innerText;
    pkx.cn =document.querySelector('#gsel').selectedOptions[0].innerText;
    pkx.tot = Number(total);
-   pkx.gst = false;
    pkx.dt = date.split(' ').join('/');
    pkx.it = od;
    (async () => {
@@ -265,10 +296,12 @@ function saveinst(v) {
     document.getElementById('upd5').style.display = 'none';
    }
 }
+  
 
 function expt(v) {
  // console.log(Number(v.parentElement.innerText.split('.')[0]))
-  couttot(Number(v.parentElement.innerText.split('.')[0]),selg,Number(v.parentElement.innerText.split('.')[0]))
+ console.log(v.parentElement.innerText.split('.')[0]);
+ couttotinst(Number(v.parentElement.innerText.split('.')[0]),selg);
   setTimeout(()=>{
     tabletcsv('testTable',new Date().toLocaleString("en-GB"));
   },3000)
@@ -276,7 +309,6 @@ function expt(v) {
 // price calculator
 function pc(v,vx,a,b,c,d,e) { // v(type) a(36-42), b(44), c(46), d(32), e(34)
   //odprice
-  // let prc=JSON.parse(localStorage.pc);
   let svc='', sva='', svbc='', svab='', svpls1='', svpls2='';
   svbc= ((b+c)!=0) ? svbc=(b+c)+'×'+prc.pc[v][1] : svbc='';
   svab= ((a+b)!=0) ? svab=(a+b)+'×'+prc.pc[v][0] : svab='';
@@ -482,7 +514,7 @@ function searchp(vv) {
   // genrate party search list in id-plist.  <li id="212">czxcjk fd 9554255495</li>
   (async()=> { // save party details
     let reg = new RegExp(vv, 'i');let lihtml="";
-    await db.pt.filter(pk => reg.test(pk.cn)).limit(10).each(pv => { console.log('n',pv);
+    await db.pt.filter(pk => reg.test(pk.cn)).limit(10).each(pv => { //console.log('n',pv);
       lihtml+="<li id='"+pv.id+"'>"+pv.cn+', '+pv.mn1+', '+pv.mn2+"</li>";
     }); 
     p.innerHTML=lihtml;
@@ -510,7 +542,7 @@ document.getElementById('plist').addEventListener('click',(e)=>{
 // onclick // get party details by id from indexed db for mobile no. 
 document.getElementById('m1list').addEventListener('click',(e)=>{
   getptd(e);
-  document.getElementById('ptmn').innerHTML=''
+  document.getElementById('ptmn').innerHTML='';
 })
 
 // not match in list, #ptd click remove list for name and mobile no. 
@@ -526,13 +558,13 @@ function getptd(e) {
   (async()=> {
     await db.pt.get(pid).then((v) => {
       console.log(v);
-      document.getElementById('incn').value=v.cn;
+      document.getElementById('incn').value=v.cn.trim();
       document.getElementById('ptm').value=v.mn1;
       
       document.getElementById('ptm1').value=v.mn2??'';
       
         let k1=document.getElementById('ptg');
-        k1.value=v.gst??'';
+        k1.value=v.gst.trim()??'';
         (k1.value)?k1.dispatchEvent(new Event('input')):document.getElementById('ptst').innerText='State 07BBNPG0866M2Z7';
        
         let k2=document.getElementById('ptp');
@@ -549,25 +581,25 @@ function getptd(e) {
 }
 
 // make party details obj
-// let ptd={id:'a0k1l6h12',cn:'',mn1:'',mn2:'',gst:'',pin:'',add:'',ods:['as102','as33','ak508']};
-var ptd={};let prc=JSON.parse(localStorage.pc);let cid='';
+// let ptd={id:'',cn:'',mn1:'',mn2:'',gst:'',pin:'',add:'',ods:['as102','as33','ak508']};
+var ptd={};let cid='';
 function sptd(v){
-  prc=JSON.parse(localStorage.pc);
+  // prc=JSON.parse(localStorage.pc);
   ptd={id:ptid,cn:'',mn1:'',gst:'',add:'',ods:ptods};
   let cn=document.getElementById('incn').value;
   let mn1=document.getElementById('ptm').value;
-  let mn2=document.getElementById('ptm1').value; // alternate mobile no.
+  let mn2=document.getElementById('ptm1').value;
   let pinc=document.getElementById('ptp').value;
   let pta=document.getElementById('pta').value;
   let ptg=document.getElementById('ptg').value;
-  ptd.cn=cn;
+  ptd.cn=cn.trim();
   ptd.mn1=mn1;
-  ptd.mn2=mn2; // alternate mobile no.
-  ptd.gst=ptg;
+  ptd.mn2=mn2;
+  ptd.gst=ptg.trim().toUpperCase();
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
-    if(ptd.add&&cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='';}
+  if(ptd.add&&cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='';}
   else if(cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='#00f';}
  // ptd.ods.push(Number(localStorage.clickcount)+Number(ptcounter()));
  let vn = (ptg) ? (true && document.getElementById('q000')): true;
@@ -583,17 +615,17 @@ function sptd(v){
 function svptd() {
   let oldid=ptd.id;
   ptd.id=ptid||genid(ptcounter(),1);console.log('save party details',ptd);
-  if (!oldid) {
+  if(!oldid){
     (async()=> { // save party details
       await db.pt.add(ptd);
      })();
   } else {
     (async()=> { // update party details
-      await db.pt.update(oldid, ptd)
+      await db.pt.update(oldid, ptd);
      })();
   }
   zc(ptd,'hiiiiiii');
-  sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ')
+  sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ');
   selg||newocb();selg&&gr();
   ptods=[];ptid=0;
 }
@@ -609,7 +641,7 @@ function ptcounter() {
   return localStorage.ptcount;
 }
 
-function genid(v,i,b='a'){ 
+function genid(v,i,b='a'){
   let id2;let id1;
   if(i==1){
   id1=new Date().toLocaleDateString('en-GB', {day : '2-digit',month : '2-digit',year : '2-digit'}).split('/').reverse().join('');
@@ -628,16 +660,19 @@ function genid(v,i,b='a'){
 async function genlink(id,cn) {
   console.log(id);
     document.querySelector('.jkjxxx').addEventListener('click', async () => {
-      try {
-        const shareData = {
-          title: 'Link',
-          text: cn+', save this link and download all your bills here👇\n',
-          url: 'https://www.ownknitted.com/bill#'+id
-        }
-        await navigator.share(shareData);
-      } catch (err) {
-        console.log(err);
-      }
+     let cin=document.querySelector('#aa5 textarea');
+     cin.value=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
+     cin.select();
+     cin.setSelectionRange(0, 99999);
+     navigator.clipboard.writeText(cin.value);
+
+      //   const shareData = {
+      //     title: 'Link',
+      //     text: cn+', save this link and download all your bills here👇\n',
+      //     url: 'https://.com/'+id
+      //   }
+      //   await navigator.share(shareData);
+
     });
   //return url1
 }
@@ -650,12 +685,14 @@ function printadd() {
       (async()=> { // get party address
       let od=selg.slice(-1)+v.match(/\d+/g)[0];//'as63'
       let cadd,radd;
-      await db.pt.where(selg).equals(od).toArray((v)=>{
+      let cnv=document.getElementById(v).name;console.log(cnv)
+      // db.pt.where('cn').equals(b).each((v)=>{
+      await db.pt.where('cn').equals(cnv).toArray((v)=>{console.log(v)
       cadd='<h1 class="p1"><b>To </b>- '+v[0].cn+', '+v[0].mn1+', '+v[0].mn2+'<br>'+v[0].add+', '+v[0].pin+'</span></h1>';
       radd='<h1><span class="p2"><div><b>Return address if not delivered</b><br></div><span>Own Knitted, 9336695049</span><br><span>F-120, Shutter wali gali, near Gujjar chowk, Khanpur Delhi, 110062</span></span></h1>';
       });
 let om='<hr style="border-top: 2px dashed #000;padding: 0;margin: 0;">';
-      if (!((i+1)%3)) {
+      if(!((i+1)%3)){
           om='<span id="pbr"></span>';
       }
       htmladd+=cadd+radd+om;
@@ -725,11 +762,11 @@ function download(imgurl,imgnm){
       document.getElementById('cnm1').classList.toggle("hide");
     }
     //
-    function goadd(b) {
-      let od=selg.slice(-1)+b; //'as63'
+    function goadd(b,z) {
+      let od=selg.slice(-1)+b; //'s63'
       ptid=0,ptods={};
-      console.log(b);
-      db.pt.where('ods').equals(od).each((v)=>{ 
+      console.log(b,z);
+      db.pt.where('cn').equals(b).each((v)=>{ 
         gr();document.getElementById('id01').scrollTop=0;
         document.getElementById('incn').value=v.cn;
         document.getElementById('ptm').value=v.mn1;
@@ -744,7 +781,7 @@ function download(imgurl,imgnm){
           (k2.value)?k2.dispatchEvent(new Event('input')):document.getElementById('ptplace').innerText='State, District';
   
         document.getElementById('pta').value=v.add??'';
-        ptods=v.ods;ptid=v.id;cid=b;
+        ptods=v.ods;ptid=v.id;cid=z;
         console.log(v,'b');
       })
     }

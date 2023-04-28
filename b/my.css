@@ -166,3 +166,4 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
   opacity: 0.3;
   margin: -75px 0 0 -60px;
 }
+#tot table thead th span {float: left;background: #00000015;padding: 0 4px;font-size: 12px;font-weight: 400;}

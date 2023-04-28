@@ -588,37 +588,6 @@ document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerT
  document.getElementById('odert').innerText="Total-"+rt;
 }
 
-// Download for customer oder .json file
-// function corj() {
-//  //let 'od'+localStorage.clickcount = {};
- 
-// zsr.id = (Number(zxc)+1);
-// zsr.cn = document.getElementById('u13').innerText;
-// zsr.tot = Number(document.getElementById('u23').innerText.split('-')[1]);
-// zsr.gst = document.getElementById('gst').checked;
-// //zsr.dt = document.getElementById('u33').innerText.split(',')[0]; 
-// let d0 = new Date();
-// let ye0 = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d0);
-// let mo0 = new Intl.DateTimeFormat('en', { month: 'short' }).format(d0);
-// let da0 = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d0);
-// zsr.dt=`${da0}/${mo0}/${ye0}`;
-// //zsr.dt=new Date().toLocaleDateString("en-US", {day:'numeric',month:'short',year: 'numeric'});
-// //.split(' ').reverse().join(' ');
-// zsr.it = od; 
-// zsr.tch=Number(document.getElementById('tch').value)
-// zsr.och=Number(document.getElementById('och').value)
-//  // console.log('json:',zsr)
-//  // var obj = {a: 123, b: "4 5 6"};
-// // var data5 = "text/json;charset=utf-8," + encodeURIComponent('od'+(Number(zxc)+1)+'='+JSON.stringify(zsr));
-
-// // let a = document.createElement('a');
-// // a.href = 'data:' + data5;
-// // a.download = 'od'+(Number(zxc)+1)+'.json';
-// // a.innerHTML = 'download JSON';
-// // document.body.appendChild(a);
-// // a.click();a.remove();
-// }
-
 
 // get document by key
 // st.collection('ods').doc('od97').get().then(document => {console.log(document)})
