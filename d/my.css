@@ -3,17 +3,6 @@ body { margin: 0; font-family: var(--bs-body-font-family); font-size: var(--bs-b
 
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 
-#oderli li{padding: 10px 5px 0px 10px;background: lawngreen;border-top: 0.5px solid;font-weight: 600;}
-#oderli li input{float: left;top: 0;margin-right: 2px;}
-#oderli li label:last-child{float: right;}
-#oderli li {-webkit-user-select: none;user-select: none;}
-#oderli li>span{padding: 0 3px 0 3px;font-size: 14px;font-weight: 200;color: #fff!important;background-color: #f44336!important;}
-
-#oderli li hr{border: 0;margin: 0;}
-#oderli li b>span{padding: 0 1.55em}
-#oderli li b:nth-child(3) {float:right}
-
-
 #html33 #odid {display: none;}
 
 td {padding: 0!important;width: 60px;}
@@ -83,7 +72,7 @@ span.w3-button.w3-display-topright {position: fixed;margin: 0 1.2em 0 0;}
 
 .w3-modal-content.w3-card-4 {border-radius: 24px;}
 .w3-modal{-webkit-backdrop-filter: blur(5px);backdrop-filter: blur(5px);}
-#oderli li.w3-display-container {font-weight: 600;}
+
 
 #tblom1 {width: 100%;}
 #tblom1  tbody tr:first-child{color:blue;background: #ffdfdd;}
@@ -142,7 +131,7 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
   user-select: none;
 }
 #oderli li span[onclick="opodli(this)"]:active{color:white;background: #0005;}
-
+#oderli li{position: relative;font-weight: 600;}
 #oderli span[onclick="opodli(this)"] span {
   display: inline-block;
   padding-left: 8px;
@@ -178,3 +167,11 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
   margin: -75px 0 0 -60px;
 }
 #tot table thead th span {float: left;background: #00000015;padding: 0 4px;font-size: 12px;font-weight: 400;}
+
+#ctm9 th {
+  -webkit-user-modify: read-write;
+  -moz-user-modify: read-write;
+  user-modify: read-write;
+}
+#ctm5 th {text-align: center;}
+#ctm9 td {width: auto;text-align: center;font-size: 12px;}

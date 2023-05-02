@@ -2,54 +2,36 @@
 var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelector(s),zc=console.log.bind(doc);
 // get all ods list
 async function getods(gd) {
-  
-    let htmlli=''; let st = new Localbase('st');let j=JSON.parse(localStorage.pin);
-    for (let i in j) {
-     await st.collection(gd).doc(i).get().then(doc => {
-            // console.log(i,doc);
-               let li0=`<li id="od${doc.id}" class="${doc.cn}" tabindex="${doc.pt}">
-                <input onclick="selod(this)" id="od${doc.id}" class="w3-check" type="checkbox">
-                <b onclick="goadd(${doc.id})">${doc.id}.${doc.cn}</b>
-                <b onclick="opodli(this)">${doc.tot}<span></span>${doc.dt.slice(0,6)}</b>
-                <hr>
-                <span>${j[i]}</span>
-                </li>`;
-        htmlli=li0+htmlli;
-    });
-    } 
-        document.getElementById('oderli').innerHTML=htmlli;
-    }
-  
-//   try {
+  try {
     
-//  let st = new Localbase('st');let j=JSON.parse(localStorage.pin);
-//  let allod=await st.collection(gd).get().then(v =>{
-//   return v.sort((a,b)=>{
-//       return a.id - b.id;
-//       });
-//   })
+ let st = new Localbase('st');
+ let allod=await st.collection(gd).get().then(v =>{
+  return v.sort((a,b)=>{
+      return a.id - b.id;
+      });
+  })
 
-//    let hmtl0='';
-//     for await (const i of allod) {
-//           //console.log(i)
-//           let ifz='';
-//           if(!Number(i.tot)){ifz="delt"};
-//           // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
-//           let gstr="<span style='padding: 0 1.55em'></span>";
-//           let inp="<input onclick='selod(this)' id='od"+i.id+"' name="+'"'+i.cn+'"'+" class='w3-check' type='checkbox'>";
-//           let lid='';let exio='';let funex='';
-//           if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
-//           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
+   let hmtl0='';
+    for await (const i of allod) {
+          // console.log(i)
+          let ifz='';
+          if(!Number(i.tot)){ifz="class='delt'"};
+          // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
+          let gstr="<span style='padding: 0 1.55em'></span>";
+          let inp="<input onclick='selod(this)' id='od"+i.id+"' class='w3-check' type='checkbox'>";
+          let lid="tabindex="+i.pt+" ";let exio='';let funex='';
+          if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';}
+          vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
 
-//           hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+'"'+i.cn+'",'+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
-//       }
-//       document.getElementById('oderli').innerHTML=hmtl0;
-//   }
-//   catch(error) {
-//     console.log('error in getods() fn-', error);
-//     alert('error in getods() fn-', error);
-//   }
-
+          hmtl0="<li id="+i.id+" "+lid+" "+ifz+">"+inp+' '+"<b onclick='goadd("+i.pt+','+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
+      }
+      document.getElementById('oderli').innerHTML=hmtl0;
+  }
+  catch(error) {
+    console.log('error in getods() fn-', error);
+    alert('error in getods() fn-', error);
+  }
+}
 let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
 let erdb = new Dexie("erro");erdb.version(1).stores({err: "id"});
 let bulkdb = new Dexie("bulk");bulkdb.version(1).stores({bk: "id"});
@@ -82,7 +64,7 @@ if(localStorage.clickcount){zxc=localStorage.clickcount;}
 
 var urli =localStorage.gr5;
 let gststate={01:"JAMMU AND KASHMIR",02:"HIMACHAL PRADESH",03:"PUNJAB",04:"CHANDIGARH",05:"UTTARAKHAND",06:"HARYANA",07:"DELHI",08:"RAJASTHAN",09:"UTTAR PRADESH",10:"BIHAR",11:"SIKKIM",12:"ARUNACHAL PRADESH",13:"NAGALAND",14:"MANIPUR",15:"MIZORAM",16:"TRIPURA",17:"MEGHALAYA",18:"ASSAM",19:"WEST BENGAL",20:"JHARKHAND",21:"ODISHA",22:"CHATTISGARH",23:"MADHYA PRADESH",24:"GUJARAT",26:"DADRA AND NAGAR HAVELI AND DAMAN AND DIU (NEWLY MERGED UT)",27:"MAHARASHTRA",28:"ANDHRA PRADESH(BEFORE DIVISION)",29:"KARNATAKA",30:"GOA",31:"LAKSHADWEEP",32:"KERALA",33:"TAMIL NADU",34:"PUDUCHERRY",35:"ANDAMAN AND NICOBAR ISLANDS",36:"TELANGANA",37:"ANDHRA PRADESH",38:"LADAKH",97:"OTHER TERRITORY",99:"CENTRE JURISDICTION"}
-var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
+var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Lavender:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Beige:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
 
 var pki={"types":[{"type":"Bio","color":["Black","White","Maroon","Navy","Mustard Yellow","Red","Bottle Green","Beige","Royal Blue","Lavender","Sky","Grey"],"size":[36,38,40,42,44,46],"price":155},{"type":"NBio","color":["Black","White","Navy","Grey","Mint","Charcol","Olive"],"size":[36,38,40,42,44,46],"price":105},{"type":"Polo","color":["Black","White","Navy","Grey","Maroon","Anthra","Red","Charcol","Royal","Orange","Sky Blue","Flag Green","Reliance Green","Golden Yellow"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"OverS","color":["Black","White","Lavender","Beige"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Hood","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Sweat","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Kids","color":["Black","White"],"size":["20","22","24","26","28","30","32","34"],"price":190}]};
 // console.log(pki.types[0]); // console.log(pki.types[0].type); // console.log(pki.types[0].color[0]); // console.log(pki.types[0].size[0]);
@@ -646,9 +628,8 @@ document.getElementById('cout6').addEventListener("click", function() {
  })
 
 getods(d.name);
-// selod5=JSON.parse(pinloc);
-selod5={}
-// setTimeout(function(){pint(0,pinloc);selod5={};},350);
+selod5=JSON.parse(pinloc);//console.log(selg,pinloc)
+setTimeout(function(){pint(0,pinloc);selod5={};},350);
 }}
 
 function chnot(b,v) {
@@ -674,11 +655,12 @@ function opodli(b) {
     //console.log(b.getAttribute("for"));
   //  op5= JSON.parse(pinloc);
    // console.log('1',op5)
+    // let qwe5=b.getAttribute("for");
     let qwe5=b.parentElement.id;
-    let od=selg.slice(-1)+qwe5.match(/\d+/g)[0];
+    let od=selg.slice(-1)+qwe5;
 
     let st = new Localbase('st');
-    st.collection(selg).doc(qwe5).get().then(doc=> {
+    st.collection(selg).doc('od'+qwe5).get().then(doc=> {
       //  console.log("data:",uio=doc.it)
         //gentblo(doc.it,qwe5);
      clickh+=1;
@@ -943,28 +925,30 @@ iframe.contentWindow.document.close();
 // pin 
 function pint(v,p) {
   selgo(selg);const aul=document.getElementById('oderli');
-  let od=selg.slice(-1);
+ // let od=selg.slice(-1);//console.log(selod5);
   for (const t in selod5) {
   let px=document.getElementById(t);let pxn=px.parentNode;
-  //console.log(xm,px)
-  db.pt.where('ods').equals(od+t.match(/\d+/g)[0]).each((v)=>{
-    !!v.add||(pxn.style.color='blue');
+  
+  // db.pt.where('ods').equals(od+t.slice(2)).each((v)=>{
+    let pj=pxn.tabIndex;//console.log(t,pj);
+    if (pj>0) {
+      (async()=>{
+  await db.pt.get(pj).then((v)=>{
+    // console.log(t,pj);
+    // if ((v.add!=='')) {pxn.style.color='blue';}
+    console.log((v.add===''),v.cn);
+    // !!v.add||(pxn.style.color='blue');
+    !(v.add==='')||(pxn.style.color='blue');
     if (v.gst) {
         let zw=pxn.querySelector('span[onclick] span');
         zw.innerText='GST';
         zw.style.padding='';
     }
-  })
-  // db.pt.where('ods').equals(od+t.match(/\d+/g)[0]).each((v)=>{
-  //   if (!!v.gst) {
-  //     pxn.style.color='blue'
-  //   }
-  //   // !!v.add||(pxn.style.color='blue')
-  //  // console.log(t,'fgf')
-  // })
+  });})();}
+
+ // console.log(t,selod5[t],selod5);
   if(t!=selod5[t]){aul.querySelector('#vtag [name='+t+']').innerText=selod5[t];}
-  //document.querySelector().innerText=selod5[t];
-  let lipnode=aul.querySelectorAll('#oderli li'); // current all li node
+  let lipnode=aul.querySelectorAll('#oderli li');
   // let xm=Array.from(px.parentNode.parentNode.children).indexOf(px.parentNode);
    let xm=Array.from(lipnode).indexOf(pxn);
   //moveItem(xm,0);
@@ -981,7 +965,7 @@ function pint(v,p) {
   }
   let mer5 = {...JSON.parse(pinloc), ...selod5};
   selpin(selg)
-  localStorage.setItem(pinz,JSON.stringify(mer5))//JSON.stringify(mer5)//JSON.parse()
+  localStorage.setItem(pinz,JSON.stringify(mer5));
   selod5={};
   let vkz5={ p: "3","g":selg, od:{...mer5}};
   if(v===1){sendd(urli,vkz5,'pin')}
