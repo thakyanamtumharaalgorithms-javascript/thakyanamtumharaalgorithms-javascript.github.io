@@ -57,6 +57,7 @@ if(localStorage.clickcount){zxc=localStorage.clickcount;}
   if(localStorage.m!=(d.getMonth()+1)){
     // resetd();
     localStorage.clickcount=0;zxc=0;localStorage.m=(d.getMonth()+1);
+    localStorage.fromod=0;
   }
 }
   todaydate();
@@ -172,10 +173,10 @@ function bulks() {
     console.log(sum);
       if((sum>bulkpc.sqt)){
         prc=bulkpc;document.getElementById('bulkc').checked=1;
-        zc(sum,bulkpc.sqt,'t0hiiiiiii');
+        // zc(sum,bulkpc.sqt,'t0hiiiiiii');
       }else{
         prc=sampc;document.getElementById('bulkc').checked=0;
-        zc(sum,bulkpc.sqt,'f0hiiiiiii');
+        // zc(sum,bulkpc.sqt,'f0hiiiiiii');
       }
 
    let x1 = document.querySelectorAll(".city");let x11=x1.length;
@@ -253,27 +254,25 @@ for (let d = 0; d < gf1; d++) {
 
 //// Display Total table
 //var kli;
-var pctt;var pcwt;let total;var odprice;let billinv=[];
+var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
 function tot(){
-odprice={};
+odprice={};othch=[];billinv=[];
 let dtt=date.slice(0,6);
-let tch=document.getElementById('tch').value;let och=document.getElementById('och').value;
+let tch=document.getElementById('tch').value;
+let och=document.getElementById('och').value;
 let dis=document.getElementById('dis').value;
-let dptch='';let dpoch='';
-tch = (tch=='') ? tch=0 : tch=tch; och = (och=='') ? och=0 : och=och;
+let dptch='';let dpoch='';othch[2]=Number(dis);
+tch = (tch=='') ? tch=0 : tch=othch[0]=Number(tch); och = (och=='') ? och=0 : och=othch[1]=Number(och);
 dptch = (tch=='') ? dptch='display:none': dptch='';
 dpoch = (och=='') ? dpoch='display:none': dpoch='';
  // kli=document.getElementById('gst').checked;
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
-let v9 = (pk8) ? pk8.slice(2) : (date1+(Number(localStorage.clickcount)+1));
+let v9 = (pk8) ? pk8 : (date1+(Number(localStorage.clickcount)+1));
+console.log(pk8,v9);
 document.querySelector('#tot table thead th span').innerText='#'+v9;
- //document.getElementById('u33').innerHTML=new Date().toLocaleString().slice(0,-3);
-//  pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
-// let pw=new Date();
-// let dtt2=', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
+
 let dtt2=', '+ new Date().toLocaleTimeString('en', { hour: "2-digit", minute: "2-digit",hour12: true }).replace(' ','');
-//document.getElementById('u33').innerHTML=pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+dtt2;
-//document.getElementById('u33').innerHTML=pw.split(" ")[0]+':'+pw.split(":")[1];//+pw.slice(-2);
+
 document.getElementById('tot').style.display='';
 document.getElementById('odert').style.display='none';
 total=0;pctt=0;pcwt=0;
@@ -380,19 +379,15 @@ let ty4=document.querySelectorAll("#ptd .w3-padding");
 for (let t of ty4) {
   t.innerHTML='_ _ _ _ _ _';
 }
-document.getElementById('pta').value='';
+ document.getElementById('pta').value='';
  document.querySelector("body > div.bar > div.w3-bar.w3-purple > button:nth-child(1)").click();
-document.getElementById('id01').style.display='block';
+ document.getElementById('id01').style.display='block';
  document.getElementById('incn').value='';
  document.getElementById('tch').value='';
  document.getElementById('och').value='';
  document.getElementById('dis').value='';
- document.getElementById('ctp').value='';
- document.getElementById('ctq').value='';
- document.getElementById('chp').value='';
- document.getElementById('chq').value='';
  totqt=[];od={}; zsr={};//ods={};
- ptd={};selg='';
+ ptd={};selg='';pk8='';ptods=[];ptid=0;
 }
 
 // onload model get Customer Name and gst
@@ -545,7 +540,7 @@ function newocb() {
  document.getElementById('gstall').innerHTML='';
  newc();
  document.getElementById('in1').checked=true;
- ptods=[];ptid=0;
+ 
  // new date today
  todaydate();
 }
@@ -780,39 +775,26 @@ function selod(h) {
   async function couttot(xc,gd) {  
   let st = new Localbase('st');
   pd2=structuredClone(ods1);//{...ods1}
-  console.log(pd2);
+  // console.log(pd2);
 let oldm=localStorage.lastreset.split(','); // '304,34' 
+console.log(oldm[0],date1,oldm[1],xc,zxc);
 if (oldm[0]!=date1) {
-  let lr=Number(oldm[1]);
-  for(let v = lr; v <= (lr+500); v++){
+  let lr=Number(oldm[1]);let lr1=500;
+  
+  for(let v = lr; v <= (lr+lr1); v++){
   st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
+    if (doc) {
+    console.log('1',v);
     lelo(doc.it);
-})}
+    }else{console.log('0',v);}
+});
+}
 }
 
-for(let v = xc; v <= Number(zxc); v++){  
-st.collection(gd).doc('od'+date1+v).get().then(doc => {
-  lelo(doc.it);
+for(let v1 = 0; v1 <= Number(zxc); v1++){  
+st.collection(gd).doc('od'+date1+v1).get().then(doc => {
+  if (doc) {console.log('1',v1);lelo(doc.it);}else{console.log('0',v1);}
 })
-// .catch(err=> {
-//   console.log(err);
-//     // st.collection(gd).doc('od'+(date1-1)+v).get().then(doc => {
-//     //   lelo(doc.it);
-//     // });
-//   })
-
-
-// st.collection(gd).doc('od'+dit+v).get().then(doc => {
-
-//   doc5=doc.it;
-
-// }).catch(err=> {
-//   dit++;
-// })
-//  .then(response => {
-//   //console.log(doc5)
-//    lelo(doc5);
-//   })
   }
  }
  
@@ -932,11 +914,11 @@ function pint(v,p) {
   // db.pt.where('ods').equals(od+t.slice(2)).each((v)=>{
     let pj=pxn.tabIndex;//console.log(t,pj);
     if (pj>0) {
-      (async()=>{
+  (async()=>{
   await db.pt.get(pj).then((v)=>{
     // console.log(t,pj);
     // if ((v.add!=='')) {pxn.style.color='blue';}
-    console.log((v.add===''),v.cn);
+    // console.log((v.add===''),v.cn);
     // !!v.add||(pxn.style.color='blue');
     !(v.add==='')||(pxn.style.color='blue');
     if (v.gst) {

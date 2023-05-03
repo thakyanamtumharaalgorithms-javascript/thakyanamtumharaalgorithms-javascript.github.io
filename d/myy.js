@@ -3,9 +3,9 @@ function resetd() {
 let from=Number(localStorage.fromod);let crrodno=Number(zxc);
  let odcount=1+crrodno-from;let oldm1=localStorage.lastreset.split(','); // '304,34' 
  let oldmc='';
- if(oldm1[0]!=date1){oldmc='\nAnd month-'+oldm1[0]+' from '+oldm1[1];}
+ if(oldm1[0]!=date1){oldmc='\nAnd old month('+oldm1[0]+') from '+oldm1[1];}
  if(odcount){
-    let per1 = prompt("Please enter 'ok' to download from "+from+" to "+zxc+oldmc);
+    let per1 = prompt("Please enter 'ok' to download\nthis month from "+from+" to "+zxc+oldmc);
     if (per1==="ok") {
       // {p:0,g:'odt',od:{}};
       let lastr=date1+','+(1+crrodno);
@@ -592,6 +592,7 @@ document.querySelector('#ptd').addEventListener('click',()=>{
 //get party details from selected in list // fill all detail in inputs
 let ptods=[];let ptid=0; // transfer value from db to new order 
 function getptd(e) {
+  ptods=[];ptid=0;
   let pid=Number(e.target.id);//console.log(pid);
   (async()=> {
     await db.pt.get(pid).then((v) => {
@@ -696,10 +697,11 @@ function genid(v,i,b='a'){
 }
 //genlink(genid(ptd.id,3),ptd.cn);
 async function genlink(id,cn) {
-  console.log(id);
+  // console.log(id);
+  let url1=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
     document.querySelector('.jkjxxx').addEventListener('click', async () => {
      let cin=document.querySelector('#aa5 textarea');
-     cin.value=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
+     cin.value=url1;
      cin.select();
      cin.setSelectionRange(0, 99999);
      navigator.clipboard.writeText(cin.value);
@@ -712,8 +714,19 @@ async function genlink(id,cn) {
       //   await navigator.share(shareData);
 
     });
-  //return url1
+  // return url1
 }
+function copylink(){
+ let cn=document.getElementById('incn').value;
+ let link='https://www.ownknitted.com/bill#'+genid(ptid,3)
+  let url1=cn+', save this link and download all your bills here👇\n\n'+link;
+  let cnb=document.getElementById('cnm4');
+  cnb.href=link;
+  cnb.innerText=cn.slice(0,6)+'...';
+  cnb.style.display='';
+  navigator.clipboard.writeText(url1);
+}
+
 
 // print address
 function printadd() {
