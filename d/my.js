@@ -784,17 +784,19 @@ if (oldm[0]!=date1) {
   for(let v = lr; v <= (lr+lr1); v++){
   st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
     if (doc) {
-    console.log('1',v);
+    // console.log('1',v);
     lelo(doc.it);
-    }else{console.log('0',v);}
+    // }else{console.log('0',v);
+  }
 });
 }
 }
 
 for(let v1 = 0; v1 <= Number(zxc); v1++){  
 st.collection(gd).doc('od'+date1+v1).get().then(doc => {
-  if (doc) {console.log('1',v1);lelo(doc.it);}else{console.log('0',v1);}
-})
+  if (doc) {lelo(doc.it);}
+  // else{console.log('0',v1);
+});
   }
  }
  
