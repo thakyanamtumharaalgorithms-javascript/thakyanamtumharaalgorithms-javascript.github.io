@@ -29,6 +29,7 @@ async function nnnn(){
 let fr1=(document.getElementById('frm5').valueAsNumber-19800000);let to1=(document.getElementById('to5').valueAsNumber-19800000);
 p1="data:text/csv;charset=utf-8,GSTIN/UIN of Recipient,Receiver Name,Invoice Number,Invoice date,Invoice Value,Place Of Supply,Reverse Charge,Applicable % of Tax Rate,Invoice Type,E-Commerce GSTIN,Rate,Taxable Value,Cess Amount\r\n";
 let pkl=odspt.length;let lp;
+
   for(let i = 0; i < pkl; i++){
     // console.log(odspt);
     lp=((i+1)/pkl)*100;
@@ -41,22 +42,24 @@ let pkl=odspt.length;let lp;
     let pfgh=[...new Set(odspt[i].ods)];//console.log(pfgh);
 for(let j = 0; j < pfgh.length; j++){
     let odsf=Number(pfgh[j].slice(1));
-    await st.collection('ods').doc({ id: odsf }).get().then(d=>{
+    await st.collection('ods').doc({id: odsf}).get().then(d=>{
         // console.log(odspt1,d)
-     odspt1[i][j+1]=d;let nd=new Date(d.dt).getTime(); // console.log(nd);
-    //  console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1));
+     let nd=new Date(d.dt).getTime(); // console.log(nd);
+     console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1),(fr1<=nd&&to1>=nd));
     // if(((fr1<nd&&to1>nd)&&d.tot)||(d.bulk&&d.tot)){
     if((fr1<=nd&&to1>=nd)){
-        if(d.bulk&&d.tot){
-            console.log(d.id);
-            p1+=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(","); 
+        console.log(d.bulk&&d.tot);
+        if(d.bulk&&d.tot){  
+            odspt1[i][j+1]=d;
+            let poi=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
+            p1+=poi;
         }
     }
     });
     }
 }
 
- console.log(odspt1,p1);
+// console.log(odspt1,p1);
 pbar1.style.display='none';
 let link1 = document.getElementById("alink");link1.style.display='';
 let fname="From "+fr9.value.split('-').reverse().join('_')+" To "+to9.value.split('-').reverse().join('_');
