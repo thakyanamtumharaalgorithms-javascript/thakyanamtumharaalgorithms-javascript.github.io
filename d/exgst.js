@@ -29,7 +29,7 @@ async function nnnn(){
 let fr1=(document.getElementById('frm5').valueAsNumber-19800000);let to1=(document.getElementById('to5').valueAsNumber-19800000);
 p1="data:text/csv;charset=utf-8,GSTIN/UIN of Recipient,Receiver Name,Invoice Number,Invoice date,Invoice Value,Place Of Supply,Reverse Charge,Applicable % of Tax Rate,Invoice Type,E-Commerce GSTIN,Rate,Taxable Value,Cess Amount\r\n";
 let pkl=odspt.length;let lp;
-
+console.log(new Date(fr1),'||',new Date(to1),'||',new Date("02/May/2023"));
   for(let i = 0; i < pkl; i++){
     // console.log(odspt);
     lp=((i+1)/pkl)*100;
@@ -44,14 +44,14 @@ for(let j = 0; j < pfgh.length; j++){
     let odsf=Number(pfgh[j].slice(1));
     await st.collection('ods').doc({id: odsf}).get().then(d=>{
         // console.log(odspt1,d)
-     let nd=new Date(d.dt).getTime(); // console.log(nd);
-     console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1),(fr1<=nd&&to1>=nd));
+        let dt1=d.dt.split('/').join('-');
+     let nd=new Date(dt1).getTime(); // console.log(nd);
+   //  console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1),'|',(fr1<=nd&&to1>=nd));
     // if(((fr1<nd&&to1>nd)&&d.tot)||(d.bulk&&d.tot)){
     if((fr1<=nd&&to1>=nd)){
-        console.log(d.bulk&&d.tot);
-        if(d.bulk&&d.tot){  
-            odspt1[i][j+1]=d;
-            let poi=[pt.gst,d.cn,d.id,d.dt.split('/').join('-'),d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].join(",");
+      //  console.log(d.bulk&&d.tot);odspt1[i][j+1]=d;
+        if(d.bulk&&d.tot){
+            let poi=[pt.gst,d.cn,d.id,dt1,d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].toString();
             p1+=poi;
         }
     }
