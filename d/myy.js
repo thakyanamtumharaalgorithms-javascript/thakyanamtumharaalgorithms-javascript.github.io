@@ -96,17 +96,6 @@ Kids:['Kids R-neck, 20"-34"']}
      }
     })
     
-
-
-
-    // if (oldod.c[0]) {
-    // document.getElementById('ctp').value=oldod.c[0];
-    // document.getElementById('ctq').value=oldod.c[1];
-    // }
-    // if (oldod.c[2]) {
-    //   document.getElementById('chp').value=oldod.c[2];
-    //   document.getElementById('chq').value=oldod.c[3];
-    // }
   }
 
     document.getElementById('frt').innerHTML="<strong>"+ht+"</strong>";
@@ -201,7 +190,8 @@ let jkl=document.querySelectorAll('#ctm9 tr');
 if (jkl.length) {
   let cods=[];
   jkl.forEach((v)=>{
-    let pi=(v.innerText).split('\t');let pz1=Number(pi[1].trim());let pz2=Number(pi[2].trim());
+    let pi=(v.innerText).split('\t');
+    let pz1=Number(pi[1].trim());let pz2=Number(pi[2].trim());
     if (pz2) {
     cods.push([v.dataset.p,pz1,pz2]);
     zsr.inv[0]+=(pz1*pz2);
