@@ -253,18 +253,19 @@ for (let d = 0; d < gf1; d++) {
 
 //// Display Total table
 //var kli;
-var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
+var pctt;var pcwt;let total;var odprice;let billinv=[];//let othch;
 function tot(){
-odprice={};othch=[];billinv=[];
+odprice={};//othch=[];
+billinv=[];
 let dtt=date.slice(0,6);
 let tch = document.getElementById('tch').value || 0;
 let och = document.getElementById('och').value || 0;
 let dis = document.getElementById('dis').value || 0;
 let dptch = (tch=='') ? dptch='display:none': dptch='';
 let dpoch = (och=='') ? dpoch='display:none': dpoch='';
-othch[0]=Number(tch);
-othch[1]=Number(och);
-othch[2]=Number(dis);
+// othch[0]=Number(tch);
+// othch[1]=Number(och);
+// othch[2]=Number(dis);
  // kli=document.getElementById('gst').checked;
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
 let v9 = (pk8) ? pk8 : (date1+(Number(localStorage.clickcount)+1));
