@@ -95,7 +95,6 @@ Kids:['Kids R-neck, 20"-34"']}
       addtbl(p9,v[1],v[2],v[0]);
      }
     })
-    
   }
 
     document.getElementById('frt').innerHTML="<strong>"+ht+"</strong>";
