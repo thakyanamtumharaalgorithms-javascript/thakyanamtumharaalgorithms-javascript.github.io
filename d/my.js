@@ -258,9 +258,11 @@ function tot(){
 odprice={};//othch=[];
 billinv=[];
 let dtt=date.slice(0,6);
-let tch = document.getElementById('tch').value || 0;
-let och = document.getElementById('och').value || 0;
-let dis = document.getElementById('dis').value || 0;
+let tch = document.getElementById('tch').value;
+let och = document.getElementById('och').value;
+let dis = document.getElementById('dis').value;
+tch = (tch=='') ? tch=0 : tch=tch;
+och = (och=='') ? och=0 : och=och;
 let dptch = (tch=='') ? dptch='display:none': dptch='';
 let dpoch = (och=='') ? dpoch='display:none': dpoch='';
 // othch[0]=Number(tch);
