@@ -262,7 +262,7 @@ let och = document.getElementById('och').value || 0;
 let dis = document.getElementById('dis').value || 0;
 let dptch = (tch=='') ? dptch='display:none': dptch='';
 let dpoch = (och=='') ? dpoch='display:none': dpoch='';
-othch[0]= Number(tch);
+othch[0]=Number(tch);
 othch[1]=Number(och);
 othch[2]=Number(dis);
  // kli=document.getElementById('gst').checked;
