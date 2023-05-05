@@ -44,15 +44,15 @@ for(let j = 0; j < pfgh.length; j++){
     let odsf=Number(pfgh[j].slice(1));
     await st.collection('ods').doc({id: odsf}).get().then(d=>{
         // console.log(odspt1,d)
-        let dt1=d.dt.split('/').join('-');
-     let nd=new Date(dt1).getTime(); // console.log(nd);
+    let dt1=d.dt.split('/').join('-');
+    let nd=new Date(dt1).getTime(); // console.log(nd);
    //  console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1),'|',(fr1<=nd&&to1>=nd));
     // if(((fr1<nd&&to1>nd)&&d.tot)||(d.bulk&&d.tot)){
     if((fr1<=nd&&to1>=nd)){
       //  console.log(d.bulk&&d.tot);odspt1[i][j+1]=d;
         if(d.bulk&&d.tot){
-            let poi=[pt.gst,d.cn,d.id,dt1,d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].toString();
-            p1+=poi;
+        let poi=[pt.gst,d.cn,d.id,dt1,d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].toString();
+        p1+=poi;
         }
     }
     });

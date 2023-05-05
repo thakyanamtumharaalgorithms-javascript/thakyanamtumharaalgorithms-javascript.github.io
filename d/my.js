@@ -386,7 +386,7 @@ for (let t of ty4) {
  document.getElementById('och').value='';
  document.getElementById('dis').value='';
  totqt=[];od={}; zsr={};//ods={};
- ptd={};selg='';pk8='';ptods=[];ptid=0;
+ ptd={};selg='';pk8='';ptods=[];ptid=0;selod5={};
 }
 
 // onload model get Customer Name and gst

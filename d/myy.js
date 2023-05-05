@@ -38,11 +38,11 @@ function delod () {
    let st = new Localbase('st');
    st.collection(selg).doc(r).get().then(doc => {
     od=doc.it;//let odno=selg.slice(-1)+doc.id;
-    an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[];an5.pc={};an5.inv=[];
+    an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[];an5.pc={};an5.inv=[],an5.bulk=0;
     shod11={"p":"1","g":selg,"od":{...an5}};
     sendd(urli,shod11,'del order');
 
-    console.log(an5);
+    // console.log(an5);
     od={};an5={};
 }).then(() => {
   //console.log('hhhhh',shod11.od)
@@ -62,6 +62,8 @@ function delod () {
 
 var pk8;var oldod;
 var instg={Delhi:'ods',Tiruppur:'odt',Kolkata:'odk',PD:'odpd'};
+
+async function editod(tp) {
 let nm={Bio:['Biowash R-neck, 36"-42"','Biowash R-neck, 44"-46"'],
 NBio:['Cotton R-neck, 36"-42"','Cotton R-neck, 44"-46"','Cotton R-neck White, 36"-42"','Cotton R-neck White, 44"-46"'],
 Hood:['Non Zipper Hoodie, S-XL','Non Zipper Hoodie, XXL'],
@@ -69,7 +71,6 @@ OverS:['O/S Drop-shoulder R-neck, S-XXL'],
 Polo:['Polo neck, XS-XL','Polo neck, XXL'],
 Sweat:['Sweatshirt, S-XL','Sweatshirt, XXL'],
 Kids:['Kids R-neck, 20"-34"']}
-async function editod(tp) {
   pk8=tp.id.slice(1);// order id b34
   let cnv=document.getElementById(pk8).tabIndex;
   
