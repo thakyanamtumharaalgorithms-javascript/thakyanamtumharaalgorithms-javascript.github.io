@@ -3,7 +3,6 @@ var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelec
 // get all ods list
 async function getods(gd) {
   try {
-    
  let st = new Localbase('st');
  let allod=await st.collection(gd).get().then(v =>{
   return v.sort((a,b)=>{
@@ -13,17 +12,17 @@ async function getods(gd) {
 
    let hmtl0='';
     for await (const i of allod) {
-          //console.log(i)
+          // console.log(i)
           let ifz='';
-          if(!Number(i.tot)){ifz="delt"};
+          if(!Number(i.tot)){ifz="class='delt'"};
           // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
           let gstr="<span style='padding: 0 1.55em'></span>";
-          let inp="<input onclick='selod(this)' id='od"+i.id+"' name="+'"'+i.cn+'"'+" class='w3-check' type='checkbox'>";
-          let lid='';let exio='';let funex='';
-          if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';} 
+          let inp="<input onclick='selod(this)' id='od"+i.id+"' class='w3-check' type='checkbox'>";
+          let lid="tabindex="+i.pt+" ";let exio='';let funex='';
+          if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';}
           vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
 
-          hmtl0="<li "+lid+" class='w3-display-container "+ifz+"'>"+inp+' '+"<b onclick='goadd("+'"'+i.cn+'",'+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'  "+"for='"+'od'+i.id+"'>"+i.tot+' '+ gstr+' '+i.dt.split('/20')[0]+"</span></li>"+hmtl0;
+          hmtl0="<li id="+i.id+" "+lid+" "+ifz+">"+inp+' '+"<b onclick='goadd("+i.pt+','+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
       }
       document.getElementById('oderli').innerHTML=hmtl0;
   }
@@ -57,6 +56,7 @@ if(localStorage.clickcount){zxc=localStorage.clickcount;}
   if(localStorage.m!=(d.getMonth()+1)){
     // resetd();
     localStorage.clickcount=0;zxc=0;localStorage.m=(d.getMonth()+1);
+    localStorage.fromod=0;
   }
 }
   todaydate();
@@ -64,7 +64,7 @@ if(localStorage.clickcount){zxc=localStorage.clickcount;}
 
 var urli =localStorage.gr5;
 let gststate={01:"JAMMU AND KASHMIR",02:"HIMACHAL PRADESH",03:"PUNJAB",04:"CHANDIGARH",05:"UTTARAKHAND",06:"HARYANA",07:"DELHI",08:"RAJASTHAN",09:"UTTAR PRADESH",10:"BIHAR",11:"SIKKIM",12:"ARUNACHAL PRADESH",13:"NAGALAND",14:"MANIPUR",15:"MIZORAM",16:"TRIPURA",17:"MEGHALAYA",18:"ASSAM",19:"WEST BENGAL",20:"JHARKHAND",21:"ODISHA",22:"CHATTISGARH",23:"MADHYA PRADESH",24:"GUJARAT",26:"DADRA AND NAGAR HAVELI AND DAMAN AND DIU (NEWLY MERGED UT)",27:"MAHARASHTRA",28:"ANDHRA PRADESH(BEFORE DIVISION)",29:"KARNATAKA",30:"GOA",31:"LAKSHADWEEP",32:"KERALA",33:"TAMIL NADU",34:"PUDUCHERRY",35:"ANDAMAN AND NICOBAR ISLANDS",36:"TELANGANA",37:"ANDHRA PRADESH",38:"LADAKH",97:"OTHER TERRITORY",99:"CENTRE JURISDICTION"}
-var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
+var ods1={Bio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Maroon:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},"Mustard Yellow":{36:0,38:0,40:0,42:0,44:0,46:0},Red:{36:0,38:0,40:0,42:0,44:0,46:0},"Bottle Green":{36:0,38:0,40:0,42:0,44:0,46:0},Beige:{36:0,38:0,40:0,42:0,44:0,46:0},"Royal Blue":{36:0,38:0,40:0,42:0,44:0,46:0},Lavender:{36:0,38:0,40:0,42:0,44:0,46:0},Sky:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0}},NBio:{Black:{36:0,38:0,40:0,42:0,44:0,46:0},White:{36:0,38:0,40:0,42:0,44:0,46:0},Navy:{36:0,38:0,40:0,42:0,44:0,46:0},Grey:{36:0,38:0,40:0,42:0,44:0,46:0},Mint:{36:0,38:0,40:0,42:0,44:0,46:0},Charcol:{36:0,38:0,40:0,42:0,44:0,46:0},Olive:{36:0,38:0,40:0,42:0,44:0,46:0}},Polo:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Maroon:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Anthra:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Red:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Charcol:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Royal:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Orange:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Sky Blue":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Flag Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Reliance Green":{XS:0,S:0,M:0,L:0,XL:0,XXL:0},"Golden Yellow":{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},OverS:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Lavender:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Beige:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Hood:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Sweat:{Black:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},White:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Navy:{XS:0,S:0,M:0,L:0,XL:0,XXL:0},Grey:{XS:0,S:0,M:0,L:0,XL:0,XXL:0}},Kids:{Black:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0},White:{20:0,22:0,24:0,26:0,28:0,30:0,32:0,34:0}}};
 
 var pki={"types":[{"type":"Bio","color":["Black","White","Maroon","Navy","Mustard Yellow","Red","Bottle Green","Beige","Royal Blue","Lavender","Sky","Grey"],"size":[36,38,40,42,44,46],"price":155},{"type":"NBio","color":["Black","White","Navy","Grey","Mint","Charcol","Olive"],"size":[36,38,40,42,44,46],"price":105},{"type":"Polo","color":["Black","White","Navy","Grey","Maroon","Anthra","Red","Charcol","Royal","Orange","Sky Blue","Flag Green","Reliance Green","Golden Yellow"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"OverS","color":["Black","White","Lavender","Beige"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Hood","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Sweat","color":["Black","White","Navy","Grey"],"size":["XS","S","M","L","XL","XXL"],"price":190},{"type":"Kids","color":["Black","White"],"size":["20","22","24","26","28","30","32","34"],"price":190}]};
 // console.log(pki.types[0]); // console.log(pki.types[0].type); // console.log(pki.types[0].color[0]); // console.log(pki.types[0].size[0]);
@@ -172,10 +172,10 @@ function bulks() {
     console.log(sum);
       if((sum>bulkpc.sqt)){
         prc=bulkpc;document.getElementById('bulkc').checked=1;
-        zc(sum,bulkpc.sqt,'t0hiiiiiii');
+        // zc(sum,bulkpc.sqt,'t0hiiiiiii');
       }else{
         prc=sampc;document.getElementById('bulkc').checked=0;
-        zc(sum,bulkpc.sqt,'f0hiiiiiii');
+        // zc(sum,bulkpc.sqt,'f0hiiiiiii');
       }
 
    let x1 = document.querySelectorAll(".city");let x11=x1.length;
@@ -253,27 +253,30 @@ for (let d = 0; d < gf1; d++) {
 
 //// Display Total table
 //var kli;
-var pctt;var pcwt;let total;var odprice;let billinv=[];
+var pctt;var pcwt;let total;var odprice;let billinv=[];//let othch;
 function tot(){
-odprice={};
+odprice={};//othch=[];
+billinv=[];
 let dtt=date.slice(0,6);
-let tch=document.getElementById('tch').value;let och=document.getElementById('och').value;
-let dis=document.getElementById('dis').value;
-let dptch='';let dpoch='';
-tch = (tch=='') ? tch=0 : tch=tch; och = (och=='') ? och=0 : och=och;
+let tch = document.getElementById('tch').value;
+let och = document.getElementById('och').value;
+let dis = document.getElementById('dis').value;
+tch = (tch=='') ? tch=0 : tch=tch;
+och = (och=='') ? och=0 : och=och;
+let dptch,dpoch;
 dptch = (tch=='') ? dptch='display:none': dptch='';
 dpoch = (och=='') ? dpoch='display:none': dpoch='';
- // kli=document.getElementById('gst').checked;
+// othch[0]=Number(tch);
+// othch[1]=Number(och);
+// othch[2]=Number(dis);
+// kli=document.getElementById('gst').checked;
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
-let v9 = (pk8) ? pk8.slice(2) : (date1+(Number(localStorage.clickcount)+1));
+let v9 = (pk8) ? pk8 : (date1+(Number(localStorage.clickcount)+1));
+console.log(pk8,v9);
 document.querySelector('#tot table thead th span').innerText='#'+v9;
- //document.getElementById('u33').innerHTML=new Date().toLocaleString().slice(0,-3);
-//  pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
-// let pw=new Date();
-// let dtt2=', '+pw.getHours().toString().padStart(2,"0")+':'+pw.getMinutes().toString().padStart(2,"0");
+
 let dtt2=', '+ new Date().toLocaleTimeString('en', { hour: "2-digit", minute: "2-digit",hour12: true }).replace(' ','');
-//document.getElementById('u33').innerHTML=pw.getDate()+"/"+(pw.getMonth()+1)+"/"+pw.getFullYear()+dtt2;
-//document.getElementById('u33').innerHTML=pw.split(" ")[0]+':'+pw.split(":")[1];//+pw.slice(-2);
+
 document.getElementById('tot').style.display='';
 document.getElementById('odert').style.display='none';
 total=0;pctt=0;pcwt=0;
@@ -380,19 +383,15 @@ let ty4=document.querySelectorAll("#ptd .w3-padding");
 for (let t of ty4) {
   t.innerHTML='_ _ _ _ _ _';
 }
-document.getElementById('pta').value='';
+ document.getElementById('pta').value='';
  document.querySelector("body > div.bar > div.w3-bar.w3-purple > button:nth-child(1)").click();
-document.getElementById('id01').style.display='block';
+ document.getElementById('id01').style.display='block';
  document.getElementById('incn').value='';
  document.getElementById('tch').value='';
  document.getElementById('och').value='';
  document.getElementById('dis').value='';
- document.getElementById('ctp').value='';
- document.getElementById('ctq').value='';
- document.getElementById('chp').value='';
- document.getElementById('chq').value='';
  totqt=[];od={}; zsr={};//ods={};
- ptd={};selg='';
+ ptd={};selg='';pk8='';ptods=[];ptid=0;selod5={};
 }
 
 // onload model get Customer Name and gst
@@ -545,7 +544,7 @@ function newocb() {
  document.getElementById('gstall').innerHTML='';
  newc();
  document.getElementById('in1').checked=true;
- ptods=[];ptid=0;
+ 
  // new date today
  todaydate();
 }
@@ -588,37 +587,6 @@ document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerT
  document.getElementById('odert').innerText="Total-"+rt;
 }
 
-// Download for customer oder .json file
-// function corj() {
-//  //let 'od'+localStorage.clickcount = {};
- 
-// zsr.id = (Number(zxc)+1);
-// zsr.cn = document.getElementById('u13').innerText;
-// zsr.tot = Number(document.getElementById('u23').innerText.split('-')[1]);
-// zsr.gst = document.getElementById('gst').checked;
-// //zsr.dt = document.getElementById('u33').innerText.split(',')[0]; 
-// let d0 = new Date();
-// let ye0 = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d0);
-// let mo0 = new Intl.DateTimeFormat('en', { month: 'short' }).format(d0);
-// let da0 = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d0);
-// zsr.dt=`${da0}/${mo0}/${ye0}`;
-// //zsr.dt=new Date().toLocaleDateString("en-US", {day:'numeric',month:'short',year: 'numeric'});
-// //.split(' ').reverse().join(' ');
-// zsr.it = od; 
-// zsr.tch=Number(document.getElementById('tch').value)
-// zsr.och=Number(document.getElementById('och').value)
-//  // console.log('json:',zsr)
-//  // var obj = {a: 123, b: "4 5 6"};
-// // var data5 = "text/json;charset=utf-8," + encodeURIComponent('od'+(Number(zxc)+1)+'='+JSON.stringify(zsr));
-
-// // let a = document.createElement('a');
-// // a.href = 'data:' + data5;
-// // a.download = 'od'+(Number(zxc)+1)+'.json';
-// // a.innerHTML = 'download JSON';
-// // document.body.appendChild(a);
-// // a.click();a.remove();
-// }
-
 
 // get document by key
 // st.collection('ods').doc('od97').get().then(document => {console.log(document)})
@@ -659,7 +627,7 @@ document.getElementById('cout6').addEventListener("click", function() {
  })
 
 getods(d.name);
-selod5=JSON.parse(pinloc);
+selod5=JSON.parse(pinloc);//console.log(selg,pinloc)
 setTimeout(function(){pint(0,pinloc);selod5={};},350);
 }}
 
@@ -686,11 +654,12 @@ function opodli(b) {
     //console.log(b.getAttribute("for"));
   //  op5= JSON.parse(pinloc);
    // console.log('1',op5)
-    let qwe5=b.getAttribute("for");
-    let od=selg.slice(-1)+qwe5.match(/\d+/g)[0];
+    // let qwe5=b.getAttribute("for");
+    let qwe5=b.parentElement.id;
+    let od=selg.slice(-1)+qwe5;
 
     let st = new Localbase('st');
-    st.collection(selg).doc(qwe5).get().then(doc=> {
+    st.collection(selg).doc('od'+qwe5).get().then(doc=> {
       //  console.log("data:",uio=doc.it)
         //gentblo(doc.it,qwe5);
      clickh+=1;
@@ -810,39 +779,28 @@ function selod(h) {
   async function couttot(xc,gd) {  
   let st = new Localbase('st');
   pd2=structuredClone(ods1);//{...ods1}
-  console.log(pd2);
+  // console.log(pd2);
 let oldm=localStorage.lastreset.split(','); // '304,34' 
+console.log(oldm[0],date1,oldm[1],xc,zxc);
 if (oldm[0]!=date1) {
-  let lr=Number(oldm[1]);
-  for(let v = lr; v <= (lr+500); v++){
+  let lr=Number(oldm[1]);let lr1=500;
+  
+  for(let v = lr; v <= (lr+lr1); v++){
   st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
+    if (doc) {
+    // console.log('1',v);
     lelo(doc.it);
-})}
+    // }else{console.log('0',v);
+  }
+});
+}
 }
 
-for(let v = xc; v <= Number(zxc); v++){  
-st.collection(gd).doc('od'+date1+v).get().then(doc => {
-  lelo(doc.it);
-})
-// .catch(err=> {
-//   console.log(err);
-//     // st.collection(gd).doc('od'+(date1-1)+v).get().then(doc => {
-//     //   lelo(doc.it);
-//     // });
-//   })
-
-
-// st.collection(gd).doc('od'+dit+v).get().then(doc => {
-
-//   doc5=doc.it;
-
-// }).catch(err=> {
-//   dit++;
-// })
-//  .then(response => {
-//   //console.log(doc5)
-//    lelo(doc5);
-//   })
+for(let v1 = xc; v1 <= Number(zxc); v1++){  
+st.collection(gd).doc('od'+date1+v1).get().then(doc => {
+  if (doc) {lelo(doc.it);}
+  // else{console.log('0',v1);
+});
   }
  }
  
@@ -955,28 +913,30 @@ iframe.contentWindow.document.close();
 // pin 
 function pint(v,p) {
   selgo(selg);const aul=document.getElementById('oderli');
-  let od=selg.slice(-1);
+ // let od=selg.slice(-1);//console.log(selod5);
   for (const t in selod5) {
   let px=document.getElementById(t);let pxn=px.parentNode;
-  //console.log(xm,px)
-  db.pt.where('ods').equals(od+t.match(/\d+/g)[0]).each((v)=>{
-    !!v.add||(pxn.style.color='blue');
+  
+  // db.pt.where('ods').equals(od+t.slice(2)).each((v)=>{
+    let pj=pxn.tabIndex;//console.log(t,pj);
+    if (pj>0) {
+  (async()=>{
+  await db.pt.get(pj).then((v)=>{
+    // console.log(t,pj);
+    // if ((v.add!=='')) {pxn.style.color='blue';}
+    // console.log((v.add===''),v.cn);
+    // !!v.add||(pxn.style.color='blue');
+    !(v.add==='')||(pxn.style.color='blue');
     if (v.gst) {
         let zw=pxn.querySelector('span[onclick] span');
         zw.innerText='GST';
         zw.style.padding='';
     }
-  })
-  // db.pt.where('ods').equals(od+t.match(/\d+/g)[0]).each((v)=>{
-  //   if (!!v.gst) {
-  //     pxn.style.color='blue'
-  //   }
-  //   // !!v.add||(pxn.style.color='blue')
-  //  // console.log(t,'fgf')
-  // })
+  });})();}
+
+ // console.log(t,selod5[t],selod5);
   if(t!=selod5[t]){aul.querySelector('#vtag [name='+t+']').innerText=selod5[t];}
-  //document.querySelector().innerText=selod5[t];
-  let lipnode=aul.querySelectorAll('#oderli li'); // current all li node
+  let lipnode=aul.querySelectorAll('#oderli li');
   // let xm=Array.from(px.parentNode.parentNode.children).indexOf(px.parentNode);
    let xm=Array.from(lipnode).indexOf(pxn);
   //moveItem(xm,0);
@@ -993,7 +953,7 @@ function pint(v,p) {
   }
   let mer5 = {...JSON.parse(pinloc), ...selod5};
   selpin(selg)
-  localStorage.setItem(pinz,JSON.stringify(mer5))//JSON.stringify(mer5)//JSON.parse()
+  localStorage.setItem(pinz,JSON.stringify(mer5));
   selod5={};
   let vkz5={ p: "3","g":selg, od:{...mer5}};
   if(v===1){sendd(urli,vkz5,'pin')}

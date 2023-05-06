@@ -36,7 +36,8 @@
         <button id="ghy00" class="w3-button w3-blue w3-bar-item w3-border-right" onclick="newocb()">New</button>
         <!-- <button id="full" class="w3-button w3-teal w3-right" onclick="openFullscreen(this)">Full</button> -->
         <!-- <button id="oder" style="display: none" onclick="oderc(this)" class="w3-button w3-teal w3-left">Bulk</button> -->
-        <button id="ghy99" class="w3-button w3-blue w3-bar-item w3-border-right" onclick="stockm()">Out</button>
+        <button id="ghy99" class="w3-button w3-blue w3-bar-item w3-border-right" onclick="stockm()">
+          <span class="w3-badge w3-red">1</span>Out</button>
         <button id="instb" name="inst" onclick="indb(this)" class="w3-button w3-blue w3-bar-item w3-border-right">In</button>
         <a href="pc.html" class="w3-button w3-blue w3-bar-item w3-border-right">₹</a>
         <a href="rop.html" class='w3-button w3-blue w3-bar-item w3-border-right' onclick=''>Bill</a>
@@ -44,8 +45,6 @@
           <img id='lastodimg' src="data:image/jpeg;base64,/9j/4AAQSkZJRgAB/z">
           <span id='lastodcn' style="color: #000;float: left;width: 100%;font-size: 12px;">dad</span>
         </div>
-        
-        
       </div>
       <div id='p78' class="w3-bar w3-blue" style="display: none">
         <button id='p781' name="ods" class="w3-bar-item w3-button w3-border-right" onclick="indb(this)">Delhi</button>
@@ -99,8 +98,10 @@
           <textarea id="pta" class="w3-input w3-border" oninput="address(this)" placeholder="Delivery Address" rows="4" style="resize:none"></textarea>
           <p>
             <button id="cnm1" onclick="sptd(1)" class="w3-button w3-green">Next</button>
-            <span id="cnm2" onclick="sptd()&&svptd()" class="w3-button w3-green">Save</span> 
-            <span id="cnm3" onclick="gr()" class="w3-button w3-green hide">Close</span> 
+            <span id="cnm2" onclick="sptd()&&svptd()" class="w3-button w3-green">Save</span>
+            <span id="cnm3" onclick="gr()" class="w3-button w3-green hide">Close</span>
+            <span onclick="copylink()" class="w3-button w3-khaki w3-hover-purple" style="margin-left: 2em;">Copy</span>
+            <a id="cnm4" href="#" target="_blank" style="display: none;color:blue;text-decoration: none;margin-left: 5px;">cn</a>
           </p>
         </div>
         <p id="cnm" class="w3-hide"> 
@@ -195,28 +196,47 @@
   <!-- <button id="oder" style="display: none" onclick="oderc(this)" class="w3-button w3-teal w3-left">Bulk</button> -->
   <button id="odert" style="width:80px;" class="w3-col s4 w3-button w3-teal w3-right">Total</button>
 </div>
-  <div class="w3-row">
-    <div class="w3-col s4">
-    <label>₹:</label>
-    <input id="ctp" type="number" placeholder="C Tshirt Price">
-    </div>
-    <div style="display: inline-table;" class="w3-col s4">
-    <input id="ctq" type="number" placeholder="C Tshirt Qt">
-    <label>:Qt</label>
-  </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s4">
-    <label>₹:</label>
-    <input id="chp" type="number" placeholder="C Winter Price">
-     </div>
-  <div style="display: inline-table;" class="w3-col s4">
-    <input id="chq" type="number" placeholder="C Winter Qt">
-    <label>:Qt</label>
-  </div>
-  </div>
-
+  <table id="ctm5" class="w3-table w3-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Qt.</th>
+        <th></th>
+      </tr>
+     </thead>
+    <tbody id="ctm9">
+     <!-- <tr data-p="0Custom Tshirt0">
+       <td>Custom Tshirt</td>
+       <th>0</th>
+       <th>0</th>
+       <td style="width: 10px;" onclick="this.parentElement.remove()"><b class="w3-block w3-button w3-ripple w3-teal">Del</b></td>
+     </tr> -->
+     <tfoot>
+  <td colspan="4" style="text-align: center;">
+  <div id="addtbl0" class="w3-dropdown-click">
+    <b id="addtbl1" class="w3-button w3-circle w3-large w3-ripple w3-teal">+</b>
+  <ul id="addtbl" class="w3-dropdown-content w3-bar-block w3-ul w3-border" style="position:absolute;left: -40px;bottom: 42px;">
+     <li data-p="1Bio0">Biowash R-neck, 36"-42"</li>
+     <li data-p="1Bio1">Biowash R-neck, 44"-46"</li>
+     <li data-p="1NBio0">Cotton R-neck, 36"-42"</li>
+     <li data-p="1NBio1">Cotton R-neck, 44"-46"</li>
+     <li data-p="1OverS0">O/S Drop-shoulder R-neck, S-XXL</li>
+     <li data-p="1Polo0">Polo neck, XS-XL</li>
+     <li data-p="1Polo1">Polo neck, XXL</li>
+     <li data-p="1Sweat0">Sweatshirt, S-XL</li>
+     <li data-p="1Sweat1">Sweatshirt, XXL</li>
+     <li data-p="1Hood0">Non Zipper Hoodie, S-XL</li>
+     <li data-p="1Hood1">Non Zipper Hoodie, XXL</li>
+     <li data-p="1Kids0">Kids R-neck, 20"-34"</li>
+     <li data-p="0Custom Tshirt0">Custom Tshirt</li>
+     <li><input type="text"></li>
+     </ul></div>
+     </td>
+     </tfoot>
+    </tbody>
+   </table>
 
   <!-- <div id='tb'></div> -->
   

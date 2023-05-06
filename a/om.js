@@ -6,45 +6,43 @@
 document.getElementById("btn_convert").addEventListener("click", function () {
   let gd =document.getElementById("gsel").value;
   viewtotal();
-  let odid=Number(date1+(Number(zxc)+1));
-  if (document.getElementById('instock').checked) {
-    saveinst(1);document.getElementById('instock').click();
+  let ctcn=(Number(zxc)+1);
+  let odid=Number(date1+ctcn);
+  let instgh=document.getElementById('instock');
+  if (instgh.checked) {
+    saveinst(1);instgh.click();instgh.checked=0;
   }else {
     // let ptd={id:'a',cn:'',mn1:'',mn2:'',gst:'',add:'',ods:['as102','as33','ak508']};
-
-    //corj();
     zc(ptd,'hiii76868iiii');
     zsr.id = odid;
     zsr.cn = document.getElementById('u13').innerText;
     zsr.tot = Number(total);
     zsr.bulk = Number(document.getElementById('bulkc').checked);
-    // zsr.odno=odno;
-   
     zsr.dt= date.split(' ').join('/');
     zsr.it = od;
     zsr.inv=billinv;
 
-    zsr.tch=Number(document.getElementById('tch').value);
-    zsr.och=Number(document.getElementById('och').value);
-    zsr.dis=Number(document.getElementById('dis').value);
-    let ct=document.getElementById('ctp');
-    let ch=document.getElementById('chp');
-    if(ct.value){
-      zsr.c=[,,,,];
-      zsr.c[0]=Number(ct.value);
-      let ctq=Number(document.getElementById('ctq').value);
-      zsr.c[1]=ctq;
-      zsr.tot=zsr.tot+ctq;
-      zsr.bulk=1;document.getElementById('bulkc').checked=1;
+    zsr.tch=document.getElementById('tch').valueAsNumber;
+    zsr.och=document.getElementById('tch').valueAsNumber;
+    zsr.dis=document.getElementById('tch').valueAsNumber;
+
+   let jkl=document.querySelectorAll('#ctm9 tr');
+    if (jkl.length) {
+      let cods=[];
+      jkl.forEach((v)=>{
+        let pi=(v.innerText).split('\t');let pz1=Number(pi[1].trim());let pz2=Number(pi[2].trim());
+        if (pz2) {
+        cods.push([v.dataset.p,pz1,pz2]);
+        zsr.inv[0]+=(pz1*pz2);
+        zsr.inv[1]+=(pz1*pz2)+((pz1*pz2)*0.05);zsr.tot+=pz2;
+        zsr.bulk=1;document.getElementById('bulkc').checked=1;
+        }
+        v.remove();
+      });
+      zsr.c=cods;
+      console.log(cods);
     }
-    if(ch.value){
-      zsr.c||(zsr.c=[,,,,]);
-      zsr.c[2]=Number(ch.value);
-      let chq= Number(document.getElementById('chq').value);
-      zsr.c[3]=chq;
-      zsr.tot=zsr.tot+chq;
-      zsr.bulk=1;document.getElementById('bulkc').checked=1;
-    }
+
     let shod0={};
       let oldid=ptd.id;
       let odno=gd.slice(-1)+odid; // s30424
@@ -52,7 +50,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       //genlink(genid(ptd.id,3),ptd.cn);
       if(document.getElementById('bulkc').checked){
       ptd.ods.push(odno);
-      (async()=> { 
+      (async()=> {
         await bulkdb.bk.add({...zsr,"pt":ptd});
        })();
     }
@@ -98,12 +96,13 @@ document.getElementById("btn_convert").addEventListener("click", function () {
       useCORS: true
     }).then(function (canvas) {
 
-      let imglastod = JSON.parse(localStorage.imglastod);
+
    //console.log(shod0,'zsr',zsr,'sho',shod1);
      // console.log('hhhhhhhhh '+JSON.stringify(shod0));
-      imglastod['cn'] = shod0.od.id+'.'+shod0.od.cn; imglastod['im5'] = canvas.toDataURL();
-      document.getElementById('lastodimg').src = canvas.toDataURL();
-      document.getElementById('lastodcn').innerHTML = shod0.od.id+'.'+shod0.od.cn;
+     let txtcn=shod0.od.id+'.'+shod0.od.cn;let imgcn=canvas.toDataURL();
+     let imglastod = {};imglastod['cn'] =txtcn; imglastod['im5'] = imgcn;
+      document.getElementById('lastodimg').src = imgcn;
+      document.getElementById('lastodcn').innerHTML = txtcn;
       localStorage.setItem('imglastod', JSON.stringify(imglastod));
       // canvas.toBlob(async (blob) => {
       //   odimgbob=blob;
@@ -115,8 +114,8 @@ document.getElementById("btn_convert").addEventListener("click", function () {
   html33.style.width ='';
   newc();
   // clickCounter();
-  let chj=Number(zxc)+1; localStorage.clickcount=chj; zxc=chj;
-
-  ptods=[];ptid=0;//document.getElementById('gst').checked = 0;
+  console.log(localStorage.clickcount,zxc,odid);
+  localStorage.clickcount=ctcn; zxc=ctcn;
+  ptods=[];ptid=0;
   }
 });

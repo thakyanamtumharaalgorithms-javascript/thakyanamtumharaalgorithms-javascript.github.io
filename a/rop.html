@@ -26,6 +26,7 @@
       </div>
     <div class="w3-bar w3-aqua">
         <button onclick="printbill()" class="w3-bar-item w3-button w3-blue w3-xlarge">Print</button>
+        <a href="exgst.html" class="w3-bar-item w3-button w3-blue w3-xlarge w3-right">Monthly CSV</a>
       </div>
     <ul id="ptdli" class="w3-ul w3-hoverable">
         <li><input class="w3-check" type="checkbox">
@@ -64,8 +65,8 @@ for (let i in j) {
             </li>`;
     htmlli=li0+htmlli;
 });
-} 
-    document.getElementById('ptdli').innerHTML=htmlli;
+}
+  document.getElementById('ptdli').innerHTML=htmlli;
 }
 
 dddd();
@@ -101,7 +102,6 @@ let myWindow = window.open("", "_blank");let body1=myWindow.document.body;
     let tep=pk.body.cloneNode(true);body1.append(tep0,tep);
     myWindow.print();myWindow.close();
   }else{window.frames[0].print();}
-
 
 }else{alert('Select order first!!')}
 selod5={};

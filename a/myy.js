@@ -3,9 +3,9 @@ function resetd() {
 let from=Number(localStorage.fromod);let crrodno=Number(zxc);
  let odcount=1+crrodno-from;let oldm1=localStorage.lastreset.split(','); // '304,34' 
  let oldmc='';
- if(oldm1[0]!=date1){oldmc='\nAnd month-'+oldm1[0]+' from '+oldm1[1];}
+ if(oldm1[0]!=date1){oldmc='\nAnd old month('+oldm1[0]+') from '+oldm1[1];}
  if(odcount){
-    let per1 = prompt("Please enter 'ok' to download from "+from+" to "+zxc+oldmc);
+    let per1 = prompt("Please enter 'ok' to download\nthis month from "+from+" to "+zxc+oldmc);
     if (per1==="ok") {
       // {p:0,g:'odt',od:{}};
       let lastr=date1+','+(1+crrodno);
@@ -38,11 +38,11 @@ function delod () {
    let st = new Localbase('st');
    st.collection(selg).doc(r).get().then(doc => {
     od=doc.it;//let odno=selg.slice(-1)+doc.id;
-    an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[,,,,];an5.pc={};an5.inv=[];
+    an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[];an5.pc={};an5.inv=[],an5.bulk=0;
     shod11={"p":"1","g":selg,"od":{...an5}};
     sendd(urli,shod11,'del order');
 
-    console.log(an5);
+    // console.log(an5);
     od={};an5={};
 }).then(() => {
   //console.log('hhhhh',shod11.od)
@@ -63,12 +63,22 @@ function delod () {
 var pk8;var oldod;
 var instg={Delhi:'ods',Tiruppur:'odt',Kolkata:'odk',PD:'odpd'};
 
-function editod(tp) {
-  pk8=tp.id.split('b')[1];// order id od34
-  let cnv=document.getElementById(pk8).name;
-  db.pt.where('cn').equals(cnv).each((v)=>{ptd=v});
+async function editod(tp) {
+let nm={Bio:['Biowash R-neck, 36"-42"','Biowash R-neck, 44"-46"'],
+NBio:['Cotton R-neck, 36"-42"','Cotton R-neck, 44"-46"','Cotton R-neck White, 36"-42"','Cotton R-neck White, 44"-46"'],
+Hood:['Non Zipper Hoodie, S-XL','Non Zipper Hoodie, XXL'],
+OverS:['O/S Drop-shoulder R-neck, S-XXL'],
+Polo:['Polo neck, XS-XL','Polo neck, XXL'],
+Sweat:['Sweatshirt, S-XL','Sweatshirt, XXL'],
+Kids:['Kids R-neck, 20"-34"']}
+  pk8=tp.id.slice(1);// order id b34
+  let cnv=document.getElementById(pk8).tabIndex;
+  
+  await db.pt.get(cnv).then((v)=>{ptd=v});
+  console.log(ptd,pk8,cnv);
+  // db.pt.where('cn').equals(cnv).each((v)=>{ptd=v});
   let st = new Localbase('st');
-  st.collection(selg).doc(pk8).get().then(doc => {
+  st.collection(selg).doc('od'+pk8).get().then(doc => {
     let ht=doc.cn;
     oldod=doc;
 
@@ -76,14 +86,15 @@ function editod(tp) {
    (oldod.och) ? document.getElementById('och').value=oldod.och :'';
    (oldod.dis) ? document.getElementById('dis').value=oldod.dis :'';
    if(oldod.c){
-    if (oldod.c[0]) {
-    document.getElementById('ctp').value=oldod.c[0];
-    document.getElementById('ctq').value=oldod.c[1];
-    }
-    if (oldod.c[2]) {
-      document.getElementById('chp').value=oldod.c[2];
-      document.getElementById('chq').value=oldod.c[3];
-    }
+    oldod.c.forEach((v)=>{
+     // addtbl(v,pc,qt,d);
+     let p9=v[0].slice(1).slice(0,-1);
+     if (Number(v[0][0])) {
+      addtbl(nm[p9][Number(v[0].slice(-1))],v[1],v[2],v[0]);
+     }else{
+      addtbl(p9,v[1],v[2],v[0]);
+     }
+    })
   }
 
     document.getElementById('frt').innerHTML="<strong>"+ht+"</strong>";
@@ -141,8 +152,8 @@ function updateod() {
  setTimeout(()=>{document.getElementById("instb").click()},100); 
  }else{
 viewtotal();
-var id55=pk8.split('od')[1];
-zsr.id = Number(id55);
+var id55=pk8;
+zsr.id = Number(pk8);
 zsr.cn = document.getElementById('u13').innerText;
 zsr.tot = Number(total);
 zsr.bulk = Number(document.getElementById('bulkc').checked);
@@ -152,34 +163,64 @@ zsr.inv=billinv;
 zsr.tch=Number(document.getElementById('tch').value);
 zsr.och=Number(document.getElementById('och').value);
 zsr.dis=Number(document.getElementById('dis').value);
-let ct=document.getElementById('ctp');
-let ch=document.getElementById('chp');
-if(ct.value){
-  zsr.c=[,,,,];
-  zsr.c[0]=Number(ct.value);
-  let ctq=Number(document.getElementById('ctq').value);
-  zsr.c[1]=ctq;
-  zsr.tot=zsr.tot+ctq;
-  zsr.bulk=1;document.getElementById('bulkc').checked=1;
+// let ct=document.getElementById('ctp');
+// let ch=document.getElementById('chp');
+// if(ct.value){
+//   zsr.c=[,,,,];
+//   zsr.c[0]=Number(ct.value);
+//   let ctq=Number(document.getElementById('ctq').value);
+//   zsr.c[1]=ctq;
+//   zsr.tot=zsr.tot+ctq;
+//   zsr.bulk=1;document.getElementById('bulkc').checked=1;let m=zsr.c[0]*zsr.c[1];
+//   zsr.inv[0]+=m;
+//   zsr.inv[1]+=m+(m*0.05);
+// }
+// if(ch.value){
+//   zsr.c||(zsr.c=[,,,,]);
+//   zsr.c[2]=Number(ch.value);
+//   let chq= Number(document.getElementById('chq').value);
+//   zsr.c[3]=chq;
+//   zsr.tot=zsr.tot+chq;
+//   zsr.bulk=1;document.getElementById('bulkc').checked=1;let m1=zsr.c[2]*zsr.c[3];
+//   zsr.inv[0]+=m1;
+//   zsr.inv[1]+=m1+(m1*0.05);
+// }
+let jkl=document.querySelectorAll('#ctm9 tr');
+if (jkl.length) {
+  let cods=[];
+  jkl.forEach((v)=>{
+    let pi=(v.innerText).split('\t');
+    let pz1=Number(pi[1].trim());let pz2=Number(pi[2].trim());
+    if (pz2) {
+    cods.push([v.dataset.p,pz1,pz2]);
+    zsr.inv[0]+=(pz1*pz2);
+    zsr.inv[1]+=(pz1*pz2)+((pz1*pz2)*0.05);zsr.tot+=pz2;
+    zsr.bulk=1;document.getElementById('bulkc').checked=1;
+    }
+    v.remove();
+  });
+  zsr.c=cods;
+  console.log(cods);
 }
-if(ch.value){
-  zsr.c||(zsr.c=[,,,,]);
-  zsr.c[2]=Number(ch.value);
-  let chq= Number(document.getElementById('chq').value);
-  zsr.c[3]=chq;
-  zsr.tot=zsr.tot+chq;
-  zsr.bulk=1;document.getElementById('bulkc').checked=1;
-}
+zsr.pt=ptd.id;console.log(ptd.id);
+let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
 if(document.getElementById('bulkc').checked){
   ptd.ods.push(selg.slice(-1)+id55);
-  (async()=> { 
+  let uniq=[...new Set(ptd.ods)];
+  ptd.ods=uniq;
+  (async()=> {
     await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
    })();
 }else{
-  let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
-  if(yu!=(-1)){ptd.ods.splice(yu, 1);}
+  // let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+  if(yu!=(-1)){
+    ptd.ods.splice(yu, 1);
+    (async()=> {
+      await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
+     })();
+  }
 }
-(async()=> { 
+(async()=> {
   await db.pt.update(ptd.id, ptd);
  })();
 
@@ -200,7 +241,7 @@ shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}},ptd};
 sendd(urli,shod1,'update order');
 
 let st = new Localbase('st');
-st.collection(selg).doc(pk8).set(shod1.od)
+st.collection(selg).doc('od'+pk8).set(shod1.od)
  .then(response => {
   let html33=document.getElementById("html33");
   html33.style.width='455px';
@@ -541,6 +582,7 @@ document.querySelector('#ptd').addEventListener('click',()=>{
 //get party details from selected in list // fill all detail in inputs
 let ptods=[];let ptid=0; // transfer value from db to new order 
 function getptd(e) {
+  ptods=[];ptid=0;
   let pid=Number(e.target.id);//console.log(pid);
   (async()=> {
     await db.pt.get(pid).then((v) => {
@@ -551,7 +593,7 @@ function getptd(e) {
       document.getElementById('ptm1').value=v.mn2??'';
       
         let k1=document.getElementById('ptg');
-        k1.value=v.gst??'';
+        k1.value=v.gst.trim()??'';
         (k1.value)?k1.dispatchEvent(new Event('input')):document.getElementById('ptst').innerText='State 07BBNPG0866M2Z7';
        
         let k2=document.getElementById('ptp');
@@ -582,7 +624,7 @@ function sptd(v){
   ptd.cn=cn.trim();
   ptd.mn1=mn1;
   ptd.mn2=mn2;
-  ptd.gst=ptg;
+  ptd.gst=ptg.trim().toUpperCase();
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
@@ -645,10 +687,11 @@ function genid(v,i,b='a'){
 }
 //genlink(genid(ptd.id,3),ptd.cn);
 async function genlink(id,cn) {
-  console.log(id);
+  // console.log(id);
+  let url1=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
     document.querySelector('.jkjxxx').addEventListener('click', async () => {
      let cin=document.querySelector('#aa5 textarea');
-     cin.value=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
+     cin.value=url1;
      cin.select();
      cin.setSelectionRange(0, 99999);
      navigator.clipboard.writeText(cin.value);
@@ -656,13 +699,24 @@ async function genlink(id,cn) {
       //   const shareData = {
       //     title: 'Link',
       //     text: cn+', save this link and download all your bills here👇\n',
-      //     url: 'https://www.ownknitted.com/bill#'+id
+      //     url: 'https://.com/'+id
       //   }
       //   await navigator.share(shareData);
 
     });
-  //return url1
+  // return url1
 }
+function copylink(){
+ let cn=document.getElementById('incn').value;
+ let link='https://www.ownknitted.com/bill#'+genid(ptid,3)
+  let url1=cn+', save this link and download all your bills here👇\n\n'+link;
+  let cnb=document.getElementById('cnm4');
+  cnb.href=link;
+  cnb.innerText=cn.slice(0,6)+'...';
+  cnb.style.display='';
+  navigator.clipboard.writeText(url1);
+}
+
 
 // print address
 function printadd() {
@@ -670,12 +724,13 @@ function printadd() {
   let htmladd='<style>a{text-decoration: none;color: black;}body{margin: 0; padding: 0;color: #000; background: #fff;}@media print {#pbr{page-break-after: always;display: block;}}.p2 span {font-weight: 400;}.p1{font-size: 32px!important;font-weight: initial;}.p2{font-size: 22px!important;}.p2 div{font-weight:bold}</style>';
   Object.keys(selod5).forEach(function (v,i) {
       (async()=> { // get party address
-      let od=selg.slice(-1)+v.match(/\d+/g)[0];//'as63'
+      let od=selg.slice(-1)+v.slice(2);//'as63'
       let cadd,radd;
-      let cnv=document.getElementById(v).name;console.log(cnv)
+      let cnv=document.getElementById(v).parentElement.tabIndex;console.log(cnv);
       // db.pt.where('cn').equals(b).each((v)=>{
-      await db.pt.where('cn').equals(cnv).toArray((v)=>{console.log(v)
-      cadd='<h1 class="p1"><b>To </b>- '+v[0].cn+', '+v[0].mn1+', '+v[0].mn2+'<br>'+v[0].add+', '+v[0].pin+'</span></h1>';
+      // await db.pt.where('cn').equals(cnv).toArray((v)=>{
+      await db.pt.get(cnv).then((v)=>{ console.log(v)
+      cadd='<h1 class="p1"><b>To </b>- '+v.cn+', '+v.mn1+', '+v.mn2+'<br>'+v.add+', '+v.pin+'</span></h1>';
       radd='<h1><span class="p2"><div><b>Return address if not delivered</b><br></div><span>Own Knitted, 9336695049</span><br><span>F-120, Shutter wali gali, near Gujjar chowk, Khanpur Delhi, 110062</span></span></h1>';
       });
 let om='<hr style="border-top: 2px dashed #000;padding: 0;margin: 0;">';
@@ -749,11 +804,13 @@ function download(imgurl,imgnm){
       document.getElementById('cnm1').classList.toggle("hide");
     }
     //
-    function goadd(b,z) {
+    async function goadd(b,z) {
+      b=Number(b);
       let od=selg.slice(-1)+b; //'s63'
       ptid=0,ptods={};
       console.log(b,z);
-      db.pt.where('cn').equals(b).each((v)=>{ 
+      // db.pt.where('cn').equals(b).each((v)=>{ 
+        await db.pt.get(b).then((v)=>{
         gr();document.getElementById('id01').scrollTop=0;
         document.getElementById('incn').value=v.cn;
         document.getElementById('ptm').value=v.mn1;
@@ -772,3 +829,28 @@ function download(imgurl,imgnm){
         console.log(v,'b');
       })
     }
+
+function addtbl(v,pc,qt,d) {
+document.getElementById('ctm9').innerHTML+=`<tr data-p="${d}"><td>${v}</td><th>${pc}</th><th>${qt}</th>
+  <td style="width: 10px;" onclick="this.parentElement.remove()"><b class="w3-block w3-button w3-ripple w3-teal">Del</b></td></tr>`;
+} 
+document.querySelector('#addtbl0').addEventListener('click',(e)=>{
+  //console.log(e.currentTarget,e.target);
+  let t=e.target;
+  if (t.matches('li')) {
+    document.querySelector('#addtbl').classList.toggle('w3-show');
+    addtbl(t.innerText,0,0,t.dataset.p);
+  }
+  if (t.id==='addtbl1') {
+    document.querySelector('#addtbl').classList.toggle('w3-show');
+    let pol=document.querySelector('#addtbl li:last-child input');
+    let p0=pol.value;
+    if (p0) {
+      addtbl(p0,0,0,('0'+''+p0+''+'0'));
+      pol.value='';
+    }
+
+  }
+   
+  // e.classList.toggle('w3-show');
+})
