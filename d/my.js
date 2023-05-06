@@ -796,7 +796,7 @@ if (oldm[0]!=date1) {
 }
 }
 
-for(let v1 = 0; v1 <= Number(zxc); v1++){  
+for(let v1 = xc; v1 <= Number(zxc); v1++){  
 st.collection(gd).doc('od'+date1+v1).get().then(doc => {
   if (doc) {lelo(doc.it);}
   // else{console.log('0',v1);
