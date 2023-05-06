@@ -217,62 +217,22 @@ for (let d = 0; d < gf1; d++) {
  } tot();
 }
 
-
-///each oninput table cell
-// function inclick(zx) {
-//  //macin();
-//  console.log(Number(zx.value));
-//  let tbid=zx.parentElement.parentElement.parentElement.parentElement.id;
-//  let xn=Array.from(zx.parentNode.parentNode.children).indexOf(zx.parentNode);
-// let pk1=document.getElementById(tbid).rows;let pk11=pk1.length;
-// var jk=0;
-// for (let i = 2; i < pk11; i++) {
-//    let njh=pk1[i].cells[xn].querySelector('input').value;
-//    let njh1=Number(njh);
-//    jk+=njh1;
-// }
-//  let ihj=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[xn].innerText;
-//  let ihj1=zx.parentElement.parentElement;
-//  let ihj2=document.querySelectorAll("#"+tbid+" > thead > tr.w3-red > th")[0].innerText;
-//  //console.log('kjkj',ihj2,ihj1.querySelector('th').innerText,ihj,zx.value);
-//  let ihjk=Number(zx.value);
-// //  
-//  stork(ihj2,ihj1.querySelector('th').innerText,ihj,ihjk);
-//  //console.log(od);
-// document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerText=jk;
-//  let uy=document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th");let uy1=uy.length;
-//  var rt=0;
-//  for(let u = 1; u < uy1; u++){
-//   let yt12=uy[u].innerText;
-//   let yt3= Number(yt12);
-//   rt+=yt3;
-//   //console.log('gggtttt',rt,yt12);
-//  }//console.log('ffftttt',rt);
-//  document.getElementById('odert').innerText="Total-"+rt;
-// }
-
 //// Display Total table
-//var kli;
-var pctt;var pcwt;let total;var odprice;let billinv=[];//let othch;
+var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
 function tot(){
-odprice={};//othch=[];
-billinv=[];
+odprice={};billinv=[];othch=[];
 let dtt=date.slice(0,6);
-let tch = document.getElementById('tch').value;
-let och = document.getElementById('och').value;
+
+let tch = document.getElementById('tch').valueAsNumber||0;
+let och = document.getElementById('och').valueAsNumber||0;
 let dis = document.getElementById('dis').value;
-tch = (tch=='') ? tch=0 : tch=tch;
-och = (och=='') ? och=0 : och=och;
-let dptch,dpoch;
-dptch = (tch=='') ? dptch='display:none': dptch='';
-dpoch = (och=='') ? dpoch='display:none': dpoch='';
-// othch[0]=Number(tch);
-// othch[1]=Number(och);
-// othch[2]=Number(dis);
-// kli=document.getElementById('gst').checked;
+let dptch = tch ? '': 'display:none';
+let dpoch = och ? '': 'display:none';
+othch=[tch,och,Number(dis)];
+
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
 let v9 = (pk8) ? pk8 : (date1+(Number(localStorage.clickcount)+1));
-console.log(pk8,v9);
+// console.log(pk8,v9);
 document.querySelector('#tot table thead th span').innerText='#'+v9;
 
 let dtt2=', '+ new Date().toLocaleTimeString('en', { hour: "2-digit", minute: "2-digit",hour12: true }).replace(' ','');

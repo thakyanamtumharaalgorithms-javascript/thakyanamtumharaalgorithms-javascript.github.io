@@ -57,7 +57,7 @@ async function dddd() {
 let htmlli='';
 for (let i in j) {
  await st.collection('ods').doc(i).get().then(doc => {
-         console.log(i,doc);
+        //  console.log(i,doc);
            let li0=`<li>
             <input onclick="selod(this)" id="od${doc.id}" class="w3-check" type="checkbox">
             <label for="od${doc.id}">${doc.id}.${doc.cn}</label>
@@ -622,17 +622,22 @@ function savepd2(kk) {
         }
 
         let cttq=0;let cttp=0;
-        if (t[1].c) {
-          if(t[1].c[0]){
-          apnd('c',t[1].c[1],t[1].c[0],0,0,'');
-          cttq+=t[1].c[1];cttp+=(t[1].c[1]*t[1].c[0]);
+        if(t[1].c){
+          t[1].c.forEach((v,i)=>{
+          let p9=v[0].slice(1).slice(0,-1);
+          let p91=(Number(v[0].slice(-1)));
+          if(Number(v[0][0])){
+          console.log(p9,v[2],v[1],0,p91,'');
+          apnd(p9,v[2],v[1],0,p91,'');
+          }else{
+          nm.c[i]=p9;
+          console.log('c',v[2],v[1],0,i,'');
+          apnd('c',v[2],v[1],0,i,'');
           }
-         if(t[1].c[2]){
-          apnd('c',t[1].c[3],t[1].c[2],0,1,'');
-          cttq+=t[1].c[3];
-          cttp+=(t[1].c[2]*t[1].c[3]);
-          }
-        }
+          cttq+=v[2];
+          cttp+=(v[1]*v[2]);
+        });
+       }
         
         let txv=(cttp+pcx-t[1].dis);
         let phx=(txv*0.05);let phxx=(Math.ceil(phx)-phx);
