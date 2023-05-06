@@ -220,9 +220,9 @@ for (let d = 0; d < gf1; d++) {
 //// Display Total table
 var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
 function tot(){
-odprice={};billinv=[];othch=[];
+odprice={};billinv=[];
 let dtt=date.slice(0,6);
-
+othch=[];
 let tch = document.getElementById('tch').valueAsNumber||0;
 let och = document.getElementById('och').valueAsNumber||0;
 let dis = document.getElementById('dis').value;

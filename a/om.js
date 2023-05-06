@@ -22,9 +22,9 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     zsr.it = od;
     zsr.inv=billinv;
 
-    zsr.tch=document.getElementById('tch').valueAsNumber;
-    zsr.och=document.getElementById('tch').valueAsNumber;
-    zsr.dis=document.getElementById('tch').valueAsNumber;
+    zsr.tch=othch[0];
+    zsr.och=othch[1];
+    zsr.dis=othch[2];
 
    let jkl=document.querySelectorAll('#ctm9 tr');
     if (jkl.length) {

@@ -253,19 +253,19 @@ for (let d = 0; d < gf1; d++) {
 
 //// Display Total table
 //var kli;
-var pctt;var pcwt;let total;var odprice;let billinv=[];//let othch;
+var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
 function tot(){
-odprice={};//othch=[];
+odprice={};
 billinv=[];
 let dtt=date.slice(0,6);
 
-let tch=document.getElementById('tch').value;
-let och=document.getElementById('och').value;
-let dis=document.getElementById('dis').value;
-let dptch='';let dpoch='';
-tch = (tch=='') ? tch=0 : tch=tch; och = (och=='') ? och=0 : och=och;
-dptch = (tch=='') ? dptch='display:none': dptch='';
-dpoch = (och=='') ? dpoch='display:none': dpoch='';
+othch=[];
+let tch = document.getElementById('tch').valueAsNumber||0;
+let och = document.getElementById('och').valueAsNumber||0;
+let dis = document.getElementById('dis').value;
+let dptch = tch ? '': 'display:none';
+let dpoch = och ? '': 'display:none';
+othch=[tch,och,Number(dis)];
 // let tch = document.getElementById('tch').value;
 // let och = document.getElementById('och').value;
 // let dis = document.getElementById('dis').value;
