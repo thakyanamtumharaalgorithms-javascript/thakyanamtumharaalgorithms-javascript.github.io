@@ -9,7 +9,7 @@ td {padding: 0!important;width: 60px;}
 td input{text-align: center;}
 
 #alltab{padding: 0.18em 0.5em;margin: 0px 0px;}
-#alltab span div {border-radius: 10px;width: 30px;height: 3px;background-color: white;margin: 6px 0;}
+#alltab span div,#sidebarbutton span div {border-radius: 10px;width: 30px;height: 3px;background-color: white;margin: 6px 0;}
 #alltab span:hover *{background-color:#9C27B0}
 
 :fullscreen{background-color: #ffffff;}
