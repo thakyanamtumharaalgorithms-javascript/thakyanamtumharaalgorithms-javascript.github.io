@@ -1,6 +1,6 @@
 async function erradd(id,t,obj,er) { 
   let da={"id":id,"type":t,"p":obj.p,"data":obj,"err":er};
-  console.log(da);
+  // console.log(da);
   await erdb.err.put(da,da.id);
  }
 
@@ -42,7 +42,9 @@ async function sendd(urld,d9,b) {
 
       if(localStorage.gr5!='hi2'){
       console.log(b+' sendd failed '+JSON.stringify(d9)+' '+error);
-      alert(b+' sendd failed '+JSON.stringify(d9)+' '+error+'\nTake a screenshot for Onkar');}
+      console.log(d9);
+      // alert(b+' sendd failed '+JSON.stringify(d9)+' '+error+'\nTake a screenshot for Onkar');
+    }
 
     });
 }

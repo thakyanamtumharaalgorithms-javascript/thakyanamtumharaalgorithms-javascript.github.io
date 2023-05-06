@@ -511,6 +511,7 @@ selod5={};
     bdoc.body.style.margin='0';
 
     function bill(c,t){
+      nm.c=[];
         let pt=t[0];let p=t[1];
         bdoc.body.innerHTML+=`<div id='${'b'+c}' class='pbreak' style='margin: 0;padding: 0;font-family: sans-serif;'></div>`;
         bdoc.querySelector('#b'+c).appendChild(document.querySelector('#tembill #b0 div').cloneNode(true));
@@ -622,17 +623,22 @@ function savepd2(kk) {
         }
 
         let cttq=0;let cttp=0;
-        if (t[1].c) {
-          if(t[1].c[0]){
-          apnd('c',t[1].c[1],t[1].c[0],0,0,'');
-          cttq+=t[1].c[1];cttp+=(t[1].c[1]*t[1].c[0]);
+        if(t[1].c){
+          t[1].c.forEach((v,i)=>{
+          let p9=v[0].slice(1).slice(0,-1);
+          let p91=(Number(v[0].slice(-1)));
+          if(Number(v[0][0])){
+          console.log(p9,v[2],v[1],0,p91,'');
+          apnd(p9,v[2],v[1],0,p91,'');
+          }else{
+          nm.c[i]=p9;
+          console.log('c',v[2],v[1],0,i,'');
+          apnd('c',v[2],v[1],0,i,'');
           }
-         if(t[1].c[2]){
-          apnd('c',t[1].c[3],t[1].c[2],0,1,'');
-          cttq+=t[1].c[3];
-          cttp+=(t[1].c[2]*t[1].c[3]);
-          }
-        }
+          cttq+=v[2];
+          cttp+=(v[1]*v[2]);
+        });
+       }
         
         let txv=(cttp+pcx-t[1].dis);
         let phx=(txv*0.05);let phxx=(Math.ceil(phx)-phx);
@@ -682,7 +688,7 @@ OverS:['O/S Drop-shoulder R-neck, S-XXL'],
 Polo:['Polo neck, XS-XL','Polo neck, XXL'],
 Sweat:['Sweatshirt, S-XL','Sweatshirt, XXL'],
 Kids:['Kids R-neck, 20"-34"'],
-c:['Custom T-shirts','Custom Winter Wears']}
+c:[]}
 
 let gststate={01:"Jammu And Kashmir",02:"Himachal Pradesh",03:"Punjab",04:"Chandigarh",05:"Uttarakhand",06:"Haryana",07:"Delhi",08:"Rajasthan",09:"Uttar Pradesh",10:"Bihar",11:"Sikkim",12:"Arunachal Pradesh",13:"Nagaland",14:"Manipur",15:"Mizoram",16:"Tripura",17:"Meghalaya",18:"Assam",19:"West Bengal",20:"Jharkhand",21:"Odisha",22:"Chattisgarh",23:"Madhya Pradesh",24:"Gujarat",26:"Dadra And Nagar Haveli And Daman And Diu",27:"Maharashtra",28:"Andhra Pradesh(old)",29:"Karnataka",30:"Goa",31:"Lakshadweep",32:"Kerala",33:"Tamil Nadu",34:"Puducherry",35:"Andaman And Nicobar Islands",36:"Telangana",37:"Andhra Pradesh",38:"Ladakh",97:"Other Territory",99:"Centre Jurisdiction"}
 </script>

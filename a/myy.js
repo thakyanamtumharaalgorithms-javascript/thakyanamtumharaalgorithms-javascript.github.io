@@ -81,10 +81,9 @@ Kids:['Kids R-neck, 20"-34"']}
   st.collection(selg).doc('od'+pk8).get().then(doc => {
     let ht=doc.cn;
     oldod=doc;
-
-   (oldod.tch) ? document.getElementById('tch').value=oldod.tch :'';
-   (oldod.och) ? document.getElementById('och').value=oldod.och :'';
-   (oldod.dis) ? document.getElementById('dis').value=oldod.dis :'';
+    oldod.tch&&(document.getElementById('tch').value = oldod.tch || '');
+    oldod.och&&(document.getElementById('och').value = oldod.och || '');
+    oldod.dis&&(document.getElementById('dis').value = oldod.dis || '');
    if(oldod.c){
     oldod.c.forEach((v)=>{
      // addtbl(v,pc,qt,d);
@@ -160,9 +159,9 @@ zsr.bulk = Number(document.getElementById('bulkc').checked);
 zsr.dt = oldod.dt;
 zsr.it = od;
 zsr.inv=billinv;
-zsr.tch=Number(document.getElementById('tch').value);
-zsr.och=Number(document.getElementById('och').value);
-zsr.dis=Number(document.getElementById('dis').value);
+zsr.tch=othch[0];
+zsr.och=othch[1];
+zsr.dis=othch[2];
 // let ct=document.getElementById('ctp');
 // let ch=document.getElementById('chp');
 // if(ct.value){

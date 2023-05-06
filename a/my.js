@@ -216,7 +216,6 @@ for (let d = 0; d < gf1; d++) {
   } //console.log("gghgh",fhall);
  } tot();
 }
-
 //// Display Total table
 var pctt;var pcwt;let total;var odprice;let billinv=[];let othch;
 function tot(){
@@ -229,7 +228,7 @@ let dis = document.getElementById('dis').value;
 let dptch = tch ? '': 'display:none';
 let dpoch = och ? '': 'display:none';
 othch=[tch,och,Number(dis)];
-
+// alert(othch);
 document.getElementById('u13').innerText=document.getElementById('frt').innerText;
 let v9 = (pk8) ? pk8 : (date1+(Number(localStorage.clickcount)+1));
 // console.log(pk8,v9);
