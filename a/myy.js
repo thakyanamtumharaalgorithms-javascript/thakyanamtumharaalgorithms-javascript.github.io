@@ -36,24 +36,26 @@ async function delod() {
   if (confirm(text) == true) {
     await mthdb(selg.slice(-1)+odno.slice(0,3));
     await oddb.od.get(Number(odno)).then((doc)=>{
+      console.log(odno,doc);
     // od=doc.it;//let odno=selg.slice(-1)+doc.id;
     an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[];an5.pc={};an5.inv=[],an5.bulk=0;
     shod11={"p":"1","g":selg,"od":{...an5}};
-    sendd(urli,shod11,'del order');
+     sendd(urli,shod11,'del order');
     // console.log(an5);
 }).then(async() => {
   //console.log('hhhhh',shod11.od)
+  let yu;
    await db.pt.get(shod11.od.pt).then((v)=>{
-    let yu=v.ods.indexOf(selg.slice(-1)+odno);
+    yu=v.ods.indexOf(selg.slice(-1)+odno);
     if (yu>(-1)) {v.ods.splice(yu, 1);}
     ptc=v;
-    console.log(ptc,yu);
   })
+  console.log('ptc'+JSON.stringify(ptc),'yu'+yu,'shod11'+JSON.stringify(shod11));
   await db.pt.put(ptc,Number(shod11.od.pt));
   await bulkdb.bk.delete(shod11.od.id);
-  await oddb.od.put(shod11.od,Number(odno)).then(response => {
+  await oddb.od.put(shod11.od,Number(odno)).then(() => {
     selod5={};
-    document.querySelector('[name='+selg+']').click();
+    indb({name:selg});
   })
   .catch(error => {
     alert('error in del update fn-', error);
