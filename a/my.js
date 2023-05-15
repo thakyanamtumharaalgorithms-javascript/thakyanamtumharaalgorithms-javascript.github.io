@@ -385,6 +385,7 @@ for (let q = 1; q < ty11; q++) {
  document.getElementById('tch').value='';
  document.getElementById('och').value='';
  document.getElementById('dis').value='';
+ selg='';
 }
 
 function newc2(){
@@ -404,7 +405,7 @@ function newc2(){
 function newc1(){
   for (let u in selod5) {document.getElementById(u).checked=false;}
   totqt=[];od={}; zsr={};
-  ptd={};selg='';pk8=0;ptods=[];ptid=0;selod5={};
+  ptd={};pk8=0;ptods=[];ptid=0;selod5={};
 }
 
 // onload model get Customer Name and gst
