@@ -3,8 +3,6 @@
 <title>ROP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="om.css">
-<!-- <script src="vue.js"></script> -->
-<script src="localbase.min.js"></script>
 <script src="dexie.min.js"></script>
 <style>
 .content {max-width: 500px;margin: auto;/* background: #b0e0e6; */}
@@ -38,7 +36,11 @@
 <script>
 let zzz=(s,o=document)=>o.querySelectorAll(s),zz=(s,o=document)=>o.querySelector(s),zc=console.log.bind(document);
 let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
-
+let oddb;
+async function mthdb(m) {
+oddb = new Dexie(m);
+oddb.version(1).stores({od: "id,dt,bulk"}); 
+}
 let selg='ods';
 
 let selod5={};
@@ -49,18 +51,25 @@ function selod(h) {
 }
 
 // onload get all(50) recent order
-let st = new Localbase('st');
+// let st = new Localbase('st');
+
 let j=JSON.parse(localStorage.pin);
 
 async function dddd() {
-let htmlli='';
+let htmlli='';let vb='';
 for (let i in j) {
- await st.collection('ods').doc(i).get().then(doc => {
+  let pf=i.slice(2,6);
+  console.log(pf,i);
+  if (vb!=pf) {
+    vb=pf;
+    await mthdb(pf);
+  }
+ await oddb.od.get(Number(i.slice(3))).then(doc => {
         //  console.log(i,doc);
            let li0=`<li>
-            <input onclick="selod(this)" id="od${doc.id}" class="w3-check" type="checkbox">
-            <label for="od${doc.id}">${doc.id}.${doc.cn}</label>
-            <label for="od${doc.id}">${doc.tot} .... ${doc.dt.slice(0,6)}</label>
+            <input onclick="selod(this)" id="ods${doc.id}" class="w3-check" type="checkbox">
+            <label for="ods${doc.id}">${doc.id}.${doc.cn}</label>
+            <label for="ods${doc.id}">${doc.tot} .... ${doc.dt.slice(0,6)}</label>
             </li>`;
     htmlli=li0+htmlli;
 });
@@ -72,10 +81,13 @@ dddd();
 async function getcd(b) { // b(order no.)='od12'
  let d=new Array();
 //get customer details by order no./bill no.
-let od=selg.slice(-1)+b.slice(2); //'as12'=a+s+12
+let jkl0=b.slice(3);
+let od=selg.slice(-1)+jkl0; //'as12'=a+s+12
+console.log(jkl0,od,b);
 await db.pt.where(selg).equals(od).each((v)=>{ d[0]=v;});
 //get order details
-d[1]=await st.collection(selg).doc(b).get();
+await mthdb(b.slice(2,6));
+d[1]=await oddb.od.get(Number(jkl0));
     return d
 }
 

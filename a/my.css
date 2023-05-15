@@ -1,5 +1,5 @@
-@charset "UTF-8"; :root {--bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"; --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)); --bs-body-font-family: var(--bs-font-sans-serif); --bs-body-font-size: 1rem; --bs-body-font-weight: 400; --bs-body-line-height: 1.5; --bs-body-color: #212529; --bs-body-bg: #fff } 
-body { margin: 0; font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); line-height: var(--bs-body-line-height); color: var(--bs-body-color); text-align: var(--bs-body-text-align); background-color: var(--bs-body-bg); -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent }
+@charset "UTF-8"; :root {--bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";--bs-body-font-family: var(--bs-font-sans-serif);} 
+body {margin: 0;font-family: var(--bs-body-font-family);-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: transparent;}
 
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {-webkit-appearance: none;margin: 0;}
 
@@ -131,7 +131,8 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
   user-select: none;
 }
 #oderli li span[onclick="opodli(this)"]:active{color:white;background: #0005;}
-#oderli li{position: relative;font-weight: 600;}
+#oderli li{position: relative;font-weight: 600;border-bottom: 0.5px solid black;}
+#oderli>li{background: #ffeb3b;}
 #oderli span[onclick="opodli(this)"] span {
   display: inline-block;
   padding-left: 8px;
@@ -158,13 +159,12 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
   width: 60px;
   height: 40px;
   overflow: hidden;
-  background: #caca;
 }
 #lastodimg{
   width: 60px;
-  height: 900vh;
-  opacity: 0.3;
-  margin: -75px 0 0 -60px;
+  opacity: 0.2;
+  margin: -4px -18px 0 -60px;
+  -webkit-user-select: none;
 }
 #tot table thead th span {float: left;background: #00000015;padding: 0 4px;font-size: 12px;font-weight: 400;}
 
@@ -175,3 +175,6 @@ ul#plist li,ul#m1list li {padding: 5px 8px;color: #fff;background:#483d8b}
 }
 #ctm5 th {text-align: center;}
 #ctm9 td {width: auto;text-align: center;font-size: 12px;}
+#sync li{padding: 0;}
+
+/* #snackbar {display: none;min-width: 190px;margin-left: -110px;background: #616161;color: #fff;text-align: center;border-radius: 10px;padding: 8px;position: fixed;z-index: 5;left: 50%;bottom: 30px;font-size: 17px;} */

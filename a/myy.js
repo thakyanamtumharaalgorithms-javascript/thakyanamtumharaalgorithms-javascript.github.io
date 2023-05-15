@@ -25,31 +25,36 @@ let from=Number(localStorage.fromod);let crrodno=Number(zxc);
 }else{alert("No data to download ")}
 }
 
-
-function delod () {
+async function delod() {
   let an5={};let shod11={};
- if(Object.entries(selod5)[0]){
-  let r=Object.keys(selod5)[Object.keys(selod5).length-1];
-  let text = "Want to delete? order No."+r.split('od')[1];
-  console.log('hdhjd',selg)
+  let latsel=Object.keys(selod5);
+ if(latsel.length){
+  let r=latsel.pop();
+  let odno=r.slice(3);
+  let text = "Want to delete? order No."+odno;
+  console.log('hdhjd',selg);
   if (confirm(text) == true) {
-
-  // let r=Object.keys(selod5)[Object.keys(selod5).length-1];
-   let st = new Localbase('st');
-   st.collection(selg).doc(r).get().then(doc => {
+    await mthdb(selg.slice(-1)+odno.slice(0,3));
+    await oddb.od.get(Number(odno)).then((doc)=>{
     od=doc.it;//let odno=selg.slice(-1)+doc.id;
     an5=doc;an5.tot=0;an5.it={};an5.tch=0;an5.och=0;an5.dis=0;an5.c=[];an5.pc={};an5.inv=[],an5.bulk=0;
     shod11={"p":"1","g":selg,"od":{...an5}};
     sendd(urli,shod11,'del order');
-
     // console.log(an5);
     od={};an5={};
-}).then(() => {
+}).then(async() => {
   //console.log('hhhhh',shod11.od)
-  (async()=> { 
-    await bulkdb.bk.delete(shod11.od.id)
-   })();
- st.collection(selg).doc(r).update(shod11.od).then(response => {
+  let ptc=await db.pt.get(shod11.od.pt).then((v)=>{
+    let yu=v.ods.indexOf(selg.slice(-1)+odno);
+    if (yu>(-1)) {
+      v.ods.splice(yu, 1);
+     return v
+    }
+    console.log(v.ods,yu);
+  })
+  await db.pt.put(ptc,Number(shod11.od.pt));
+  await bulkdb.bk.delete(shod11.od.id);
+  await oddb.od.put(shod11.od,Number(odno)).then(response => {
     selod5={};
     document.querySelector('[name='+selg+']').click();
   })
@@ -71,14 +76,16 @@ OverS:['O/S Drop-shoulder R-neck, S-XXL'],
 Polo:['Polo neck, XS-XL','Polo neck, XXL'],
 Sweat:['Sweatshirt, S-XL','Sweatshirt, XXL'],
 Kids:['Kids R-neck, 20"-34"']}
-  pk8=tp.id.slice(1);// order id b34
-  let cnv=document.getElementById(pk8).tabIndex;
+  pk8=Number(tp.id.slice(1));// order id b34
+  let cnv=document.getElementById('s'+pk8).tabIndex;
   
   await db.pt.get(cnv).then((v)=>{ptd=v});
   console.log(ptd,pk8,cnv);
   // db.pt.where('cn').equals(cnv).each((v)=>{ptd=v});
-  let st = new Localbase('st');
-  st.collection(selg).doc('od'+pk8).get().then(doc => {
+  // let st = new Localbase('st');
+  // st.collection(selg).doc('od'+pk8).get().then(doc => {
+    await mthdb(selg.slice(-1)+String(pk8).slice(0,3));
+    await oddb.od.get(pk8).then((doc)=>{
     let ht=doc.cn;
     oldod=doc;
     oldod.tch&&(document.getElementById('tch').value = oldod.tch || '');
@@ -144,15 +151,13 @@ let event = new Event('input', {'bubbles': true,'cancelable': true});
 v.dispatchEvent(event);
 }}
 
-function updateod() {
- // console.log(pk8,od);//var po5;
- if (selg=='inst') {
-  viewtotal();saveinst(0);
- setTimeout(()=>{document.getElementById("instb").click()},100); 
- }else{
+async function updateod() {
+//  if (selg=='inst') {
+//   viewtotal();saveinst(0);
+//  setTimeout(()=>{document.getElementById("instb").click()},100); 
+//  }else{
 viewtotal();
-var id55=pk8;
-zsr.id = Number(pk8);
+zsr.id = pk8;
 zsr.cn = document.getElementById('u13').innerText;
 zsr.tot = Number(total);
 zsr.bulk = Number(document.getElementById('bulkc').checked);
@@ -162,28 +167,6 @@ zsr.inv=billinv;
 zsr.tch=othch[0];
 zsr.och=othch[1];
 zsr.dis=othch[2];
-// let ct=document.getElementById('ctp');
-// let ch=document.getElementById('chp');
-// if(ct.value){
-//   zsr.c=[,,,,];
-//   zsr.c[0]=Number(ct.value);
-//   let ctq=Number(document.getElementById('ctq').value);
-//   zsr.c[1]=ctq;
-//   zsr.tot=zsr.tot+ctq;
-//   zsr.bulk=1;document.getElementById('bulkc').checked=1;let m=zsr.c[0]*zsr.c[1];
-//   zsr.inv[0]+=m;
-//   zsr.inv[1]+=m+(m*0.05);
-// }
-// if(ch.value){
-//   zsr.c||(zsr.c=[,,,,]);
-//   zsr.c[2]=Number(ch.value);
-//   let chq= Number(document.getElementById('chq').value);
-//   zsr.c[3]=chq;
-//   zsr.tot=zsr.tot+chq;
-//   zsr.bulk=1;document.getElementById('bulkc').checked=1;let m1=zsr.c[2]*zsr.c[3];
-//   zsr.inv[0]+=m1;
-//   zsr.inv[1]+=m1+(m1*0.05);
-// }
 let jkl=document.querySelectorAll('#ctm9 tr');
 if (jkl.length) {
   let cods=[];
@@ -202,9 +185,9 @@ if (jkl.length) {
   console.log(cods);
 }
 zsr.pt=ptd.id;console.log(ptd.id);
-let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
+let yu=ptd.ods.indexOf(selg.slice(-1)+pk8);
 if(document.getElementById('bulkc').checked){
-  ptd.ods.push(selg.slice(-1)+id55);
+  ptd.ods.push(selg.slice(-1)+pk8);
   let uniq=[...new Set(ptd.ods)];
   ptd.ods=uniq;
   (async()=> {
@@ -212,7 +195,7 @@ if(document.getElementById('bulkc').checked){
    })();
 }else{
   // let yu=ptd.ods.indexOf(selg.slice(-1)+id55);
-  if(yu!=(-1)){
+  if(yu>(-1)){
     ptd.ods.splice(yu, 1);
     (async()=> {
       await bulkdb.bk.put({...zsr,"pt":ptd},zsr.id);
@@ -231,7 +214,7 @@ if(!(selg==gsel)){
    selod5={};selod5[pk8]=pk8;unpin(1);selod5={}; // order id pk8=od34
    //document.querySelector("#oderli #"+pk8).parentElement.remove();
    shod1={"p":"4","g":selg,"gl":gsel,"od":{...zsr, "pc":{...odprice}}};
-  await moveod(selg,gsel,'od'+id55);
+  await moveod(selg,gsel,'ods'+pk8);
 })();
 }
 
@@ -239,8 +222,10 @@ if(!(selg==gsel)){
 shod1={"p":"1","g":gsel,"od":{...zsr, "pc":{...odprice}},ptd};
 sendd(urli,shod1,'update order');
 
-let st = new Localbase('st');
-st.collection(selg).doc('od'+pk8).set(shod1.od)
+// let st = new Localbase('st');
+// st.collection(selg).doc('od'+pk8).set(shod1.od)
+await mthdb(selg.slice(-1)+String(pk8).slice(0,3));
+await oddb.od.put(shod1.od,pk8)
  .then(response => {
   let html33=document.getElementById("html33");
   html33.style.width='455px';
@@ -249,41 +234,45 @@ st.collection(selg).doc('od'+pk8).set(shod1.od)
                 allowTaint: true,
                 useCORS: true
             }).then(function (canvas) {
-            let imglastod=JSON.parse(localStorage.imglastod);
+            
             //console.log('zsr',zsr,'sho',shod1);
-            imglastod['cn']=shod1.od.id+'.'+shod1.od.cn;imglastod['im5']=canvas.toDataURL();
-            document.getElementById('lastodimg').src=canvas.toDataURL();
-            document.getElementById('lastodcn').innerHTML=shod1.od.id+'.'+shod1.od.cn;
+            let imglastod={};
+            let txtcn=shod1.od.id+' '+shod1.od.cn;let imgcn=canvas.toDataURL();
+            imglastod['cn']=txtcn;imglastod['im5']=imgcn;
+            document.getElementById('lastodimg').src=imgcn;
+            document.getElementById('lastodcn').innerHTML=txtcn;
+            tt5=imglastod;
             localStorage.setItem('imglastod',JSON.stringify(imglastod));
-            // canvas.toBlob(async (blob) => {
-              // odimgbob=blob;
-              // console.log(blob);
-              // await navigator.clipboard.write([new ClipboardItem({ "image/png": blob})])
-              // .then(function () { console.log('copied');})
-              // .catch(function (error) { console.log(error); });
-              // });
             });
             html33.style.width='';
        newc();
 document.getElementById('btn_convert').style.display='';
 document.getElementById('upd5').style.display='none';
-document.getElementById("p781").click();
+  }).then((v) => {
+    document.getElementById("p781").click();
   })
   .catch(error => {
     console.log('error in update od1 fn- ', error);
     alert('error in update od1 fn- ', error);
    
   })
-}}
+}
 
 //{p:4,g:'odt',gl:'odk',od:{id:34,first:"Jake",phone:"312-000-1212", last:"Newperson"}}; // move order from odt to odk
 //moveod('odk','odpd','od82');
+// add pin details(unpin and pin)
 async function moveod(gf,gt,idf) {
-let st = new Localbase('st');
+// let st = new Localbase('st');
+let idfs=String(idf).slice(0,3)
+await mthdb(gf.slice(-1)+idfs);
 let docft={};
- await st.collection(gf).doc(idf).get().then(doc => {docft=doc;});
- await st.collection(gf).doc(idf).delete();
- await st.collection(gt).doc(idf).set(docft);
+//  await st.collection(gf).doc(idf).get().then(doc => {docft=doc;});
+await oddb.od.get().then((v)=> docft=v);
+//  await st.collection(gf).doc(idf).delete();
+await oddb.od.delete(Number(idf));
+// await st.collection(gt).doc(idf).set(docft);
+await mthdb(gt.slice(-1)+idfs);
+await oddb.od.put(docft,idf);
 }
 
 // document.getElementById('alltab').onclick=function() {
@@ -307,14 +296,18 @@ function saveinst(v) {
    pkx.dt = date.split(' ').join('/');
    pkx.it = od;
    (async () => {
-     let st = new Localbase('st');
+    //  let st = new Localbase('st');
+    
      if (v===0) {
       pkx.id=oldod.id;
-     } else {
-      await st.collection('inst').get().then((e) => e.length).then((id) => pkx.id=Number(date1+(id+1)));
-     }
-     console.log('incv',v);
-     await st.collection('inst').add(pkx, 'od'+pkx.id);
+     } 
+    // else {
+    //   // await st.collection('inst').get().then((e) => e.length)
+    //   // await indb.inst.get().then((v)=>{console.log(v);});
+    //   // .then((id) => pkx.id=Number(date1+(id+1)));
+    //  }
+    //  console.log('incv',v);
+     await instdb.inst.put(pkx);
      await sendd(urli, { "p": "5", "g": "inst", "od": { ...pkx }},'in stock');
    })();
   newc();
@@ -440,7 +433,7 @@ function inmn(v) {
     let lihtml="";
     await db.pt.where('mn1').startsWith(v).limit(10).each(pv => { console.log('n',pv);
       lihtml+="<li id='"+pv.id+"'>"+pv.cn+', '+pv.mn1+', '+pv.mn2+"</li>";
-    }); 
+    });
     p1.innerHTML=lihtml;
     console.log('End');
   })();
@@ -578,6 +571,7 @@ document.querySelector('#ptd').addEventListener('click',()=>{
   document.getElementById('m1list').innerHTML='';
 })
 
+// sptd()&&svptd()
 //get party details from selected in list // fill all detail in inputs
 let ptods=[];let ptid=0; // transfer value from db to new order 
 function getptd(e) {
@@ -586,7 +580,15 @@ function getptd(e) {
   (async()=> {
     await db.pt.get(pid).then((v) => {
       console.log(v);
-      document.getElementById('incn').value=v.cn.trim();
+      let cop=document.getElementById('cnm5');
+      if (v.ods.length) {
+        cop.style.display='';
+      } else {
+        cop.style.display='none';
+        document.getElementById('cnm4').style.display='none';
+      }
+     
+      document.getElementById('incn').value=v.cn.replace(/\s+/g, ' ').trim();
       document.getElementById('ptm').value=v.mn1;
       
       document.getElementById('ptm1').value=v.mn2??'';
@@ -620,15 +622,15 @@ function sptd(v){
   let pinc=document.getElementById('ptp').value;
   let pta=document.getElementById('pta').value;
   let ptg=document.getElementById('ptg').value;
-  ptd.cn=cn.trim();
+  ptd.cn=cn.replace(/\s+/g, ' ').trim();
   ptd.mn1=mn1;
   ptd.mn2=mn2;
-  ptd.gst=ptg.trim().toUpperCase();
+  ptd.gst=ptg.replace(/\s+/g, ' ').trim().toUpperCase();
   ptd.pin=pinc;
   ptd.add=pta;
  // if(selg&&cid[1]&&(v!=1)){
-  if(ptd.add&&cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='';}
-  else if(cid&&(v!=1)){document.getElementById('od'+cid).parentNode.style.color='#00f';}
+  if(ptd.add&&cid&&(v!=1)){document.getElementById('ods'+cid).parentNode.style.color='';}
+  else if(cid&&(v!=1)){document.getElementById('ods'+cid).parentNode.style.color='#00f';}
  // ptd.ods.push(Number(localStorage.clickcount)+Number(ptcounter()));
  let vn = (ptg) ? (true && document.getElementById('q000')): true;
 
@@ -656,6 +658,8 @@ function svptd() {
   sendd(urli,{ "p": "10", "g": 'ptds', "od": {},ptd},'Party Details ');
   selg||newocb();selg&&gr();
   ptods=[];ptid=0;
+  for (let u in selod5) {document.getElementById(u).checked=false;}
+  newc2();
 }
 
 // party counter
@@ -685,37 +689,55 @@ function genid(v,i,b='a'){
   return p5
 }
 //genlink(genid(ptd.id,3),ptd.cn);
-async function genlink(id,cn) {
-  // console.log(id);
-  let url1=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
-    document.querySelector('.jkjxxx').addEventListener('click', async () => {
-     let cin=document.querySelector('#aa5 textarea');
-     cin.value=url1;
-     cin.select();
-     cin.setSelectionRange(0, 99999);
-     navigator.clipboard.writeText(cin.value);
+// async function genlink(id,cn) {
+//   // console.log(id);
+//   let url1=cn+', save this link and download all your bills here👇\n\n'+'https://www.ownknitted.com/bill#'+id;
+//     document.querySelector('.jkjxxx').addEventListener('click', async () => {
+//      let cin=document.querySelector('#aa5 textarea');
+//      cin.value=url1;
+//      cin.select();
+//      cin.setSelectionRange(0, 99999);
+//      navigator.clipboard.writeText(cin.value);
 
-      //   const shareData = {
-      //     title: 'Link',
-      //     text: cn+', save this link and download all your bills here👇\n',
-      //     url: 'https://.com/'+id
-      //   }
-      //   await navigator.share(shareData);
+//       //   const shareData = {
+//       //     title: 'Link',
+//       //     text: cn+', save this link and download all your bills here👇\n',
+//       //     url: 'https://.com/'+id
+//       //   }
+//       //   await navigator.share(shareData);
 
-    });
-  // return url1
-}
+//     });
+//   // return url1
+// }
+
+
 function copylink(){
  let cn=document.getElementById('incn').value;
- let link='https://www.ownknitted.com/bill#'+genid(ptid,3)
+ let link='https://www.ownknitted.com/bill#'+genid(ptid,3);
   let url1=cn+', save this link and download all your bills here👇\n\n'+link;
   let cnb=document.getElementById('cnm4');
-  cnb.href=link;
-  cnb.innerText=cn.slice(0,6)+'...';
-  cnb.style.display='';
-  navigator.clipboard.writeText(url1);
+  if (cn) {
+    cnb.href=link;
+    cnb.innerText=cn.slice(0,6)+'...';
+    cnb.style.display='';
+    navigator.clipboard.writeText(url1);
+  }else{
+    cn='No data';
+  }
+  snackbar(cn+' copied',500);
+    newc2();
 }
 
+function copylink1(v){
+  let p= document.getElementById(v);
+  let p1=p.tabIndex;
+  let cn=p.querySelector('b').innerText.match(/[^\d+.].+/g)[0].trim();
+  // console.log(p1,cn);
+  let link='https://www.ownknitted.com/bill#'+genid(p1,3);
+  let url1=cn+', save this link and download all your bills here👇\n\n'+link;
+  navigator.clipboard.writeText(url1);
+  snackbar(cn+' copied',500);
+}
 
 // print address
 function printadd() {
@@ -723,12 +745,13 @@ function printadd() {
   let htmladd='<style>a{text-decoration: none;color: black;}body{margin: 0; padding: 0;color: #000; background: #fff;}@media print {#pbr{page-break-after: always;display: block;}}.p2 span {font-weight: 400;}.p1{font-size: 32px!important;font-weight: initial;}.p2{font-size: 22px!important;}.p2 div{font-weight:bold}</style>';
   Object.keys(selod5).forEach(function (v,i) {
       (async()=> { // get party address
-      let od=selg.slice(-1)+v.slice(2);//'as63'
+      // let od=selg.slice(-1)+v.slice(2);//'as63'
       let cadd,radd;
       let cnv=document.getElementById(v).parentElement.tabIndex;console.log(cnv);
       // db.pt.where('cn').equals(b).each((v)=>{
       // await db.pt.where('cn').equals(cnv).toArray((v)=>{
-      await db.pt.get(cnv).then((v)=>{ console.log(v)
+      await db.pt.get(cnv).then((v)=>{
+      console.log(v);
       cadd='<h1 class="p1"><b>To </b>- '+v.cn+', '+v.mn1+', '+v.mn2+'<br>'+v.add+', '+v.pin+'</span></h1>';
       radd='<h1><span class="p2"><div><b>Return address if not delivered</b><br></div><span>Own Knitted, 9336695049</span><br><span>F-120, Shutter wali gali, near Gujjar chowk, Khanpur Delhi, 110062</span></span></h1>';
       });
@@ -738,7 +761,7 @@ let om='<hr style="border-top: 2px dashed #000;padding: 0;margin: 0;">';
       }
       htmladd+=cadd+radd+om;
   })();
-  for (const t in selod5) {document.getElementById(t).checked=false;}
+  document.querySelector('#'+secid+' #'+v).checked=false;
   })
   selod5={};
   setTimeout(() => {
@@ -747,11 +770,11 @@ let om='<hr style="border-top: 2px dashed #000;padding: 0;margin: 0;">';
     body1.innerHTML+=htmladd;//body.setAttribute('onclick','print()');
     myWindow.print();
     // myWindow.close();
-  }, 100);
+  }, 150);
   }else{
     alert('Select order first');
   }
-} 
+}
 // function download(link,name) {
 // let iframe = document.createElement("iframe");
 // iframe.style.display = 'none';
@@ -801,31 +824,33 @@ function download(imgurl,imgnm){
      // document.getElementById('tre6').classList.toggle("hide");//display none
       document.getElementById('cnm3').classList.toggle("hide");
       document.getElementById('cnm1').classList.toggle("hide");
+      document.querySelector("#gstall > div.w3-blue-gray").style.display='flex';
     }
     //
     async function goadd(b,z) {
       b=Number(b);
-      let od=selg.slice(-1)+b; //'s63'
       ptid=0,ptods={};
       console.log(b,z);
       // db.pt.where('cn').equals(b).each((v)=>{ 
         await db.pt.get(b).then((v)=>{
-        gr();document.getElementById('id01').scrollTop=0;
-        document.getElementById('incn').value=v.cn;
-        document.getElementById('ptm').value=v.mn1;
-        document.getElementById('ptm1').value=v.mn2??'';
-        
-          let k1=document.getElementById('ptg');
-          k1.value=v.gst??'';
-          (k1.value)?k1.dispatchEvent(new Event('input')):document.getElementById('ptst').innerText='State 07BBNPG0866M2Z7';
-         
-          let k2=document.getElementById('ptp');
-          k2.value=v.pin??'';
-          (k2.value)?k2.dispatchEvent(new Event('input')):document.getElementById('ptplace').innerText='State, District';
-  
-        document.getElementById('pta').value=v.add??'';
-        ptods=v.ods;ptid=v.id;cid=z;
-        console.log(v,'b');
+          if (v) {
+            gr();document.getElementById('id01').scrollTop=0;
+            document.querySelector("#gstall > div.w3-blue-gray").style.display='none';
+            document.getElementById('incn').value=v.cn;
+            document.getElementById('ptm').value=v.mn1;
+            document.getElementById('ptm1').value=v.mn2??'';
+              let k1=document.getElementById('ptg');
+              k1.value=v.gst??'';
+              (k1.value)?k1.dispatchEvent(new Event('input')):document.getElementById('ptst').innerText='State 07BBNPG0866M2Z7';
+              let k2=document.getElementById('ptp');
+              k2.value=v.pin??'';
+              (k2.value)?k2.dispatchEvent(new Event('input')):document.getElementById('ptplace').innerText='State, District';
+            document.getElementById('pta').value=v.add??'';
+            ptods=v.ods;ptid=v.id;cid=z;
+            console.log(v,'b');
+          }else{
+            alert('Party details not found');
+          }
       })
     }
 
@@ -848,8 +873,115 @@ document.querySelector('#addtbl0').addEventListener('click',(e)=>{
       addtbl(p0,0,0,('0'+''+p0+''+'0'));
       pol.value='';
     }
-
   }
-   
   // e.classList.toggle('w3-show');
 })
+
+async function syncdata(){
+  newc2();
+  w3_close();
+  let pkj=document.getElementById('gstall');
+  pkj.style.display='';
+  document.getElementById('bnm7').style.display='none';
+  document.getElementById('p78').style.display='none';
+  let li='';
+  
+  await erdb.err.each(async(v)=>{
+    let cn='';
+    if ((v.p=='0')||(v.p=='1')) {
+      cn='<div class="w3-bar-item" style="color:blue">'+v.data.od.cn+'</div>';
+    }else if(v.p=='10'){
+      cn='<div class="w3-bar-item" style="color:blue">'+v.data.ptd.cn+'</div>';
+    }
+    li+=`<li id="z${v.id}"><div class="w3-bar w3-border w3-light-grey">
+    <div class="w3-bar-item w3-green w3-left">${v.id}</div>
+    ${cn}
+    <div class="w3-bar-item w3-right">${v.type}</div>
+    </div></li>`;
+    // console.log(v.id,v.type,v.data.od.cn);
+  });
+  pkj.innerHTML="<div id='tre6'><br><a onclick='syncdata1()' class='w3-button w3-red' style='display: block;'>Sync</a><br><ul id='sync' class='w3-ul w3-hoverable'>"+li+"</ul><br></div>";
+}
+let errid=0;
+async function syncdata1(){
+  
+  await erdb.err.each(async(v)=>{
+switch(v.p) {
+  case '0':
+  case '1':
+    errid=v.id;
+    await sendd(urli,v.data,v.type);
+    document.getElementById('z'+v.id).remove();
+  break;
+
+  case '2':
+  case '4':
+  case '5':
+    errid=v.id;
+    await sendd(urli,v.data,v.type);
+    document.getElementById('z'+v.id).remove();
+  break;
+
+  case '3': // take current pin data
+  errid=v.id;
+  selgo(v.data.g);
+  v.data.od=JSON.parse(pinloc);
+  await sendd(urli,v.data,v.type);
+  document.getElementById('z'+v.id).remove();
+  break;
+
+  case '10': // take current ptd data
+  await db.pt.get(v.id).then(async(doc)=>{
+    v.data.ptd=doc;
+    errid=v.id;
+    await sendd(urli,v.data,v.type);
+    document.getElementById('z'+v.id).remove();
+  })
+  
+  break;
+
+  default:
+    
+  break;
+}});
+}
+
+// scroll
+function dismth() {
+  window.indexedDB.databases().then((e)=>{
+    let b=[];
+    e.forEach((v,i)=>{
+         if (String(v.name).match(/\w\d{3}/g)) {
+          let x=(2+v.name.slice(1));let moth=Number(x[2]+x[3])-1;
+          let mth=new Date('20'+x[0]+x[1],moth).toLocaleDateString('en-GB', {
+            month : 'short',
+            year : 'numeric'
+            });
+          b[i]=`<ul id="${v.name}" class="w3-border w3-ul"><li onclick="getmth('${v.name}','${mth}')" class="w3-block w3-blue-gray w3-button">${mth}</li></ul>`;
+         }
+    });
+    // console.log(b);
+    document.getElementById('oderli').innerHTML+=b.reverse().join('');
+  });
+}
+
+async function getmth(b,m){
+ let po0=document.querySelector('#'+b+' li').nextSibling;
+ for (let u in selod5) {document.getElementById(u).checked=false;}selod5={};
+
+  if (!po0) {
+    // console.log('0',po0);
+    await mthdb(b);
+    let z=await oddb.od.toArray();
+    await appdli(z,b);
+  }else{
+    document.getElementById(b).innerHTML=`<li onclick="getmth('${b}','${m}')" class="w3-block w3-blue-gray w3-button">${m}</li>`;
+    // console.log('1',po0);
+  }
+}
+
+if (localStorage.gr5=='555') {
+document.getElementById('cnm5').style.display='none';
+}
+
+

@@ -1,9 +1,14 @@
+let oddb;
+async function mthdb(m) {
+oddb = new Dexie(m);
+oddb.version(1).stores({od: "id,dt,bulk"}); 
+}
 let posList = ["01-Jammu & Kashmir", "02-Himachal Pradesh", "03-Punjab", "04-Chandigarh", "05-Uttarakhand", "06-Haryana", "07-Delhi", "08-Rajasthan", "09-Uttar Pradesh", "10-Bihar", "11-Sikkim", "12-Arunachal Pradesh", "13-Nagaland", "14-Manipur", "15-Mizoram", "16-Tripura", "17-Meghalaya", "18-Assam", "19-West Bengal", "20-Jharkhand", "21-Odisha", "22-Chhattisgarh", "23-Madhya Pradesh", "24-Gujarat", "25-Daman & Diu", "26-Dadra & Nagar Haveli", "27-Maharashtra", "29-Karnataka", "30-Goa", "31-Lakshdweep", "32-Kerala", "33-Tamil Nadu", "34-Pondicherry", "35-Andaman & Nicobar Islands", "36-Telangana", "37-Andhra Pradesh","38-Ladakh", "97-Other Territory"];
 let stat={"01":"Jammu and Kashmir","02":"Himachal Pradesh","03":"Punjab","04":"Chandigarh","05":"Uttarakhand","06":"Haryana","07":"Delhi","08":"Rajasthan","09":"Uttar Pradesh","10":"Bihar","11":"Sikkim","12":"Arunachal Pradesh","13":"Nagaland","14":"Manipur","15":"Mizoram","16":"Tripura","17":"Meghalaya","18":"Assam","19":"West Bengal","20":"Jharkhand","21":"Odisha","22":"Chhattisgarh","23":"Madhya Pradesh","24":"Gujarat","25":"Daman and Diu","26":"Dadra and Nagar Haveli and Daman and Diu","27":"Maharashtra","29":"Karnataka","30":"Goa","31":"Lakshadweep","32":"Kerala","33":"Tamil Nadu","34":"Pondicherry","35":"Andaman and Nicobar Islands","36":"Telangana","37":"Andhra Pradesh","38":"Ladakh","97":"Other Territory"};
-let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
-let st = new Localbase('st');
+let db = new Dexie("party");db.version(1).stores({pt: "id,cn,mn1,mn2,*ods"});
 let fr9=document.getElementById('frm5');
-let to9=document.getElementById('to5');fr9.valueAsDate=new Date(new Date()-(1000*60*60*24*20));to9.valueAsDate = new Date();
+let to9=document.getElementById('to5');
+fr9.valueAsDate=new Date(new Date()-(1000*60*60*24*20));to9.valueAsDate = new Date();
 console.log(fr9.valueAsNumber,fr9.valueAsDate);
 
 let pbar1=document.getElementById('myBar1');
@@ -40,16 +45,19 @@ console.log(new Date(fr1),'||',new Date(to1),'||',new Date("02/May/2023"));
     odspt1[i][0]=pt;
     let gsts=pt.gst.slice(0,2);
     let pfgh=[...new Set(odspt[i].ods)];//console.log(pfgh);
-for(let j = 0; j < pfgh.length; j++){
+    let vb='';
+    for(let j = 0; j < pfgh.length; j++){
+    let odsf1=pfgh[j].slice(0,4);
     let odsf=Number(pfgh[j].slice(1));
-    await st.collection('ods').doc({id: odsf}).get().then(d=>{
-        // console.log(odspt1,d)
-    let dt1=d.dt.split('/').join('-');
-    let nd=new Date(dt1).getTime(); // console.log(nd);
-   //  console.log(new Date(fr1),'|',new Date(d.dt),'|',new Date(to1),'|',(fr1<=nd&&to1>=nd));
-    // if(((fr1<nd&&to1>nd)&&d.tot)||(d.bulk&&d.tot)){
-    if((fr1<=nd&&to1>=nd)){
-      //  console.log(d.bulk&&d.tot);odspt1[i][j+1]=d;
+        if (vb!=odsf1) {
+            vb=odsf1;
+            await mthdb(odsf1);
+        }
+        await oddb.od.get(odsf).then((d)=>{
+            console.log(odsf,d);
+        let dt1=d.dt.split('/').join('-');
+        let nd=new Date(dt1).getTime(); // console.log(nd);
+        if((fr1<=nd&&to1>=nd)){
         if(d.bulk&&d.tot){
         let poi=[pt.gst,d.cn,d.id,dt1,d.inv[1].toFixed(1),(gsts+'-'+stat[gsts]),"N","","Regular B2B","","5.0",d.inv[0].toFixed(1),"0.0\r\n"].toString();
         p1+=poi;

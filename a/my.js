@@ -3,36 +3,78 @@ var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelec
 // get all ods list
 async function getods(gd) {
   try {
- let st = new Localbase('st');
- let allod=await st.collection(gd).get().then(v =>{
-  return v.sort((a,b)=>{
-      return a.id - b.id;
-      });
-  })
+  // await mthdb(gd.slice(-1)+date1);
+  // let allod=await oddb.od.toArray((v)=>{
+  // return v.sort((a,b)=>{
+  //     return a.id - b.id;
+  //     });
+  // });
 
-   let hmtl0='';
-    for await (const i of allod) {
-          // console.log(i)
-          let ifz='';
-          if(!Number(i.tot)){ifz="class='delt'"};
-          // if(i.gst){ gstr="<span>GST</span>"}else{ gstr="<span style='padding: 0 1.55em'></span>"};
-          let gstr="<span style='padding: 0 1.55em'></span>";
-          let inp="<input onclick='selod(this)' id='od"+i.id+"' class='w3-check' type='checkbox'>";
-          let lid="tabindex="+i.pt+" ";let exio='';let funex='';
-          if (gd == 'inst') {lid='data-gd='+i.cn;exio='Export CSV';funex="onclick='expt(this)'";inp='';}
-          vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
-
-          hmtl0="<li id="+i.id+" "+lid+" "+ifz+">"+inp+' '+"<b onclick='goadd("+i.pt+','+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
-      }
-      document.getElementById('oderli').innerHTML=hmtl0;
+  // await appdli(allod);
+  selgo(gd);
+  let j=JSON.parse(pinloc);let vb='';
+let hmtl0='';
+for (let k in j) {
+  let pf=k.slice(2,6);
+  // console.log(pf,k);
+  if (vb!=pf) {vb=pf;await mthdb(pf);}
+   await oddb.od.get(Number(k.slice(3))).then(i => {
+    let ifz='';
+      if(!(i.tot)){ifz="class='delt'"};
+      let gstr="<span style='padding: 0 1.55em'></span>";
+      let inp="<input onclick='selod(this)' id='ods"+i.id+"' class='w3-check' type='checkbox'>";
+      let vtag="<span id='vtag' ><span name="+'ods'+i.id+">"+"</span></span>";
+      hmtl0="<li id=s"+i.id+" "+"tabindex="+i.pt+" "+ifz+">"+inp+' '+"<b onclick='goadd("+i.pt+','+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
+   });
+}
+document.getElementById('oderli').innerHTML=hmtl0;
+dismth();
   }
   catch(error) {
     console.log('error in getods() fn-', error);
     alert('error in getods() fn-', error);
   }
 }
-let db = new Dexie("party");db.version(2).stores({pt: "id,cn,mn1,mn2,*ods"});
+async function appdli(v,s){
+let hmtl0='';
+for await (const i of v) {
+      // console.log(i)
+      let ifz='';
+      if(!(i.tot)){ifz="class='delt'"};
+      let gstr="<span style='padding: 0 1.55em'></span>";
+      let inp="<input onclick='selod(this)' id='ods"+i.id+"' class='w3-check' type='checkbox'>";
+      let vtag="<span id='vtag' ><span name="+'ods'+i.id+">"+"</span></span>";
+      hmtl0="<li id=s"+i.id+" "+"tabindex="+i.pt+" "+ifz+">"+inp+' '+"<b onclick='goadd("+i.pt+','+i.id+")'>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
+  }
+  document.querySelector('#'+s).innerHTML+=hmtl0;
+}
+async function getinst() {
+  newc2();
+  w3_close();
+  let pkj=document.getElementById('gstall');
+  pkj.style.display='';
+  pkj.innerHTML="<div id='tre6'><br><ul id='oderli' class='w3-ul w3-hoverable w3-border'></ul><br></div>";
+  document.getElementById('bnm7').style.display='none';
+  document.getElementById('p78').style.display='none';
+  selg='inst';
+  let allod=await instdb.inst.toArray((v)=>{
+  return v.sort((a,b)=>{
+      return a.id - b.id;
+      });
+  });
+   let hmtl0='';
+    for await (const i of allod) {
+          // console.log(i)
+          let gstr="<span style='padding: 0 1.55em'></span>";
+           let lid='data-gd='+i.cn;let exio='Export CSV';let funex="onclick='expt(this)'";
+          vtag="<span id='vtag' "+funex+"><span name="+'od'+i.id+">"+exio+"</span></span>";
+          hmtl0="<li id=s"+i.id+" "+lid+" >"+' '+"<b>"+i.id+'. '+i.cn+'</b>'+vtag+"<span onclick='opodli(this)'>"+i.tot+' '+ gstr+' '+i.dt.slice(0,6)+"</span></li>"+hmtl0;
+      }
+      document.getElementById('oderli').innerHTML=hmtl0;
+  }
+let db = new Dexie("party");db.version(1).stores({pt: "id,cn,mn1,mn2,*ods"});
 let erdb = new Dexie("erro");erdb.version(1).stores({err: "id"});
+let instdb = new Dexie("inst");instdb.version(1).stores({inst: "++id"});
 let bulkdb = new Dexie("bulk");bulkdb.version(1).stores({bk: "id"});
 var selod5={};var zsr={};let selg;let odimgbob;
 //var om=document.getElementById("tb").innerHTML;
@@ -59,8 +101,12 @@ if(localStorage.clickcount){zxc=localStorage.clickcount;}
     localStorage.fromod=0;
   }
 }
-  todaydate();
-  
+todaydate();
+let oddb;
+async function mthdb(m) {
+oddb = new Dexie(m);
+oddb.version(1).stores({od: "id,dt,bulk"}); 
+}
 
 var urli =localStorage.gr5;
 let gststate={01:"JAMMU AND KASHMIR",02:"HIMACHAL PRADESH",03:"PUNJAB",04:"CHANDIGARH",05:"UTTARAKHAND",06:"HARYANA",07:"DELHI",08:"RAJASTHAN",09:"UTTAR PRADESH",10:"BIHAR",11:"SIKKIM",12:"ARUNACHAL PRADESH",13:"NAGALAND",14:"MANIPUR",15:"MIZORAM",16:"TRIPURA",17:"MEGHALAYA",18:"ASSAM",19:"WEST BENGAL",20:"JHARKHAND",21:"ODISHA",22:"CHATTISGARH",23:"MADHYA PRADESH",24:"GUJARAT",26:"DADRA AND NAGAR HAVELI AND DAMAN AND DIU (NEWLY MERGED UT)",27:"MAHARASHTRA",28:"ANDHRA PRADESH(BEFORE DIVISION)",29:"KARNATAKA",30:"GOA",31:"LAKSHADWEEP",32:"KERALA",33:"TAMIL NADU",34:"PUDUCHERRY",35:"ANDAMAN AND NICOBAR ISLANDS",36:"TELANGANA",37:"ANDHRA PRADESH",38:"LADAKH",97:"OTHER TERRITORY",99:"CENTRE JURISDICTION"}
@@ -321,7 +367,6 @@ document.querySelector('#tot table tbody').innerHTML=sd0+pctt0+pctt1+pctt2+pctt3
 
 // create new, clear old input 
 function newc(){
-  document.querySelector('#gall input').checked;
   document.getElementById('bulkc').checked = 0;
  let hjk=document.querySelectorAll('.city table td input');
 for (let t of hjk) {
@@ -332,25 +377,34 @@ let ty1=document.querySelectorAll(".city thead > tr.w3-blue-grey>th");let ty11=t
 for (let q = 1; q < ty11; q++) {
     let av=ty1[q];
  if(av.innerText!='Total'){av.innerText='';}
-} 
-
- let ty3=document.querySelectorAll("#ptd input");
- for (let t of ty3) {
-  if(t.value){t.value=''}
 }
-let ty4=document.querySelectorAll("#ptd .w3-padding");
-for (let t of ty4) {
-  t.innerHTML='_ _ _ _ _ _';
-}
- document.getElementById('pta').value='';
+  newc2();
  document.querySelector("body > div.bar > div.w3-bar.w3-purple > button:nth-child(1)").click();
  document.getElementById('id01').style.display='block';
  document.getElementById('incn').value='';
  document.getElementById('tch').value='';
  document.getElementById('och').value='';
  document.getElementById('dis').value='';
- totqt=[];od={}; zsr={};//ods={};
- ptd={};selg='';pk8='';ptods=[];ptid=0;selod5={};
+}
+
+function newc2(){
+  document.querySelector('#gall input').checked;
+  let ty3=document.querySelectorAll("#ptd input");
+  for (let t of ty3) {
+   if(t.value){t.value=''}
+ }
+ let ty4=document.querySelectorAll("#ptd .w3-padding");
+ for (let t of ty4) {
+   t.innerHTML='';
+ }
+ document.getElementById('pta').value='';
+ newc1();
+}
+
+function newc1(){
+  for (let u in selod5) {document.getElementById(u).checked=false;}
+  totqt=[];od={}; zsr={};
+  ptd={};selg='';pk8=0;ptods=[];ptid=0;selod5={};
 }
 
 // onload model get Customer Name and gst
@@ -379,7 +433,7 @@ function gonext() {
 
 
 // Print
-function omprint() {
+async function omprint() {
  // document.title+=zxc+',';
  // window.print();
 if(Object.keys(selod5).length){
@@ -393,16 +447,24 @@ document.getElementById('uyt4').innerHTML='';
   // winbody.addEventListener("click", () => {setTimeout(() => {
   //   myW.close();
   // }, 500); });
-let st = new Localbase('st');
+// let st = new Localbase('st');
+let vb='';
 for (const p in selod5) {
-st.collection(selg).doc(p).get().then(doc => {
+let p0=p.slice(2,6);
+if(vb!=p0){
+  vb=p0;
+  await mthdb(p0);
+}
+  
+// st.collection(selg).doc(p).get().then(doc => {
  // console.log(doc);
+ await oddb.od.get(Number(p.slice(3))).then((doc)=>{
 odtbl2(doc.it,'tblom1','uyt4',p,doc);
       tyu5=document.getElementById('uyt4').innerHTML;
       winbody.innerHTML+=tyu5;
-      document.getElementById(p).checked=false;
+      document.querySelector('#'+secid+' #'+p).checked=false;
      //my56
-});  selod5={};
+});  
    }
 
  // table gen for oder
@@ -479,8 +541,7 @@ Object.keys(jk).forEach(function(t) {
 });
 }// End table gen for oder
 
- for (let u in selod5) {document.getElementById(u).checked=false;}
- selod5={};
+ selod5={};secid='';
 }else{alert('Select order first')}
 }
 
@@ -546,37 +607,28 @@ document.querySelectorAll("#"+tbid+" > thead > tr.w3-blue-grey > th")[xn].innerT
  document.getElementById('odert').innerText="Total-"+rt;
 }
 
-
-// get document by key
-// st.collection('ods').doc('od97').get().then(document => {console.log(document)})
-
-// update document by key
-//st.collection('ods').doc('mykey-1').update({name: 'William'})
-
-// delete a document by key
-//st.collection('ods').doc('mykey-1').delete()
-
-function stockm() {
+async function stockm() {
  document.getElementById('p78').style.display='block'
  document.getElementById('bnm7').style.display='none';
- setTimeout(function () {document.getElementById('p781').click()}, 100);
+ newc2();
+ await indb({"name":'ods'});
+ setTimeout(()=>{
+  document.getElementById('i88').innerHTML="<style>#ghy99,#p781{color: #fff!important; background-color: #000!important;}</style>";
+ },10);
+//  setTimeout(function () {document.getElementById('p781').click()}, 100);
  //document.getElementById('p781').click()
 }
 
-function indb(d) {
+async function indb(d) {
+  newc2();
 selg=d.name;
 document.getElementById('gstall').style.display='block';
 selgo(selg);
-if (selg=='inst') {
-  document.getElementById('gstall').innerHTML="<div id='tre6'><ul id='oderli' class='w3-ul w3-hoverable'></ul></div>";
-  getods(d.name);
-  document.getElementById('bnm7').style.display='none';
-  document.getElementById('p78').style.display='none';
-}else{
-document.getElementById('gstall').innerHTML="<div class='w3-blue-gray' style='display:flex'><div class='w3-bar-item w3-button w3-border-right' onclick='delod()'>Del</div><div id='cout6' class='w3-bar-item w3-button w3-border-right'>Total</div><div onclick='resetd()' class='w3-bar-item w3-button w3-border-right'>Reset</div><button class='w3-button w3-bar-item w3-border-right' onclick='omprint()'>Print</button>"+"<div id='st91' class='w3-dropdown-hover'> <button class='w3-button w3-border-right'>Status</button><div id='st92' class='w3-hide w3-bar-block w3-border'> <a href='#' onclick='unpin()' class='w3-bar-item w3-button'>None</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Payment Pending</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Under Production</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Printing</a><a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Part Quantity</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Pending</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>In Transit</a> <input onchange='chnot(1,this)' id='inp5' name='od84' class='w3-border w3-bar-item' type='text' style='padding:5px;display:none' placeholder='Write other...'></div></div>"+"<button onclick='printadd()' class='w3-button'>DTDC</button>"+"</div>"+"<div id='tre6'><ul id='oderli' class='w3-ul w3-hoverable'></ul></div>";
+
+document.getElementById('gstall').innerHTML="<div class='w3-blue-gray' style='display:flex;position: sticky;top: -50px;z-index: 6;'><div class='w3-bar-item w3-button w3-border-right' onclick='delod()'>Del</div><div id='cout6' class='w3-bar-item w3-button w3-border-right'>Total</div><div onclick='resetd()' class='w3-bar-item w3-button w3-border-right'>Reset</div><button class='w3-button w3-bar-item w3-border-right' onclick='omprint()'>Print</button>"+"<div id='st91' class='w3-dropdown-hover'> <button class='w3-button w3-border-right'>Status</button><div id='st92' class='w3-hide w3-bar-block w3-border'> <a href='#' onclick='unpin()' class='w3-bar-item w3-button'>None</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Payment Pending</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Under Production</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Printing</a><a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Part Quantity</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>Pending</a> <a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>In Transit</a><a href='#' onclick='chnot(0,this)' class='w3-bar-item w3-button'>COD</a> <input onchange='chnot(1,this)' id='inp5' name='od84' class='w3-border w3-bar-item' type='text' style='padding:5px;display:none' placeholder='Write other...'></div></div>"+"<button onclick='printadd()' class='w3-button'>DTDC</button>"+"</div>"+"<div id='tre6'><ul id='oderli' class='w3-ul'></ul></div>";
 // status toggle
 document.getElementById('st91').addEventListener('click', (v) => {
-  document.getElementById('st92').classList.toggle('w3-show'); 
+document.getElementById('st92').classList.toggle('w3-show'); 
 })
 // count total
 document.getElementById('cout6').addEventListener("click", function() {
@@ -585,72 +637,61 @@ document.getElementById('cout6').addEventListener("click", function() {
   else{alert("No data to count total ")}
  })
 
-getods(d.name);
-selod5=JSON.parse(pinloc);//console.log(selg,pinloc)
-setTimeout(function(){pint(0,pinloc);selod5={};},350);
-}}
+await getods(selg).then((v) => {
+  selod5=JSON.parse(pinloc);//console.log(selg,pinloc)
+  setTimeout(function(){pint(0);selod5={};},100);
+})
 
-function chnot(b,v) {
-  //alert(v.value)// set pin sms
-  if(Object.keys(selod5).length){
-    var lastsel=Object.keys(selod5)[Object.keys(selod5).length-1];
-  selpin(selg);selgo(selg);pint(1)
-  ///op5[v.name]=v.value;
-  //b==='1' ?  op5[lastsel]=v.value :  op5[lastsel]=v.innerText;
-  op5= JSON.parse(pinloc);
-  if (b===1) {
-    op5[lastsel]=v.value;
-    document.querySelector('#vtag [name='+lastsel+']').innerHTML=v.value;
+}
+
+
+
+// function chnot(b,v) {
+//   let sel=Object.keys(selod5);
+//   if(sel.length){
+//     let lastsel=sel[sel.length-1];
+//   selpin(selg);selgo(selg);//pint(1);
+//   op5= JSON.parse(pinloc);
+//   if (b===1) {
+//     op5[lastsel]=v.value;
+//     document.querySelector('#vtag [name='+lastsel+']').innerHTML=v.value;
+//   }else{
+//     op5[lastsel]=v.innerText;
+//     document.querySelector('#vtag [name='+lastsel+']').innerText=v.innerText;
+//   }
+//   localStorage.setItem(pinz,JSON.stringify(op5));
+//  v.value='';
+//    let mer5 = {...op5, ...selod5};
+//   localStorage.setItem(pinz,JSON.stringify(mer5));
+//   let vkz5={ p: "3","g":selg, od:{...mer5}};
+//   for (let u in selod5) {document.getElementById(u).checked=false;}selod5={};
+//   // indb({name:selg});
+//   sendd(urli,vkz5,'pin');
+// }else{alert('Select order first.')
+//   }
+// }
+
+let clickh=0;
+async function opodli(b) {
+    let qwe5=b.parentElement.id.slice(1);
+    console.log(b.parentElement.tabIndex,qwe5);
+    if (selg!='inst') {
+      // console.log(selg.slice(-1)+qwe5.slice(0,3));
+      await mthdb(selg.slice(-1)+qwe5.slice(0,3));
+      await oddb.od.get(Number(qwe5)).then((doc)=>{clickonod(b,qwe5,doc);});
+    }else{
+     await instdb.inst.get(Number(qwe5)).then((doc)=>{clickonod(b,qwe5,doc);});
+    }
+        
+}
+function clickonod(b,qwe5,doc) {
+  clickh+=1;
+  if((clickh % 2 == 0)){
+    if(document.getElementById('aa5')){document.getElementById('my55').remove();document.getElementById('aa5').remove()}
   }else{
-    op5[lastsel]=v.innerText;
-    document.querySelector('#vtag [name='+lastsel+']').innerText=v.innerText;
-  }
-  localStorage.setItem(pinz,JSON.stringify(op5));
- v.value='';for (let u in selod5) {document.getElementById(u).checked=false;}selod5={};
-}else{alert('Select order first.')}}
-var clickh=0;
-function opodli(b) {
-    //console.log(b.getAttribute("for"));
-  //  op5= JSON.parse(pinloc);
-   // console.log('1',op5)
-    // let qwe5=b.getAttribute("for");
-    let qwe5=b.parentElement.id;
-    let od=selg.slice(-1)+qwe5;
-
-    let st = new Localbase('st');
-    st.collection(selg).doc('od'+qwe5).get().then(doc=> {
-      //  console.log("data:",uio=doc.it)
-        //gentblo(doc.it,qwe5);
-     clickh+=1;
-if((clickh % 2 == 0)){
-  //if(document.getElementById('my55')){}
-  if(document.getElementById('aa5')){document.getElementById('my55').remove();document.getElementById('aa5').remove()}
-  //b.click();
-}else{
-  // if (op5.hasOwnProperty(b.getAttribute("for"))) {
-  //    kk5="<input onchange='chnot(this)' id='inp5' name='"+b.getAttribute("for")+"' class='w3-border w3-input' type='text' style='padding:0 5px' placeholder=' Write Notes...'>"
-  // }else{ kk5=''}
-  if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div class='w3-small w3-button w3-border-right w3-dark-grey w3-ripple jkjxxx'>Copy Link</div><textarea style='display: none'></textarea></div></div>"+"<div id='my55'>Sample Div</div>")}
-     odtbl(doc.it,'tblom1','my55');
-     }
-    })
-  //  setTimeout(()=>{
-  //   if((op5.hasOwnProperty(b.getAttribute("for"))&&(op5[b.getAttribute("for")])===b.getAttribute("for"))){
-  //    // alert('note1')
-  //   }else{//alert('note2')
-  //     if(document.getElementById('inp5')){
-  //       console.log('2',op5)
-  //     document.getElementById('inp5').value=op5[b.getAttribute("for")]
-    
-  //     }
-  //   }},40);
-      // localStorage.setItem('pin',JSON.stringify(mer5))//JSON.stringify(mer5)//JSON.parse()
-      // selod5={};
-      // let vkz5={ p: "3", od:{...JSON.parse(localStorage.pin)}};
-      db.pt.where(selg).equals(od).first((v)=>{
-        console.log(v.id);
-        genlink(genid(v.id,3),v.cn);
-      })
+    if(!document.getElementById('my55')){b.parentElement.insertAdjacentHTML('afterend', "<div id='aa5' style='font-weight: 600;display: flex;'><div class='w3-small w3-button w3-border-right w3-dark-grey' id='b"+qwe5+"' onclick='editod(this)'>Edit</div><div onclick='copylink1("+`"s${qwe5}"`+")' class='w3-small w3-button w3-border-right w3-dark-grey w3-ripple'>Copy Link</div></div></div>"+"<div id='my55'>Sample Div</div>")}
+       odtbl(doc.it,'tblom1','my55');
+       }
 }
 
 // table gen for oder
@@ -726,49 +767,70 @@ Object.keys(jk).forEach(function(t) {
 });
 }// End table gen for oder
 
-//
+
+let secid='';
 function selod(h) {
- let er5=h.id;
- if(h.checked){selod5[er5]=er5;}else if(!h.checked){delete selod5[er5]; }
- console.log(selod5);
+  let crrid=h.parentElement.parentElement.id;
+  if ((secid!='')&&(secid!=crrid)) {
+  document.querySelectorAll('#'+secid+'> li input').forEach((v)=>{
+    if(v.checked){
+      v.click();
+    }
+    });
+  }
+
+  let er5=h.id;
+  if(h.checked){
+    selod5[er5]=er5;
+    secid=crrid;
+   }else{
+    delete selod5[er5];
+    !Object.keys(selod5).length&&(secid='');
+  }
+ console.log(selod5, secid);
 }
  // count total and make table
 //alert('',xc)
   let pd2;
   async function couttot(xc,gd) {  
-  let st = new Localbase('st');
+  // let st = new Localbase('st');
+  newc2();
   pd2=structuredClone(ods1);//{...ods1}
   // console.log(pd2);
 let oldm=localStorage.lastreset.split(','); // '304,34' 
 console.log(oldm[0],date1,oldm[1],xc,zxc);
 if (oldm[0]!=date1) {
   let lr=Number(oldm[1]);let lr1=500;
-  
+  await mthdb(gd.slice(-1)+oldm[0]);
   for(let v = lr; v <= (lr+lr1); v++){
-  st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
+  // st.collection(gd).doc('od'+(oldm[0])+v).get().then(doc => {
+    await oddb.od.get(Number(oldm[0]+''+v)).then((doc)=>{
     if (doc) {
     // console.log('1',v);
     lelo(doc.it);
     // }else{console.log('0',v);
   }
-});
+}).catch(err => {console.log(err)});
 }
 }
-
+await mthdb(gd.slice(-1)+date1);
 for(let v1 = xc; v1 <= Number(zxc); v1++){  
-st.collection(gd).doc('od'+date1+v1).get().then(doc => {
+// st.collection(gd).doc('od'+date1+v1).get().then(doc => {
+  await oddb.od.get(Number(date1+v1)).then((doc)=>{
+    // console.log(date1+''+v1)
   if (doc) {lelo(doc.it);}
   // else{console.log('0',v1);
-});
+}).catch(err => {console.log(err)});
   }
  }
  
 // for instock
 async function couttotinst(xc,gd) {  
-  let st = new Localbase('st');
+  // let st = new Localbase('st');
   pd2=structuredClone(ods1);
   // console.log(pd2);
-  st.collection(gd).doc('od'+xc).get().then(doc => {
+  // st.collection(gd).doc('od'+xc).get().then(doc => {
+    await instdb.inst.get(xc).then(doc => {
     lelo(doc.it);
   })
 }
@@ -821,7 +883,9 @@ function omak(n,i,a){
   let idrr='';
   if(n.id==='ghy99'||n.id==='p781'||n.id==='p782'||n.id==='p783'||n.id==='p784'){idrr='#'+n.id+','+'#ghy99,'}
   if(n.id){
-   document.getElementById('i88').innerHTML="<style>"+idrr+"#"+n.id+"{color: #fff!important; background-color: #000!important;}</style>"}
+    if(n.id!='lastimgc'){
+   document.getElementById('i88').innerHTML="<style>"+idrr+"#"+n.id+"{color: #fff!important; background-color: #000!important;}</style>";
+  }}
   else{
    dfg6++;
    n.setAttribute('id','ghy'+dfg6)
@@ -869,54 +933,63 @@ iframe.contentWindow.document.close();
  setTimeout(function(){ iframe.remove()}, 5000);
 }
 
-// pin 
-function pint(v,p) {
-  selgo(selg);const aul=document.getElementById('oderli');
- // let od=selg.slice(-1);//console.log(selod5);
-  for (const t in selod5) {
-  let px=document.getElementById(t);let pxn=px.parentNode;
+  // if(v===1){
+  // let mer5 = {...j, ...selod5};
+  // selpin(selg);
+  // localStorage.setItem(pinz,JSON.stringify(mer5));
+  // selod5={};
+  // let vkz5={ p: "3","g":selg, od:{...mer5}};
+  // sendd(urli,vkz5,'pin');
+  // }
   
-  // db.pt.where('ods').equals(od+t.slice(2)).each((v)=>{
-    let pj=pxn.tabIndex;//console.log(t,pj);
-    if (pj>0) {
-  (async()=>{
-  await db.pt.get(pj).then((v)=>{
-    // console.log(t,pj);
-    // if ((v.add!=='')) {pxn.style.color='blue';}
-    // console.log((v.add===''),v.cn);
-    // !!v.add||(pxn.style.color='blue');
-    !(v.add==='')||(pxn.style.color='blue');
-    if (v.gst) {
-        let zw=pxn.querySelector('span[onclick] span');
-        zw.innerText='GST';
-        zw.style.padding='';
-    }
-  });})();}
 
- // console.log(t,selod5[t],selod5);
-  if(t!=selod5[t]){aul.querySelector('#vtag [name='+t+']').innerText=selod5[t];}
-  let lipnode=aul.querySelectorAll('#oderli li');
-  // let xm=Array.from(px.parentNode.parentNode.children).indexOf(px.parentNode);
-   let xm=Array.from(lipnode).indexOf(pxn);
-  //moveItem(xm,0);
-  const items = [...lipnode];
-  if (0 > items.length - 1 || 0 < 0) return;
-  const item = items[xm];
-  if (!item) return;
-  aul.removeChild(item);
-  aul.insertBefore(item, aul.children[0]);
+// // pin 
+// function pint(v,p) {
+//   selgo(selg);const aul=document.getElementById('oderli');
+//  // let od=selg.slice(-1);//console.log(selod5);
+//   for (const t in selod5) {
+//   let px=document.getElementById(t);let pxn=px.parentNode;
+  
+//   // db.pt.where('ods').equals(od+t.slice(2)).each((v)=>{
+//     let pj=pxn.tabIndex;//console.log(t,pj);
+//     if (pj>0) {
+//   (async()=>{
+//   await db.pt.get(pj).then((v)=>{
+//     // console.log(t,pj);
+//     // if ((v.add!=='')) {pxn.style.color='blue';}
+//     // console.log((v.add===''),v.cn);
+//     // !!v.add||(pxn.style.color='blue');
+//     !!(v.add)||(pxn.style.color='blue'); // if add=='' color blue
+//     if (v.gst) {
+//         let zw=pxn.querySelector('span[onclick] span');
+//         zw.innerText='GST';
+//         zw.style.padding='';
+//     }
+//   });})();}
 
-  pxn.style.background='#ffeb3b';
-  px.checked=false;
- // console.log(xm)
-  }
-  let mer5 = {...JSON.parse(pinloc), ...selod5};
-  selpin(selg)
-  localStorage.setItem(pinz,JSON.stringify(mer5));
-  selod5={};
-  let vkz5={ p: "3","g":selg, od:{...mer5}};
-  if(v===1){sendd(urli,vkz5,'pin')}
-}
+//  // console.log(t,selod5[t],selod5);
+//   if(t!=selod5[t]){aul.querySelector('#vtag [name='+t+']').innerText=selod5[t];}
+//   let lipnode=aul.querySelectorAll('#oderli li');
+//   // let xm=Array.from(px.parentNode.parentNode.children).indexOf(px.parentNode);
+//    let xm=Array.from(lipnode).indexOf(pxn);
+//   //moveItem(xm,0);
+//   const items = [...lipnode];
+//   if (0 > items.length - 1 || 0 < 0) return;
+//   const item = items[xm];
+//   if (!item) return;
+//   aul.removeChild(item);
+//   aul.insertBefore(item, aul.children[0]);
+//   // pxn.style.background='#ffeb3b';
+//   px.checked=false;
+//  // console.log(xm)
+//   }
+//   let mer5 = {...JSON.parse(pinloc), ...selod5};
+//   selpin(selg);
+//   localStorage.setItem(pinz,JSON.stringify(mer5));
+//   selod5={};
+//   let vkz5={ p: "3","g":selg, od:{...mer5}};
+//   if(v===1){sendd(urli,vkz5,'pin')}
+// }
 
 // var moveItem = (from, to) => {
 //   const aul=document.getElementById('oderli');
@@ -928,37 +1001,95 @@ function pint(v,p) {
 //   aul.insertBefore(item, aul.children[to]);
 // }
 
-function unpin(p){
-  for (const t in selod5) {
-    let px1=document.getElementById(t);
-    px1.parentNode.style.background='';selgo(selg);
-   let mk5=JSON.parse(pinloc);
-   document.querySelector('#vtag [name='+t+']').innerText='';
-   delete mk5[t];
-   selpin(selg)
-    localStorage.setItem(pinz,JSON.stringify(mk5));
-    px1.checked=false;
+// pin status
+async function chnot(b,v) {
+  let dq=document.querySelector('#'+secid);
+  let sel=Object.keys(selod5);
+  let cd='';
+  if(sel.length){
+    sel.forEach((fv,i)=>{
+      cd+=(i+1)+'- '+dq.querySelector('#'+fv).nextElementSibling.innerText+'\n';
+    });
+if(confirm(cd+' Status will change to '+v.innerText)){
+    selgo(selg);//pint(1);
+   let op5=JSON.parse(pinloc);
+    sel.forEach((fv,i)=>{
+      console.log(fv,b,v);
+      if (!secid.match(/\w\d{3}/g)) {
+        if (b===1) {
+          op5[fv]=v.value;
+          dq.querySelector('#vtag [name='+fv+']').innerHTML=v.value;
+           v.value='';
+        }else{
+          op5[fv]=v.innerText;
+          dq.querySelector('#vtag [name='+fv+']').innerText=v.innerText;
+        }
+      }else{
+        op5[fv]=v.innerText;
+      }
+      dq.querySelector('#'+fv).checked=false;
+    });
+  selpin(selg);
+  localStorage.setItem(pinz,JSON.stringify(op5));
+  let vkz5={ p: "3","g":selg, od:{...op5}};
+  if (secid.match(/\w\d{3}/g)){
+    await indb({name:selg}).then(() => document.getElementById('st92').classList.toggle('w3-show'));
   }
-  selod5={};
-  let vkz6={ p: "3","g":selg,od:{...JSON.parse(pinloc)}};
-  if(p!=1){sendd(urli, vkz6,'unpin');}
+ await sendd(urli,vkz5,'pin');}
+ selod5={};secid='';
+}else{alert('Select order first.')
+  }
 }
 
+// pin onload
+async function pint(v) {
+  selgo(selg);let aul=document.getElementById('oderli');
+  let j=JSON.parse(pinloc);
+  for (const t in j) {
+    let px=document.getElementById(t);let pxn=px.parentNode;
+      let pj=pxn.tabIndex;
+      // console.log(t,pj,t);
+      // if(t!=selod5[t]){
+         aul.querySelector('#vtag [name='+t+']').innerText=j[t];
+      if (pj>0) {
+    await db.pt.get(pj).then((v)=>{
+      if (v) {
+        !!(v.add)||(pxn.style.color='blue'); // if add=='' txt color blue
+        if (v.gst) {
+            let zw=pxn.querySelector('span[onclick] span');
+            zw.innerText='GST';
+            zw.style.padding='';
+        }
+      }else{
+        (pxn.style.color='red'); // if no party found txt color red
+      }
+    });}
+  }
+  for (let u in selod5) {document.getElementById(u).checked=false;}selod5={};
+}
 
-/// sync
-
-let vk35=JSON.parse(localStorage.getItem('pend'));
-if(!(Object.keys(vk35).length === 0)){
-  let st1 = new Localbase('st');
-    for (let r in vk35) {
-       // console.log(r);
-st1.collection('ods').doc(r).get().then(doc => {
-  console.log('sync:',r);
-  //sinsh(doc,'0');
-    delete vk35[r];
-    localStorage.setItem("pend", JSON.stringify(vk35))
-})
- }
+function unpin(){
+  let sel=Object.keys(selod5);
+  let cd='';
+  sel.forEach((fv,i)=>{
+    cd+=(i+1)+'- '+document.querySelector('#oderli '+'#'+fv).nextElementSibling.innerText+'\n';
+  });
+  if(confirm(cd+' Will be unpin')){
+  selgo(selg);
+  let mk5=JSON.parse(pinloc);
+  for (const t in selod5) {
+    let px1=document.getElementById(t);
+    px1.parentNode.style.background='#fff';
+   document.querySelector('#vtag [name='+t+']').innerText='';
+   delete mk5[t];
+    px1.checked=false;
+  }
+  selpin(selg);
+  localStorage.setItem(pinz,JSON.stringify(mk5));
+  selod5={};
+  let vkz6={ p: "3","g":selg,od:{...mk5}};
+  sendd(urli, vkz6,'unpin');
+}
 }
 
 var pinloc='{}';
@@ -1013,6 +1144,40 @@ function selpin(g) {
   document.getElementById('lastodimg').src=tt5.im5;
   document.getElementById('lastodcn').innerHTML=tt5.cn;
 
+  document.getElementById('lastimgc').addEventListener('click', async(v) => {
+    let blobx=await makeblob(tt5.im5);
+    await navigator.clipboard.write([new ClipboardItem({"image/png": blobx}),]);
+    await snackbar(tt5.cn.match(/[^\d+\s].+/g)[0]+" copied",500);
+  });
 
+  ///base64 to blob
+async function makeblob(dataURL) {
+    const BASE64_MARKER = ';base64,';
+    const parts = dataURL.split(BASE64_MARKER);
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
+    for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], { type: contentType });
+}
 
+async function snackbar(txt,time) {
+  let x = document.getElementById("snackbar");
+  x.style.display='';
+  x.innerHTML=txt;
+  setTimeout(function(){ x.style.display='none'; }, time);
+}
 
+window.addEventListener('online', () => {
+  document.body.classList.remove("w3-grayscale-min");
+  snackbar("Online",500);
+});
+window.addEventListener('offline', () => {
+  document.body.classList.add('w3-grayscale-min');
+  snackbar("Offline",500);
+});
+
+window.navigator.onLine||document.body.classList.add('w3-grayscale-min');

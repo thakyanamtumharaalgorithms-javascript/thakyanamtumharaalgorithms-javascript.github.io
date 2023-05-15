@@ -13,7 +13,7 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     saveinst(1);instgh.click();instgh.checked=0;
   }else {
     // let ptd={id:'a',cn:'',mn1:'',mn2:'',gst:'',add:'',ods:['as102','as33','ak508']};
-    zc(ptd,'hiii76868iiii');
+    // zc(ptd,'hiii76868iiii');
     zsr.id = odid;
     zsr.cn = document.getElementById('u13').innerText;
     zsr.tot = Number(total);
@@ -21,7 +21,6 @@ document.getElementById("btn_convert").addEventListener("click", function () {
     zsr.dt= date.split(' ').join('/');
     zsr.it = od;
     zsr.inv=billinv;
-
     zsr.tch=othch[0];
     zsr.och=othch[1];
     zsr.dis=othch[2];
@@ -72,13 +71,14 @@ document.getElementById("btn_convert").addEventListener("click", function () {
      // }else{shod0={ "p": "0", "g": gd, "od": { ...zsr, "pc":{...odprice}}};}
     
     (async ()=> {
-      let st = new Localbase('st');
+      // let st = new Localbase('st');
       //await st.collection(gd).add(shod0.od, 'od' + (Number(zxc)+1)).then((res) => {
-        await st.collection(gd).add(shod0.od, 'od' + shod0.od.id).then((res) => {
+        await mthdb(gd.slice(-1)+date1);
+        await oddb.od.add(shod0.od,ctcn).then((res) => {
         console.log(res, 'added');
         selgo(gd);//  pinloc
         let paz = JSON.parse(pinloc);
-        paz['od' + shod0.od.id] = 'Pending';
+        paz['ods' + shod0.od.id] = 'Pending';
         selpin(gd);//pinz
         localStorage.setItem(pinz, JSON.stringify(paz));
       }).catch((error) => {
@@ -99,23 +99,16 @@ document.getElementById("btn_convert").addEventListener("click", function () {
 
    //console.log(shod0,'zsr',zsr,'sho',shod1);
      // console.log('hhhhhhhhh '+JSON.stringify(shod0));
-     let txtcn=shod0.od.id+'.'+shod0.od.cn;let imgcn=canvas.toDataURL();
+     let txtcn=shod0.od.id+' '+shod0.od.cn;let imgcn=canvas.toDataURL();
      let imglastod = {};imglastod['cn'] =txtcn; imglastod['im5'] = imgcn;
       document.getElementById('lastodimg').src = imgcn;
       document.getElementById('lastodcn').innerHTML = txtcn;
+      tt5=imglastod;
       localStorage.setItem('imglastod', JSON.stringify(imglastod));
-      // canvas.toBlob(async (blob) => {
-      //   odimgbob=blob;
-      // await navigator.clipboard.write([new ClipboardItem({ "image/png": blob})])
-      // .then(function () { console.log('copied'); })
-      // .catch(function (error) { console.log(error); });
-      // });
+
   });
   html33.style.width ='';
   newc();
-  // clickCounter();
-  console.log(localStorage.clickcount,zxc,odid);
   localStorage.clickcount=ctcn; zxc=ctcn;
-  ptods=[];ptid=0;
   }
 });

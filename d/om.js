@@ -4,6 +4,8 @@
 });
 
 document.getElementById("btn_convert").addEventListener("click", function () {
+  // alert("you can't create new");
+
   let gd =document.getElementById("gsel").value;
   viewtotal();
   let ctcn=(Number(zxc)+1);
