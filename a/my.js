@@ -3,14 +3,6 @@ var doc=document,zzz=(s,o=doc)=>o.querySelectorAll(s),zz=(s,o=doc)=>o.querySelec
 // get all ods list
 async function getods(gd) {
   try {
-  // await mthdb(gd.slice(-1)+date1);
-  // let allod=await oddb.od.toArray((v)=>{
-  // return v.sort((a,b)=>{
-  //     return a.id - b.id;
-  //     });
-  // });
-
-  // await appdli(allod);
   selgo(gd);
   let j=JSON.parse(pinloc);let vb='';
 let hmtl0='';
@@ -640,7 +632,7 @@ document.getElementById('cout6').addEventListener("click", function() {
 
 await getods(selg).then((v) => {
   selod5=JSON.parse(pinloc);//console.log(selg,pinloc)
-  setTimeout(function(){pint(0);selod5={};},100);
+  setTimeout(function(){pint(0);selod5={};},200);
 })
 
 }
